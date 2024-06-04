@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg_light {
+	background-color: #dddcff;
+	color: #01001a;
+	transition: .3s ease;
+}
+
+.bg_dark {
+	background-color: #01001a;
+	color: #dddcff;
+	transition: .3s ease;
+}
+
+@keyframes fadeIn {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+  }
+  
+  .animate-fadeIn {
+	animation: fadeIn 2s ease-in-out forwards;
+  }
+  
+  .delay-200 {
+	animation-delay: 0.2s;
+  }
+  
+  .delay-400 {
+	animation-delay: 0.4s;
+  }
+  
+  .text-glow {
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+  }
+
+   

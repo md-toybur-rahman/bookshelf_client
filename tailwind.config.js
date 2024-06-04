@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'logo': ['Sedan SC', 'serif'],
+      'default': ['Montserrat', 'sans-serif'],
+    }
   },
   plugins: [],
 }

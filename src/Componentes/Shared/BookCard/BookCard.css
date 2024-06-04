@@ -1,0 +1,135 @@
+.card_container {
+	width: 300px;
+	position: relative;
+}
+
+.card {
+	position: relative;
+	width: 300px;
+	height: 300px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 0.3s;
+	transition-delay: 0.3s;
+}
+
+.card::before {
+	position: relative;
+}
+
+.card:hover {
+	width: 300px;
+	transition-delay: 0.3s;
+}
+
+.card .circle {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 40vh;
+	height: 50%;
+	border-radius: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.card .circle::before {
+	content: "";
+	position: absolute;
+	top: 30px;
+	left: 2;
+	right: 2;
+	width: 300px;
+	height: 300px;
+	border-radius: 50%;
+	background: transparent;
+	/* border: 8px solid #115A56; */
+	filter: drop-shadow(0 0 10px var(--clr)) drop-shadow(0 0 60px var(--clr));
+	transition: 0.3s;
+	transition-delay: 0.75s, 1s;
+}
+
+.card:hover .circle::before {
+	transition-delay: 0.3s;
+	width: 0%;
+	height: 0%;
+	/* border-radius: 50%; */
+	border: none;
+}
+
+.card .circle .logo {
+	position: relative;
+	top: 90px;
+	width: 150px;
+	height: 230px;
+	transition: 0.3s;
+	transition-delay: 0.3s;
+}
+
+.card:hover .circle .logo {
+	transform: scale(0);
+	transition-delay: 0s;
+}
+
+.card .product_img {
+	position: absolute;
+	top: 0%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(0) rotate(180deg);
+	height: 300px;
+	transition: 0.3s ease-in-out;
+}
+
+.card:hover .product_img {
+	transition-delay: 0.75s;
+	top: 40%;
+	left: 50%;
+	height: 170px;
+	transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+
+.card .content {
+	/* position: absolute; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	width: 300px;
+	height: 300px;
+	left: 10%;
+	padding: 20px 20px 20px 20px;
+	opacity: 0;
+	transition: 0.3s;
+	visibility: hidden;
+}
+
+.card:hover .content {
+	transition-delay: 0.75s;
+	opacity: 1;
+	visibility: visible;
+	left: 3px;
+	margin-top: 15px;
+}
+
+.card .content h2 {
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 18px;
+	text-align: center;
+	line-height: 1.3em;
+}
+
+.card .content p {
+	color: #fff;
+}
+
+.card .content a {
+	position: relative;
+	padding: 4px 20px;
+	border-radius: 7px;
+	display: inline-block;
+	text-decoration: none;
+	margin-top: 14px;
+}
