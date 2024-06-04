@@ -1,6 +1,7 @@
 import React from 'react';
 import useNews from '../../../Hooks/useNews';
 import LibraryNewsCard from './LibraryNewsCard';
+import { Link } from 'react-router-dom';
 
 const LibraryNews = () => {
 	const [newses] = useNews();
@@ -17,7 +18,7 @@ const LibraryNews = () => {
 					}
 				</div>
 				<div className='flex items-center justify-center'>
-					<button className='mt-16 px-6 py-3 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-lg font-semibold rounded-lg shadow-lg'>View All News</button>
+					<Link to={"/news"} className='mt-16 px-6 py-3 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-lg font-semibold rounded-lg shadow-lg'>View All News</Link>
 				</div>
 			</div>
 		</section>

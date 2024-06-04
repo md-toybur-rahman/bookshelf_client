@@ -22,6 +22,7 @@ const Navbar = () => {
 					<Link className='hover:text-teal-300' to={"/"}>Home</Link>
 					<Link className='hover:text-teal-300' to={"/books"}>Books</Link>
 					<Link className='hover:text-teal-300' to={"/events"}>Events</Link>
+					<Link className='hover:text-teal-300' to={"/events"}>News</Link>
 					<Link className='hover:text-teal-300' to={"/contact"}>Contact Us</Link>
 					<Link className='hover:text-teal-300' to={"/admin"}>Admin Panel</Link>
 				</div>
@@ -39,6 +40,7 @@ const Navbar = () => {
 					<Link className='hover:text-teal-300' to={"/"}>Home</Link>
 					<Link className='hover:text-teal-300' to={"/books"}>Books</Link>
 					<Link className='hover:text-teal-300' to={"/events"}>Events</Link>
+					<Link className='hover:text-teal-300' to={"/events"}>News</Link>
 					<Link className='hover:text-teal-300' to={"/contact"}>Contact Us</Link>
 					<Link className='hover:text-teal-300' to={"/admin"}>Admin Panel</Link>
 				</div>
