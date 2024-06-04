@@ -13,6 +13,7 @@ import News from "../Componentes/News/News";
 import AddBook from "../Componentes/Admin/AddBook/AddBook";
 import SignIn from "../Componentes/SignIn/SignIn";
 import SignUp from "../Componentes/SignUp/SignUp";
+import BookDetials from "../Componentes/Shared/BookDetails/BookDetials";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
       {
         path: "/books",
         element: <Books></Books>
+      },
+      {
+        path: "/book/:id",
+        element: <BookDetials></BookDetials>,
+        loader: ({params}) => fetch(`http://localhost:2000/book/${params.id}`)
       },
       {
         path: "/events",

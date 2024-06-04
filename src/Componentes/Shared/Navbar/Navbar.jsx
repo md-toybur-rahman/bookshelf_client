@@ -56,7 +56,7 @@ const Navbar = () => {
 							</div>
 							<h1 className={`font-bold cursor-pointer duration-300 ${isProfile ? 'rotate-180' : 'rotate-90'}`}>︿</h1>
 						</Link> :
-						<Link className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium px-5 py-1 rounded-lg flex items-center gap-2' to={"/"}> <img className='w-6' src="https://i.ibb.co/HzdvSmH/icons8-sign-in-80.png" alt="" /> <span>Sign In</span></Link>
+						<Link className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium px-5 py-1 rounded-lg flex items-center gap-2' to={"/signin"}> <img className='w-6' src="https://i.ibb.co/HzdvSmH/icons8-sign-in-80.png" alt="" /> <span>Sign In</span></Link>
 
 				}
 				<div className={`absolute right-0 top-[73px] z-50 flex items-center justify-center duration-300 w-[170px] bg-gradient-to-r from-[#01001a] via-teal-800 to-[#01001a] px-5 ${isProfile ? 'h-32' : 'h-0'} rounded-b-xl overflow-hidden`}>

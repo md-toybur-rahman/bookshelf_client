@@ -132,3 +132,8 @@
 	text-decoration: none;
 	margin-top: 14px;
 }
+@media screen and (max-width: 568px) {
+	.card .content h2{
+		width: 150px;
+	}
+}
