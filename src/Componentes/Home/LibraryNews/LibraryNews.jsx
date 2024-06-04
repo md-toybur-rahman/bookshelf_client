@@ -17,7 +17,7 @@ const LibraryNews = () => {
 					}
 				</div>
 				<div className='flex items-center justify-center'>
-					<button className='mt-6 px-6 py-3 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-lg font-semibold rounded-lg shadow-lg'>View All News</button>
+					<button className='mt-16 px-6 py-3 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-lg font-semibold rounded-lg shadow-lg'>View All News</button>
 				</div>
 			</div>
 		</section>
