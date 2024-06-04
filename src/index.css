@@ -15,32 +15,85 @@
 }
 
 @keyframes fadeIn {
-	0% { opacity: 0; }
-	100% { opacity: 1; }
-  }
-  
-  .animate-fadeIn {
-	animation: fadeIn 2s ease-in-out forwards;
-  }
-  
-  .delay-200 {
-	animation-delay: 0.2s;
-  }
-  
-  .delay-400 {
-	animation-delay: 0.4s;
-  }
-  
-  .text-glow {
-	text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
-  }
+	0% {
+		opacity: 0;
+	}
 
-  input::file-selector-button {
+	100% {
+		opacity: 1;
+	}
+}
+
+.animate-fadeIn {
+	animation: fadeIn 2s ease-in-out forwards;
+}
+@keyframes vivrate {
+	0% {
+		rotate: 0deg;
+	}
+	10% {
+		rotate: 25deg;
+	}
+	20% {
+		rotate: -25deg;
+	}
+	30% {
+		rotate: 45deg;
+	}
+	40% {
+		rotate: -45deg;
+	}
+	50% {
+		rotate: 0deg;
+		transform: translateX(0%);
+	}
+	100% {
+		rotate: 0deg;
+		transform: translateX(-130%);
+	}
+
+}
+
+.animate-vivrate {
+	animation: vivrate 2s ease-in-out forwards;
+	animation-delay: 2s;
+}
+@keyframes slide {
+	0% {
+		margin: 0 auto;
+		transform: translateX(0px);
+	}
+	100% {
+		transform: translateX(500px);
+	}
+
+}
+
+.animate-slide {
+	animation: slide 2s ease-in-out forwards;
+	animation-delay: 4s;
+}
+
+.delay-200 {
+	animation-delay: 0.2s;
+}
+
+.delay-400 {
+	animation-delay: 0.4s;
+}
+
+.text-glow {
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.img-glow {
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+input::file-selector-button {
 	border-radius: 8px;
 	padding: 0 16px;
 	background-color: transparent;
 	border: 1px solid rgb(20 184 166);
 	color: #dddcff;
-  }
-
-   
+}
