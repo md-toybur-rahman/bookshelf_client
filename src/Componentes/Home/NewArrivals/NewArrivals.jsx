@@ -39,7 +39,7 @@ const NewArrivals = () => {
 	}, [col]);
 	return (
 		<div className='mt-20'>
-			<h1 className='text-4xl text-center font-bold'>Best Sell Books</h1>
+			<h1 className='text-4xl text-center font-bold'>New Arrivals</h1>
 			<p className='text-center max-w-[600px] mx-auto mt-4'>Explore our curated collection of top reads, from timeless classics to modern favorites. Find your next great book today!</p>
 			<div className='flex flex-wrap items-center justify-center mt-8'>
 				<Swiper

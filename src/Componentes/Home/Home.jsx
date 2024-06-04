@@ -5,6 +5,7 @@ import LibraryNews from './LibraryNews/LibraryNews';
 import Events from './Events/Events';
 import BestSellers from './BestSellers/BestSellers';
 import NewArrivals from './NewArrivals/NewArrivals';
+import OurCommunity from './OurCommunity/OurCommunity';
 
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
 				<BestSellers></BestSellers>
 				<NewArrivals></NewArrivals>
 				<LibraryNews></LibraryNews>
+				<OurCommunity></OurCommunity>
 			</section>
 		</div>
 	);
