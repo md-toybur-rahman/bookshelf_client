@@ -90,10 +90,20 @@
 	box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
 }
 
+.div-glow{
+	box-shadow: 0 0 10px rgba(56, 178, 172, 0.7), 
+              0 0 20px rgba(56, 178, 172, 0.5), 
+              0 0 30px rgba(56, 178, 172, 0.3);
+}
+
 input::file-selector-button {
 	border-radius: 8px;
 	padding: 0 16px;
 	background-color: transparent;
 	border: 1px solid rgb(20 184 166);
 	color: #dddcff;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }

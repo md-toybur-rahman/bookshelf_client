@@ -10,10 +10,14 @@ import Contact from "../Componentes/Contact/Contact";
 import Admin from "../Componentes/Admin/Admin";
 import Profile from "../Componentes/Profile/Profile";
 import News from "../Componentes/News/News";
-import AddBook from "../Componentes/Admin/AddBook/AddBook";
 import SignIn from "../Componentes/SignIn/SignIn";
 import SignUp from "../Componentes/SignUp/SignUp";
 import BookDetials from "../Componentes/Shared/BookDetails/BookDetials";
+import Welcome from "../Componentes/Admin/Welcome/Welcome";
+import AddBook from "../Componentes/Admin/BookManagement/AddBook/AddBook";
+import UpdateBook from "../Componentes/Admin/BookManagement/UpdateBook/UpdateBook";
+import DeleteBook from "../Componentes/Admin/BookManagement/DeleteBook/DeleteBook";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -30,8 +34,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/book/:id",
-        element: <BookDetials></BookDetials>,
-        loader: ({params}) => fetch(`http://localhost:2000/book/${params.id}`)
+        element: <PrivateRoute><BookDetials></BookDetials></PrivateRoute>,
+        loader: ({ params }) => fetch(`http://localhost:2000/book/${params.id}`)
       },
       {
         path: "/events",
@@ -55,8 +59,20 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/admin",
+            element: <Welcome></Welcome>
+          },
+          {
+            path: "/admin/add_book",
             element: <AddBook></AddBook>
-          }
+          },
+          {
+            path: "/admin/update_book",
+            element: <UpdateBook></UpdateBook>
+          },
+          {
+            path: "/admin/delete_book",
+            element: <DeleteBook></DeleteBook>
+          },
         ]
       },
     ]

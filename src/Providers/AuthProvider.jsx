@@ -36,7 +36,6 @@ const AuthProvider = ({children}) => {
 
 	useEffect(() => {
 		const userActivity = onAuthStateChanged(auth, loggedUser => {
-			console.log(loggedUser);
 			if(loggedUser) {
 				setUser(loggedUser);
 				setLoading(false);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../Providers/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
@@ -30,7 +30,6 @@ const Navbar = () => {
 			return res.json();
 		}
 	})
-	console.log(users[0])
 
 	return (
 		<div className={`bg-gradient-to-r from-[#01001a] from-0% via-teal-800 via-50% to-[#01001a] to-100% px-5 py-2 flex items-center justify-between relative`}>
@@ -50,7 +49,6 @@ const Navbar = () => {
 			<div>
 				<Link to={"/"} className='flex items-center gap-2 text-2xl text-[#39d5ff] lg:text-[#39d5ff] font-bold font-logo'>
 					<img className='w-8 md:w-14' src={`https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png`} />
-					{/* <img className='w-14 lg:hidden' src={`https://i.ibb.co/qNHZb6B/Elegant-Public-Library-Logo-Template-2-Photoroom-2.png`} />  */}
 
 					<span className='hidden sm:block'>Bookshelf</span></Link>
 			</div>

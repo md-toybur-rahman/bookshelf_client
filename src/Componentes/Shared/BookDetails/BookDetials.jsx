@@ -3,7 +3,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 
 const BookDetials = () => {
 	const book = useLoaderData();
-	const { book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, cover_image, dimensions, user_reviews } = book[0];
+	const { book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, cover_image, dimensions, user_reviews, price } = book[0];
 
 	return (
 		<div className=" flex flex-wrap items-center justify-center gap-10 px-4 py-8 mt-10 mb-20">
@@ -26,9 +26,10 @@ const BookDetials = () => {
 				<p><strong>Publisher:</strong> {publisher_name}</p>
 				<p><strong>Language:</strong> {language}</p>
 				<p><strong>Pages:</strong> {number_of_pages}</p>
+				<p><strong>Price:</strong> $ {price}</p>
 				<p><strong>Dimension:</strong> Height: {dimensions.height} | Width: {dimensions.width} | Depth: {dimensions.depth}</p>
 				<div className='flex items-center gap-5'>
-					<button className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium mb-2 px-5 rounded-md py-2'>Buy Now</button>
+					<button className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium mb-2 px-5 rounded-md py-2'><span className='text-glow'>${price}</span> Buy Now</button>
 					<button className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium mb-2 px-5 rounded-md py-2'>Add To Cart</button>
 				</div>
 			</div>

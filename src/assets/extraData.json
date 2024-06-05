@@ -1,0 +1,132 @@
+[
+    {
+        "_id": "665d832a2b3e1f21ee6ff6e0",
+        "book_name": "Pride and Prejudice",
+        "author_name": "Jane Austen",
+        "publisher_name": "T. Egerton, Whitehall",
+        "publication_date": "1813-01-28",
+        "language": "English",
+        "genre": "Romance, Satire",
+        "number_of_pages": 279,
+        "dimensions": {
+            "height": "8.25 inches",
+            "width": "5.5 inches",
+            "depth": "1 inch"
+        },
+        "cover_image": "https://images.penguinrandomhouse.com/cover/9780143105428",
+        "keywords": ["marriage", "class", "society"],
+        "book_id": "021",
+        "price": 12.99,
+        "user_reviews": [
+            {
+                "user": "Elizabeth",
+                "rating": 5,
+                "comment": "A witty and romantic critique of class and society."
+            }
+        ]
+    },
+    {
+        "_id": "665d832a2b3e1f21ee6ff6e1",
+        "book_name": "1984",
+        "author_name": "George Orwell",
+        "publisher_name": "Secker & Warburg",
+        "publication_date": "1949-06-08",
+        "language": "English",
+        "genre": "Dystopian, Political Fiction",
+        "number_of_pages": 328,
+        "dimensions": {
+            "height": "8 inches",
+            "width": "5.25 inches",
+            "depth": "1 inch"
+        },
+        "cover_image": "https://upload.wikimedia.org/wikipedia/en/c/c3/1984first.jpg",
+        "keywords": ["totalitarianism", "surveillance", "freedom"],
+        "book_id": "022",
+        "price": 14.99,
+        "user_reviews": [
+            {
+                "user": "Winston",
+                "rating": 5,
+                "comment": "A chilling depiction of a dystopian future."
+            }
+        ]
+    },
+    {
+        "_id": "665d832a2b3e1f21ee6ff6e2",
+        "book_name": "Catch-22",
+        "author_name": "Joseph Heller",
+        "publisher_name": "Simon & Schuster",
+        "publication_date": "1961-11-10",
+        "language": "English",
+        "genre": "Satire, War",
+        "number_of_pages": 453,
+        "dimensions": {
+            "height": "8 inches",
+            "width": "5.5 inches",
+            "depth": "1.2 inches"
+        },
+        "cover_image": "https://images.penguinrandomhouse.com/cover/9781451626650",
+        "keywords": ["war", "absurdity", "bureaucracy"],
+        "book_id": "023",
+        "price": 13.99,
+        "user_reviews": [
+            {
+                "user": "Yossarian",
+                "rating": 5,
+                "comment": "A brilliant and absurd satire of war."
+            }
+        ]
+    },
+    {
+        "_id": "665d832a2b3e1f21ee6ff6e3",
+        "book_name": "The Great Gatsby",
+        "author_name": "F. Scott Fitzgerald",
+        "publisher_name": "Charles Scribner's Sons",
+        "publication_date": "1925-04-10",
+        "language": "English",
+        "genre": "Tragedy",
+        "number_of_pages": 180,
+        "dimensions": {
+            "height": "8 inches",
+            "width": "5.5 inches",
+            "depth": "0.8 inches"
+        },
+        "cover_image": "https://upload.wikimedia.org/wikipedia/en/f/f7/TheGreatGatsby_1925jacket.jpeg",
+        "keywords": ["American Dream", "wealth", "love"],
+        "book_id": "024",
+        "price": 10.99,
+        "user_reviews": [
+            {
+                "user": "Nick",
+                "rating": 4,
+                "comment": "A haunting exploration of the American Dream."
+            }
+        ]
+    },
+    {
+        "_id": "665d832a2b3e1f21ee6ff6e4",
+        "book_name": "To Kill a Mockingbird",
+        "author_name": "Harper Lee",
+        "publisher_name": "J.B. Lippincott & Co.",
+        "publication_date": "1960-07-11",
+        "language": "English",
+        "genre": "Southern Gothic, Drama",
+        "number_of_pages": 281,
+        "dimensions": {
+            "height": "8.25 inches",
+            "width": "5.75 inches",
+            "depth": "1 inch"
+        },
+        "cover_image": "https://upload.wikimedia.org/wikipedia/en/7/79/To_Kill_a_Mockingbird.JPG",
+        "keywords": ["racism", "justice", "childhood"],
+        "book_id": "025",
+        "price": 11.99,
+        "user_reviews": [
+            {
+                "user": "Scout",
+                "rating": 5,
+                "comment": "A powerful and moving story about justice and morality."
+            }
+        ]
+    }
+]
