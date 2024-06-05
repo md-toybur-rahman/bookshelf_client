@@ -90,8 +90,11 @@ const UpdateBook = () => {
 					</div>
 					<div className='flex flex-col gap-2 text-base'>
 						<label className='font-medium' htmlFor="publication_date">Publication Date <span className='text-red-500'>*</span></label>
-						<input id="update_publication_date" {...register("publication_date", { required: true })} className='border border-teal-500 bg-transparent px-2 py-1 rounded-xl outline-none' type="date" name='publication_date' />
-						{errors.publication_date && <span className="text-sm text-red-500">This field is required *</span>}
+						<div className="relative">
+							<input id="update_publication_date" {...register("publication_date", { required: true })} className='border border-teal-500 bg-transparent px-2 py-1 rounded-xl outline-none w-full' type="date" name='publication_date' />
+							{errors.publication_date && <span className="text-sm text-red-500">This field is required *</span>}
+							<img src="https://i.ibb.co/vzrjtNy/icons8-15-100.png" alt="calendar icon" className="absolute top-1/2 right-3 transform -translate-y-1/2 pointer-events-none w-6 h-6" />
+						</div>
 					</div>
 					<div className='flex flex-col gap-2 text-base'>
 						<label className='font-medium' htmlFor="language">Language <span className='text-red-500'>*</span></label>

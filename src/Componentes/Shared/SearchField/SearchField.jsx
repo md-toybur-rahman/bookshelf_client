@@ -33,7 +33,7 @@ const SearchField = (props) => {
 		}
 	};
 
-	const {handleGetBook} = useContext(getBookContext);
+	const { handleGetBook } = useContext(getBookContext);
 
 	const handleSelect = (book_id) => {
 		handleGetBook(book_id)
@@ -61,7 +61,7 @@ const SearchField = (props) => {
 					<span>Search</span>
 				</button>
 			</form>
-			<div className={`mt-10 ${filterBooks.length > 0 ? 'grid max-h-[500px]' : 'hidden max-h-0'} grid-cols-2 gap-4 overflow-scroll absolute bg-gradient-to-r from-[#01001a] from-0% via-teal-800 via-50% to-[#01001a] to-100% w-full rounded-lg top-10 div-glow border-2 border-teal-500 p-5 duration-300`}>
+			<div className={`mt-10 ${filterBooks.length > 0 ? 'grid max-h-[500px]' : 'hidden max-h-0'} grid-cols-1 md:grid-cols-2 gap-4 overflow-scroll absolute bg-gradient-to-r from-[#01001a] from-0% via-teal-800 via-50% to-[#01001a] to-100% w-full rounded-lg top-10 div-glow border-2 border-teal-500 p-5 duration-300 z-50`}>
 				{
 					filterBooks.map(aBook => <SearchItemCard key={aBook._id} book={aBook} handleSelect={handleSelect}></SearchItemCard>)
 				}

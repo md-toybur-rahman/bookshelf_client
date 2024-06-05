@@ -5,9 +5,14 @@ export const getBookContext = createContext(null)
 
 const GetBookProvider = ({ children }) => {
 	const [book, setBook] = useState([]);
+	const token = localStorage.getItem('token');
 	console.log(book)
 	const handleGetBook = (id) => {
-		fetch(`http://localhost:2000/books?id=${id}`)
+		fetch(`http://localhost:2000/books?id=${id}`, {
+			headers: {
+				authorization: `Bearer ${token}`
+			}
+		})
 			.then(res => res.json())
 			.then(data => {
 				setBook(data);
@@ -16,6 +21,7 @@ const GetBookProvider = ({ children }) => {
 
 	const value = {
 		book,
+		setBook,
 		handleGetBook
 	}
 	return (

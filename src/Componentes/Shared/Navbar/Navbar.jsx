@@ -64,7 +64,7 @@ const Navbar = () => {
 				</div>
 				{
 					user ?
-						<Link onClick={() => { setIsProfile(!isProfile) }} className='flex items-center gap-2 cursor-pointer'>
+						<div onClick={() => { setIsProfile(!isProfile) }} className='flex items-center gap-2 cursor-pointer'>
 							<div className='h-12 w-12 rounded-full border-2 border-teal-600 flex items-center justify-center overflow-hidden'>
 								{
 									users?
@@ -79,7 +79,7 @@ const Navbar = () => {
 									<button onClick={handleLogOut} className='flex items-center gap-1 hover:text-teal-300'><img className='w-8 h-8' src="https://i.ibb.co/2Zggmb2/icons8-logout-80.png" alt="" /><span>Log Out</span></button>
 								</div>
 							</div>
-						</Link> :
+						</div> :
 						<Link className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium px-2 md:px-5 py-1 rounded-lg flex items-center gap-2 text-xs md:text-base' to={"/signin"}> <img className='w-4 md:w-6' src="https://i.ibb.co/HzdvSmH/icons8-sign-in-80.png" alt="" /> <span>Sign In</span></Link>
 
 				}

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { getBookContext } from '../../Providers/GetBookProvider';
 
 const Admin = () => {
 	const [isBook, setIsBook] = useState(false);
@@ -8,6 +9,7 @@ const Admin = () => {
 	const [isMember, setIsMember] = useState(false);
 	const [isAdmin, setIsAdmin] = useState(false);
 	const location = useLocation();
+	const {setBook} = useContext(getBookContext);
 
 	return (
 		<div className='relative lg:grid grid-cols-12 min-h-[80vh]'>
@@ -31,8 +33,8 @@ const Admin = () => {
 							<h1 onClick={() => { setIsBook(!isBook) }} className='cursor-pointer font-bold flex items-center gap-4 hover:text-teal-500 mb-4'>Book Management <span className={`font-bold cursor-pointer duration-300 ${isBook ? 'rotate-180' : 'rotate-90'}`}>︿</span></h1>
 							<div className={`flex flex-col gap-4 items-center justify-center w-full ${isBook ? 'h-32' : 'h-0'} overflow-hidden duration-300`}>
 								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Add A Book</Link>
-								<Link to={"/admin/update_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A Book</Link>
-								<Link to={"/admin/delete_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A Book</Link>
+								<Link onClick={() => {setBook([])}} to={"/admin/update_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A Book</Link>
+								<Link onClick={() => {setBook([])}} to={"/admin/delete_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A Book</Link>
 							</div>
 						</div>
 						<div className='w-full flex flex-col items-center'>
