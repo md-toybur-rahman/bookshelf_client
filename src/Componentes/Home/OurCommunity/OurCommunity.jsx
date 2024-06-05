@@ -10,7 +10,7 @@ const OurCommunity = () => {
 				<p className='text-center max-w-[600px] mx-auto mt-4 animate-slideUp'>Meet the passionate volunteers and leaders who make our library a welcoming and inspiring place for all.</p>
 				<div className="space-y-12 mt-16">
 					{members.map((member, index) => (
-						<div key={member.id} className="flex flex-col lg:flex-row items-center animate-slideUpDelay">
+						<div key={member._id} className="flex flex-col lg:flex-row items-center animate-slideUpDelay">
 							<div className="lg:w-1/3 flex justify-center mb-6 lg:mb-0">
 								<img src={member.image_url} alt={member.name} className="rounded-full w-40 h-40 object-cover shadow-lg animate-scaleIn" />
 							</div>

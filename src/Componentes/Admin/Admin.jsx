@@ -10,8 +10,8 @@ const Admin = () => {
 
 	return (
 		<div className='relative lg:grid grid-cols-12 min-h-[80vh]'>
-			<div className={`absolute z-60 lg:static col-span-3 from-[#01001a] from-0% via-teal-900 to-100% duration-200 flex items-start ${isAdmin ? 'left-0 bg-gradient-to-r' : '-left-[250px] lg:bg-gradient-to-r'}`}>
-				<div className='px-5 py-2 flex flex-col items-center'>
+			<div className={`absolute z-60 lg:static col-span-3 from-[#01001a] from-0% via-teal-900 to-100% duration-200 flex items-start ${isAdmin ? 'left-0 bg-gradient-to-r' : '-left-[230px] md:-left-[250px] lg:bg-gradient-to-r'}`}>
+				<div className='px-5 py-2 flex flex-col items-center text-xs md:text-base'>
 					<div>
 						<div className='flex flex-col items-center gap-2 text-2xl text-[#39d5ff] lg:text-[#39d5ff] font-bold font-logo'>
 							<img className='w-24' src={`https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png`} />
@@ -52,7 +52,7 @@ const Admin = () => {
 						</div>
 						<div className='w-full flex flex-col items-center'>
 							<h1 onClick={() => { setIsMember(!isMember) }} className='cursor-pointer font-bold flex items-center gap-4 hover:text-teal-500 mb-4'>Member Management <span className={`font-bold cursor-pointer duration-300 ${isMember ? 'rotate-180' : 'rotate-90'}`}>︿</span></h1>
-							<div className={`flex flex-col gap-4 items-center justify-center w-full ${isMember ? 'h-56' : 'h-0'} overflow-hidden duration-300`}>
+							<div className={`flex flex-col gap-4 items-center justify-center w-full ${isMember ? 'h-32' : 'h-0'} overflow-hidden duration-300`}>
 								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Add A Member</Link>
 								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A Member</Link>
 								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A Member</Link>
@@ -61,7 +61,7 @@ const Admin = () => {
 					</div>
 				</div>
 				<div onClick={() => { setIsAdmin(!isAdmin) }} className='lg:hidden'>
-					<img className='w-14' src="https://i.ibb.co/LrnVn4m/icons8-sidebar-100.png" alt="" />
+					<img className='w-8 md:w-14 h-8 md:h-auto' src="https://i.ibb.co/LrnVn4m/icons8-sidebar-100.png" alt="" />
 				</div>
 			</div>
 			<div></div>

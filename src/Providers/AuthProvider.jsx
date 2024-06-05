@@ -30,15 +30,18 @@ const AuthProvider = ({children}) => {
 
 	const logOut = () => {
 		setLoading(true);
+		setUser(false)
 		return signOut(auth);
 	}
 
 	useEffect(() => {
 		const userActivity = onAuthStateChanged(auth, loggedUser => {
+			console.log(loggedUser);
 			if(loggedUser) {
 				setUser(loggedUser);
 				setLoading(false);
 			} else {
+				setUser(false);
 				setLoading(false);
 			}
 		})

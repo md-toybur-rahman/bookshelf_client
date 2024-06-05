@@ -1,25 +1,121 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Providers/AuthProvider';
+import Swal from 'sweetalert2';
+
 
 const SignUp = () => {
 	const { createUser, signIn, loading, googleSignIn } = useContext(AuthContext);
 	const [error, setError] = useState('')
 	const { register, handleSubmit, watch, formState: { errors } } = useForm();
 	const navigate = useNavigate();
+	const location = useLocation();
+	const from = location?.state?.from?.pathname || '/';
+
+	const onSubmit = async (data) => {
+		const { first_name, last_name, email, phone_number, address, gender, password } = data;
+		console.log(data);
+		const formData = new FormData();
+		formData.append('file', data.profile_picture[0]);
+		formData.append('upload_preset', `${import.meta.env.VITE_preset}`);
+		await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_cloudinary_name}/image/upload`, {
+			method: 'POST',
+			body: formData
+		})
+			.then(res => res.json())
+			.then(imgData => {
+				const image = imgData.secure_url;
+				console.log(image);
+				createUser(email, password)
+					.then(data => {
+						if (data.user) {
+							const userData = { first_name, last_name, email, phone_number, address, gender, password, image }
+							fetch(`http://localhost:2000/users/?email=${email}`, {
+								method: "POST",
+								headers: {
+									'content-type': 'application/json'
+								},
+								body: JSON.stringify(userData)
+							})
+								.then(res => res.json())
+								.then(data => {
+									console.log(data);
+									if (data.status) {
+										fetch(`http://localhost:2000/jwt`, {
+											method: "POST",
+											headers: {
+												'content-type': 'application/json'
+											},
+											body: JSON.stringify({ email })
+										})
+											.then(res => res.json())
+											.then(data => {
+												console.log(data);
+												localStorage.setItem('token', JSON.stringify(data.token));
+												navigate(from, { replace: true });
+												Swal.fire({
+													position: "center",
+													icon: "success",
+													title: "Sign Up Successfully",
+													showConfirmButton: false,
+													timer: 1500
+												});
+											})
+									}
+								})
+						}
+					})
+			})
 
 
-	const onSubmit = data => {
-		console.log(data)
 	}
 
 	const hanldeGoogleSignUp = () => {
+		googleSignIn()
+			.then(data => {
+				const user = data.user;
+				console.log(data)
+				const userData = { first_name: data._tokenResponse.firstName, lastName: data._tokenResponse.lastName, email: user.email, phone_number: user.phoneNumber, login_from: data.providerId, image: user.photoURL }
+				if (data.providerId === 'google.com') {
+					fetch(`http://localhost:2000/users/?email=${user.email}`, {
+						method: 'POST',
+						headers: {
+							'content-type': 'application/json'
+						},
+						body: JSON.stringify(userData)
+					})
+						.then(res => res.json())
+						.then(data => {
+							console.log(data)
+							console.log(data.email.email)
+							fetch('http://localhost:2000/jwt', {
+								method: 'POST',
+								headers: {
+									'content-type': 'application/json'
+								},
+								body: JSON.stringify({ email: data.email.email })
+							})
+								.then(res => res.json())
+								.then(data => {
+									localStorage.setItem('token', JSON.stringify(data.token));
+									Swal.fire({
+										position: "center",
+										icon: "success",
+										title: "Sign Up Successfully",
+										showConfirmButton: false,
+										timer: 1500
+									});
+									navigate(from, { replace: true });
+								})
 
+						})
+				}
+			})
 	}
 	return (
 		<div className='bg-gradient-to-r from-[#01001a] from-0% via-teal-800 via-50% to-[#01001a] to-100% min-h-[100vh] flex items-center justify-center font-default text-[#dddcff] py-10'>
-			<div className='w-full'>
+			<div className='w-full px-5'>
 				<div className='w-[150px] mx-auto'>
 					<img className='w-full' src={`https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png`} />
 				</div>
@@ -91,7 +187,7 @@ const SignUp = () => {
 					</div>
 					<div className='flex flex-col gap-2 text-base w-full'>
 						<label className='font-medium' htmlFor="profile_picture">Profile Picture</label>
-						<input  {...register("profile_picture", { required: true })}
+						<input  {...register("profile_picture")}
 							className='border border-teal-500 px-2 py-1 rounded-xl outline-none' type="file" name='profile_picture' placeholder='Upload Image' />
 					</div>
 					<div>

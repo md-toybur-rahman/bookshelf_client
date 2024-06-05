@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.19.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -24,6 +26,7 @@
     "react-hook-form": "^7.51.5",
     "react-router-dom": "^6.23.1",
     "sort-by": "^1.2.0",
+    "sweetalert2": "^11.11.0",
     "swiper": "^11.1.4"
   },
   "devDependencies": {
