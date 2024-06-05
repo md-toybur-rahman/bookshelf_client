@@ -26,7 +26,7 @@ const Navbar = () => {
 		queryKey: ['users', user?.email],
 		queryFn: async () => {
 			console.log(user.email)
-			const res = await fetch(`http://localhost:2000/users/?email=${user?.email}`)
+			const res = await fetch(`https://bookshelf-server-cyan.vercel.app/users/?email=${user?.email}`)
 			return res.json();
 		}
 	})

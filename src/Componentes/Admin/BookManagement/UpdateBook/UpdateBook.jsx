@@ -30,7 +30,7 @@ const UpdateBook = () => {
 
 		const bookData = { book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, price, height, width };
 
-		fetch(`http://localhost:2000/books/?id=${book?._id}`, {
+		fetch(`https://bookshelf-server-cyan.vercel.app/books/?id=${book?._id}`, {
 			method: 'PUT',
 			headers: {
 				'content-type': 'application/json',

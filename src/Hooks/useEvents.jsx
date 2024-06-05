@@ -6,11 +6,7 @@ const useEvents = () => {
 	const { refetch, isLoading, isError, data: events = [], error } = useQuery({
 		queryKey: ['events'],
 		queryFn: async () => {
-			const res = await fetch(`http://localhost:2000/events/`, {
-                headers: {
-                    authorization: `bearer ${token}`
-                }
-            });
+			const res = await fetch(`https://bookshelf-server-cyan.vercel.app/events/`);
 			return res.json();
 		}
 	})

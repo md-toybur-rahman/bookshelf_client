@@ -18,7 +18,7 @@ const DeleteBook = () => {
 			confirmButtonText: "Yes, delete it!"
 		}).then((result) => {
 			if (result.isConfirmed) {
-				fetch(`http://localhost:2000/books?id=${id}`, {
+				fetch(`https://bookshelf-server-cyan.vercel.app/books/?id=${id}`, {
 					method: 'DELETE',
 					headers: {
 						authorization: `Bearar ${token}`

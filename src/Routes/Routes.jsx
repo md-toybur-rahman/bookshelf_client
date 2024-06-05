@@ -35,7 +35,7 @@ const router = createBrowserRouter([
       {
         path: "/book/:id",
         element: <PrivateRoute><BookDetials></BookDetials></PrivateRoute>,
-        loader: ({ params }) => fetch(`http://localhost:2000/book/${params.id}`)
+        loader: ({ params }) => fetch(`https://bookshelf-server-cyan.vercel.app/book/${params.id}`)
       },
       {
         path: "/events",

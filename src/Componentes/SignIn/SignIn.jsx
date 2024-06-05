@@ -17,7 +17,7 @@ const SignIn = () => {
 		signIn(email, password)
 			.then(data => {
 				const userData = { email }
-				fetch('http://localhost:2000/jwt', {
+				fetch('https://bookshelf-server-cyan.vercel.app/jwt', {
 					method: 'POST',
 					headers: {
 						'content-type': 'application/json'
@@ -49,7 +49,7 @@ const SignIn = () => {
 				console.log(data)
 				const userData = { first_name: data._tokenResponse.firstName, lastName: data._tokenResponse.lastName, email: user.email, phone_number: user.phoneNumber, login_from: data.providerId, image: user.photoURL }
 				if (data.providerId === 'google.com') {
-					fetch(`http://localhost:2000/users/?email=${user.email}`, {
+					fetch(`https://bookshelf-server-cyan.vercel.app/users/?email=${user.email}`, {
 						method: 'POST',
 						headers: {
 							'content-type': 'application/json'
@@ -60,7 +60,7 @@ const SignIn = () => {
 						.then(data => {
 							console.log(data)
 							console.log(data.email.email)
-							fetch('http://localhost:2000/jwt', {
+							fetch('https://bookshelf-server-cyan.vercel.app/jwt', {
 								method: 'POST',
 								headers: {
 									'content-type': 'application/json'

@@ -7,11 +7,7 @@ const useSingleBook = () => {
 	const { refetch, isLoading, isError, data: singleBook = [], error } = useQuery({
 		queryKey: ['singleBook', id],
 		queryFn: async () => {
-			const res = await fetch(`http://localhost:2000/books/?id=${id}`, {
-                headers: {
-                    authorization: `bearer ${token}`
-                }
-            })
+			const res = await fetch(`https://bookshelf-server-cyan.vercel.app/books/?id=${id}`)
 			return res.json();
 		}
 	})
