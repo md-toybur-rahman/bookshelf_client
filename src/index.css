@@ -117,3 +117,33 @@ input::file-selector-button {
     border-width: thin;
 
 } */
+
+
+
+
+.skewed-box {
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    border-radius: 8px;
+    animation: skewAnimation 5s;
+}
+
+@keyframes skewAnimation {
+    0% {
+		transform: skew(-5deg, -5deg);
+		transform: rotateY(0deg)
+    }
+    50% {
+        transform: skew(5deg, 5deg);
+		transform: rotateY(180deg)
+    }
+	100% {
+		transform: skew(-5deg, -5deg);
+		transform: rotateY(0deg)
+
+	}
+}

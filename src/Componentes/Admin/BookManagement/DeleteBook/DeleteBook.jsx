@@ -16,9 +16,9 @@ const DeleteBook = () => {
 			confirmButtonColor: "#3085d6",
 			cancelButtonColor: "#d33",
 			confirmButtonText: "Yes, delete it!"
-		}).then((result) => {
+		}).then(async (result) => {
 			if (result.isConfirmed) {
-				fetch(`https://bookshelf-server-cyan.vercel.app/books/?id=${id}`, {
+				await fetch(`http://localhost:2000/books/?id=${id}`, {
 					method: 'DELETE',
 					headers: {
 						authorization: `Bearar ${token}`
@@ -48,8 +48,8 @@ const DeleteBook = () => {
 				<div className="text-center border border-red-500 p-6 rounded-lg shadow-lg hover:shadow-xl shadow-red-500 transition-shadow duration-300 w-full max-w-[510px] h-[320px]">
 					<div className="logo-animation">
 						<div className=' flex flex-col items-center gap-2 text-2xl text-red-500 lg:text-red-700 font-bold font-logo'>
-							<img className='w-24' src={book.cover_image ? book.cover_image : `https://i.ibb.co/8NrNt04/icons8-error-80.png`} alt="Warning Logo" />
-							<span>Bookshelf Admin</span>
+							<img className='w-24 h-32' src={book.cover_image ? book.cover_image : `https://i.ibb.co/8NrNt04/icons8-error-80.png`} alt="Warning Logo" />
+							<span>{book.book_name}</span>
 						</div>
 					</div>
 					<h1 className={`${book.cover_image ? 'text-xl' : 'text-4xl'}  font-bold mt-4 text-red-700`}>{book.cover_image ? 'are you want to delte this book?' : `Warning: Delete Section`}</h1>

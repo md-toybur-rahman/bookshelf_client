@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useScroll from '../../../Hooks/useScroll';
 
 const Footer = () => {
+	const scroll = useScroll();
 	return (
 		<footer className=" border-t border-r border-l rounded-2xl border-teal-500 shadow-xl shadow-teal-500 py-8 px-5 mt-32">
 			<div className="container mx-auto px-4">
@@ -14,8 +16,8 @@ const Footer = () => {
 						<h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
 						<div className="text-gray-400 flex flex-col items-center gap-3">
 							<Link to={"/"} className="hover:text-white">Home</Link>
-							<Link to={"/books"} className="hover:text-white">Books</Link>
-							<Link to={"/events"} className="hover:text-white">Events</Link>
+							<Link onClick={scroll()} to={"/books"} className="hover:text-white">Books</Link>
+							<Link onClick={scroll()} to={"/events"} className="hover:text-white">Events</Link>
 						</div>
 					</div>
 					<div className="text-center lg:text-right">

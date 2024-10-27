@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 
 const SignUp = () => {
-	const { createUser, signIn, loading, googleSignIn } = useContext(AuthContext);
+	const { createUser, signIn, loading } = useContext(AuthContext);
 	const [error, setError] = useState('')
 	const { register, handleSubmit, watch, formState: { errors } } = useForm();
 	const navigate = useNavigate();
@@ -15,7 +15,6 @@ const SignUp = () => {
 
 	const onSubmit = async (data) => {
 		const { first_name, last_name, email, phone_number, address, gender, password } = data;
-		console.log(data);
 		const formData = new FormData();
 		formData.append('file', data.profile_picture[0]);
 		formData.append('upload_preset', `${import.meta.env.VITE_preset}`);
@@ -26,34 +25,29 @@ const SignUp = () => {
 			.then(res => res.json())
 			.then(imgData => {
 				const image = imgData.secure_url;
-				console.log(image);
-				createUser(email, password)
-					.then(data => {
-						if (data.user) {
-							const userData = { first_name, last_name, email, phone_number, address, gender, password, image }
-							fetch(`https://bookshelf-server-cyan.vercel.app/users/?email=${email}`, {
-								method: "POST",
-								headers: {
-									'content-type': 'application/json'
-								},
-								body: JSON.stringify(userData)
-							})
-								.then(res => res.json())
+				fetch(`http://localhost:2000/users/${email}`)
+					.then(res => res.json())
+					.then(UserData => {
+						if (UserData.length == 0) {
+							createUser(email, password)
 								.then(data => {
-									console.log(data);
-									if (data.status) {
-										fetch(`https://bookshelf-server-cyan.vercel.app/jwt`, {
+									if (data.user) {
+										const userData = { first_name, last_name, email, phone_number, address, gender, password, image }
+										fetch(`http://localhost:2000/users`, {
 											method: "POST",
 											headers: {
 												'content-type': 'application/json'
 											},
-											body: JSON.stringify({ email })
+											body: JSON.stringify(userData)
 										})
 											.then(res => res.json())
 											.then(data => {
-												console.log(data);
-												localStorage.setItem('token', JSON.stringify(data.token));
-												navigate(from, { replace: true });
+												if(location.pathname == '/signin') {
+													navigate('/')
+												}
+												else {
+													navigate(from, { replace: true });
+												}
 												Swal.fire({
 													position: "center",
 													icon: "success",
@@ -66,53 +60,12 @@ const SignUp = () => {
 								})
 						}
 					})
+
 			})
 
 
 	}
 
-	const hanldeGoogleSignUp = () => {
-		googleSignIn()
-			.then(data => {
-				const user = data.user;
-				console.log(data)
-				const userData = { first_name: data._tokenResponse.firstName, lastName: data._tokenResponse.lastName, email: user.email, phone_number: user.phoneNumber, login_from: data.providerId, image: user.photoURL }
-				if (data.providerId === 'google.com') {
-					fetch(`https://bookshelf-server-cyan.vercel.app/users/?email=${user.email}`, {
-						method: 'POST',
-						headers: {
-							'content-type': 'application/json'
-						},
-						body: JSON.stringify(userData)
-					})
-						.then(res => res.json())
-						.then(data => {
-							console.log(data)
-							console.log(data.email.email)
-							fetch('https://bookshelf-server-cyan.vercel.app/jwt', {
-								method: 'POST',
-								headers: {
-									'content-type': 'application/json'
-								},
-								body: JSON.stringify({ email: data.email.email })
-							})
-								.then(res => res.json())
-								.then(data => {
-									localStorage.setItem('token', JSON.stringify(data.token));
-									Swal.fire({
-										position: "center",
-										icon: "success",
-										title: "Sign Up Successfully",
-										showConfirmButton: false,
-										timer: 1500
-									});
-									navigate(from, { replace: true });
-								})
-
-						})
-				}
-			})
-	}
 	return (
 		<div className='bg-gradient-to-r from-[#01001a] from-0% via-teal-800 via-50% to-[#01001a] to-100% min-h-[100vh] flex items-center justify-center font-default text-[#dddcff] py-10'>
 			<div className='w-full px-5'>
@@ -120,7 +73,7 @@ const SignUp = () => {
 					<img className='w-full' src={`https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png`} />
 				</div>
 				<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center gap-5 max-w-[600px] mx-auto w-full border border-teal-500 p-6 shadow-md hover:shadow-md shadow-teal-500 transition-shadow duration-300 rounded-2xl mt-10'>
-					<h1 className='text-3xl font-bold mb-5 text-center'>Sign In</h1>
+					<h1 className='text-3xl font-bold mb-5 text-center'>Sign Up</h1>
 					<div className='grid grid-cols-1 md:grid-cols-2 gap-6 w-full'>
 						<div className='flex flex-col gap-2 text-base'>
 							<label className='font-medium' htmlFor="first_name">First Name</label>
@@ -193,12 +146,12 @@ const SignUp = () => {
 					<div>
 						<p className='text-base font-medium'>Already have an account? <Link to="/signin" className='text-teal-500 cursor-pointer'>Sign in</Link></p>
 					</div>
-					<div className='flex items-center gap-5 mt-5'>
+					{/* <div className='flex items-center gap-5 mt-5'>
 						<p className='text-base font-semibold'>Sign up with</p>
 						<div onClick={hanldeGoogleSignUp} className='cursor-pointer w-6 h-6'>
 							<img className='w-full h-full' src="https://i.ibb.co/dJnxG6F/google.png" alt="" />
 						</div>
-					</div>
+					</div> */}
 
 
 					<button type='submit' className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium px-5 py-1 rounded-lg flex items-center gap-2 mt-7'> <img className='w-6' src="https://i.ibb.co/HzdvSmH/icons8-sign-in-80.png" alt="" /> <span>Sign up</span></button>

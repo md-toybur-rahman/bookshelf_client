@@ -22,7 +22,7 @@ const AddBook = () => {
 				const image = imgData.secure_url;
 				console.log(image);
 				const bookData = { book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, price, height, width, book_id, cover_image: image }
-				fetch(`https://bookshelf-server-cyan.vercel.app/book/`, {
+				fetch(`http://localhost:2000/book/`, {
 					method: "POST",
 					headers: {
 						'content-type': 'application/json',

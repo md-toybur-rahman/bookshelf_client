@@ -4,6 +4,20 @@ import { Link } from 'react-router-dom';
 
 const News = () => {
 	const [newses] = useNews();
+	const handleNewsModal = (news) => {
+		const newsModal = document.getElementById('news_modal')
+		const modalImage = document.getElementById('news_modal_image');
+		const modalTitle = document.getElementById('news_modal_title');
+		const modalDate = document.getElementById('news_modal_date');
+		const modalDescription = document.getElementById('news_modal_description');
+		const home = document.getElementById('home');
+		newsModal.classList.remove('hidden');
+		newsModal.classList.add('flex');
+		modalImage.src = news.image_url;
+		modalTitle.innerText = news.title;
+		modalDate.innerText = news.date;
+		modalDescription.innerText = news.description;
+	}
 	return (
 		<div className="min-h-screen">
 			{/* Hero Section */}
@@ -26,10 +40,9 @@ const News = () => {
 								<div className="">
 									<h3 className="text-2xl font-bold mb-2">{article.title}</h3>
 									<p className="text-gray-600 mb-4">{article.date}</p>
-									<p className="text-gray-700">{article.content}</p>
 								</div>
 								<div>
-									<Link className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium px-3 py-1 rounded-lg' to={"/"}>Read More</Link>
+									<button onClick={() => handleNewsModal(article)} className='hover:bg-teal-500 border-2 border-teal-500 duration-300  bg-transparent text-white font-medium px-3 py-1 rounded-lg' to={"/"}>Read More</button>
 								</div>
 							</div>
 						))}

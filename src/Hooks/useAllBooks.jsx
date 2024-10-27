@@ -5,7 +5,7 @@ const useAllBooks = () => {
 	const { refetch, isLoading, isError, data: books = [], error } = useQuery({
 		queryKey: ['allBooks'],
 		queryFn: async () => {
-			const res = await fetch(`https://bookshelf-server-cyan.vercel.app/books/`)
+			const res = await fetch(`http://localhost:2000/books/`)
 			return res.json();
 		}
 	})

@@ -8,7 +8,7 @@ const GetBookProvider = ({ children }) => {
 	const token = localStorage.getItem('token');
 	console.log(book)
 	const handleGetBook = (id) => {
-		fetch(`https://bookshelf-server-cyan.vercel.app/books?id=${id}`)
+		fetch(`http://localhost:2000/books?id=${id}`)
 			.then(res => res.json())
 			.then(data => {
 				setBook(data);

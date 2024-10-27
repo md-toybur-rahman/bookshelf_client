@@ -11,7 +11,7 @@ import OurCommunity from './OurCommunity/OurCommunity';
 const Home = () => {
 	return (
 		<div>
-			<section>
+			<section id='home'>
 				<Banner></Banner>
 				<FeaturesBook></FeaturesBook>
 				<Events></Events>

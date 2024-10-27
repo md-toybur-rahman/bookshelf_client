@@ -26,7 +26,7 @@ const Navbar = () => {
 		queryKey: ['users', user?.email],
 		queryFn: async () => {
 			console.log(user.email)
-			const res = await fetch(`https://bookshelf-server-cyan.vercel.app/users/?email=${user?.email}`)
+			const res = await fetch(`http://localhost:2000/users/${user?.email}`)
 			return res.json();
 		}
 	})
@@ -43,6 +43,7 @@ const Navbar = () => {
 					<Link className='hover:text-teal-300' to={"/events"}>Events</Link>
 					<Link className='hover:text-teal-300' to={"/news"}>News</Link>
 					<Link className='hover:text-teal-300' to={"/contact"}>Contact Us</Link>
+					<Link className='hover:text-teal-300' to={"/cart"}>Cart</Link>
 					<Link className='hover:text-teal-300' to={"/admin"}>Admin Panel</Link>
 				</div>
 			</div>
@@ -60,6 +61,7 @@ const Navbar = () => {
 					<Link className='hover:text-teal-300' to={"/events"}>Events</Link>
 					<Link className='hover:text-teal-300' to={"/news"}>News</Link>
 					<Link className='hover:text-teal-300' to={"/contact"}>Contact Us</Link>
+					<Link className='hover:text-teal-300' to={"/cart"}>Cart</Link>
 					<Link className='hover:text-teal-300' to={"/admin"}>Admin Panel</Link>
 				</div>
 				{

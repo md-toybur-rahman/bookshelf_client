@@ -40,9 +40,9 @@ const Admin = () => {
 						<div className='w-full flex flex-col items-center'>
 							<h1 onClick={() => { setIsEvent(!isEvent) }} className='cursor-pointer font-bold flex items-center gap-4 hover:text-teal-500 mb-4'>Event Management <span className={`font-bold cursor-pointer duration-300 ${isEvent ? 'rotate-180' : 'rotate-90'}`}>︿</span></h1>
 							<div className={`flex flex-col gap-4 items-center justify-center w-full ${isEvent ? 'h-32' : 'h-0'} overflow-hidden duration-300`}>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Add A Event</Link>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A Event</Link>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A Event</Link>
+								<Link to={"/admin/add_event"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Add A Event</Link>
+								<Link to={"/admin/update_event"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A Event</Link>
+								<Link to={"/admin/delete_event"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A Event</Link>
 							</div>
 						</div>
 						<div className='w-full flex flex-col items-center'>

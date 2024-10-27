@@ -37,17 +37,16 @@ const AuthProvider = ({children}) => {
 	useEffect(() => {
 		const userActivity = onAuthStateChanged(auth, loggedUser => {
 			if(loggedUser) {
-				setUser(loggedUser);
-				setLoading(false);
+				setUser(loggedUser);				
 			} else {
 				setUser(false);
-				setLoading(false);
 			}
+			setLoading(false);
 		})
 		return () => {
 			return userActivity();
 		}
-	}, [user]);
+	}, []);
 
 	const authCollection = {
 		user,

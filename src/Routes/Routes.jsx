@@ -18,6 +18,10 @@ import AddBook from "../Componentes/Admin/BookManagement/AddBook/AddBook";
 import UpdateBook from "../Componentes/Admin/BookManagement/UpdateBook/UpdateBook";
 import DeleteBook from "../Componentes/Admin/BookManagement/DeleteBook/DeleteBook";
 import PrivateRoute from "./PrivateRoute";
+import JWTDecode from "../Componentes/JWTDecode/JWTDecode";
+import AddEvent from "../Componentes/Admin/EventManagement/AddEvent/AddEvent";
+import UpdateEvent from "../Componentes/Admin/EventManagement/UpdateEvent/UpdateEvent";
+import DeleteEvent from "../Componentes/Admin/EventManagement/DeleteEvent/DeleteEvent";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +39,7 @@ const router = createBrowserRouter([
       {
         path: "/book/:id",
         element: <PrivateRoute><BookDetials></BookDetials></PrivateRoute>,
-        loader: ({ params }) => fetch(`https://bookshelf-server-cyan.vercel.app/book/${params.id}`)
+        loader: ({ params }) => fetch(`http://localhost:2000/book/${params.id}`)
       },
       {
         path: "/events",
@@ -55,23 +59,35 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <Admin></Admin>,
+        element: <PrivateRoute><Admin></Admin></PrivateRoute>,
         children: [
           {
             path: "/admin",
-            element: <Welcome></Welcome>
+            element: <PrivateRoute><Welcome></Welcome></PrivateRoute>
           },
           {
             path: "/admin/add_book",
-            element: <AddBook></AddBook>
+            element: <PrivateRoute><AddBook></AddBook></PrivateRoute>
           },
           {
             path: "/admin/update_book",
-            element: <UpdateBook></UpdateBook>
+            element: <PrivateRoute><UpdateBook></UpdateBook></PrivateRoute>
           },
           {
             path: "/admin/delete_book",
-            element: <DeleteBook></DeleteBook>
+            element: <PrivateRoute><DeleteBook></DeleteBook></PrivateRoute>
+          },
+          {
+            path: "/admin/add_event",
+            element: <PrivateRoute><AddEvent></AddEvent></PrivateRoute>
+          },
+          {
+            path: "/admin/update_event",
+            element: <PrivateRoute><UpdateEvent></UpdateEvent></PrivateRoute>
+          },
+          {
+            path: "/admin/delete_event",
+            element: <PrivateRoute><DeleteEvent></DeleteEvent></PrivateRoute>
           },
         ]
       },
