@@ -1,11 +1,11 @@
 import React from 'react';
-import Banner from './Banner/Banner';
 import FeaturesBook from './FeaturesBook/FeaturesBook';
 import LibraryNews from './LibraryNews/LibraryNews';
 import Events from './Events/Events';
 import BestSellers from './BestSellers/BestSellers';
 import NewArrivals from './NewArrivals/NewArrivals';
 import OurCommunity from './OurCommunity/OurCommunity';
+import Banner from './Banner/Banner';
 
 
 const Home = () => {

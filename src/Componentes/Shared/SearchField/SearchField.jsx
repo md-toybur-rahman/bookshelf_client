@@ -5,7 +5,7 @@ import useAllBooks from '../../../Hooks/useAllBooks';
 import SearchItemCard from './SearchItemCard';
 import useSingleBook from '../../../Hooks/useSingleBook';
 
-const SearchField = (props) => {
+const SearchField = () => {
 	const [filterBooks, setFilterBooks] = useState([]);
 	// const { book, handleGetBook } = useContext(getBookContext);
 	const { register, handleSubmit } = useForm();
@@ -16,7 +16,7 @@ const SearchField = (props) => {
 		console.log("Form submitted with data:", data);
 	};
 	const handleKeyPress = (event) => {
-		let searchText = event.target.value
+		let searchText = event.target.value.toLowerCase();
 		// const filterBooks = book
 		if (searchText.length > 0) {
 			const filterData = books.filter(item => {

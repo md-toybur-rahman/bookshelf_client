@@ -1,31 +1,223 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from "react";
+import {
+	FaArrowRight,
+	FaCalendarAlt,
+	FaClock,
+	FaMapMarkerAlt,
+	FaUsers,
+} from "react-icons/fa";
 
-const EventCard = (props) => {
-	const { event_id, title, description, date, image_url, start_time, end_time } = props.event;
-	// console.log()
-	// const givenDate = new Date(`${date}T${start_time.split(' ')[0]}`);
+import "./EventCard.css";
+
+const EventCard = ({ event }) => {
+
+	const {
+		title,
+		description,
+		date,
+		image_url,
+		start_time,
+		end_time,
+		location,
+		participants,
+	} = event;
+
+	const cardRef = useRef(null);
+
+	const [style, setStyle] = useState({});
+
+	const handleMove = (e) => {
+
+		const card = cardRef.current;
+
+		if (!card) return;
+
+		const rect = card.getBoundingClientRect();
+
+		const x = e.clientX - rect.left;
+
+		const y = e.clientY - rect.top;
+
+		const rotateY = ((x / rect.width) - 0.5) * 24;
+
+		const rotateX = ((rect.height / 2 - y) / rect.height) * 24;
+
+		setStyle({
+
+			transform: `
+                perspective(1300px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                scale3d(1.04,1.04,1.04)
+            `,
+
+		});
+
+	};
+
+	const handleLeave = () => {
+
+		setStyle({
+
+			transform:
+				"perspective(1300px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)",
+
+		});
+
+	};
+
 	const now = new Date();
-	const day = now.getUTCDate();
-	const givenDay = Number(date.split('-')[2]);
-	const givenMonth = Number(date.split('-')[1]);
-	const givenYear = Number(date.split('-')[0]);
-	const month = now.getUTCMonth() + 1;
-	const year = now.getUTCFullYear();
-	console.log(day, givenDay, day > givenDay)
+
+	const eventDate = new Date(date);
+
+	const isUpcoming = eventDate >= now;
 
 	return (
-		<div key={event_id} className="border border-teal-500 p-6 rounded-lg shadow-lg hover:shadow-xl shadow-teal-500 transition-shadow duration-300">
-			<img src={image_url} alt={title} className="rounded-lg mb-4 w-full h-48" />
-			<h3 className="text-xl font-semibold mb-2">{title}</h3>
-			<p className="mb-2">{description}</p>
-			<p className="text-gray-500">{date} | {start_time} to {end_time}</p>
-			{
-				day < givenDay && month < givenMonth && year <= givenYear ?
-				<button className={`mt-4 px-5 py-1 rounded-lg font-medium border-2 duration-300 bg-transparent text-white border-teal-500 hover:bg-teal-500`}>Join The Event</button>
-					: <button className={`mt-4 px-5 py-1 rounded-lg font-medium border-2 duration-300 bg-transparent text-white border-teal-500 hover:bg-teal-500`}>Review Event</button>
-			}
+
+		<div
+			className="event-wrapper"
+			onMouseMove={handleMove}
+			onMouseLeave={handleLeave}
+		>
+
+			<div
+				ref={cardRef}
+				style={style}
+				className="event-card"
+			>
+
+				{/* Glow */}
+
+				<span className="event-glow"></span>
+
+				{/* Reflection */}
+
+				<span className="event-reflection"></span>
+
+				<div className="flex items-center justify-between px-5 mt-5">
+					{/* Badge */}
+
+					<div className="event-badge w-fit">
+
+						EVENT
+
+					</div>
+
+					{/* Date */}
+
+					<div className="event-date">
+
+						<FaCalendarAlt />
+
+						<span>{date}</span>
+
+					</div>
+				</div>
+
+				{/* Image */}
+
+				<div className="event-image-wrapper">
+
+					<img
+						src={image_url}
+						alt={title}
+						className="event-image"
+					/>
+
+				</div>
+
+				{/* Body */}
+
+				<div className="event-body">
+
+					<h2>{title}</h2>
+
+					<p className="event-description">
+
+						{description}
+
+					</p>
+
+					<div className="event-info">
+
+						<div>
+
+							<FaClock />
+
+							<span>
+
+								{start_time} - {end_time}
+
+							</span>
+
+						</div>
+
+						<div>
+
+							<FaMapMarkerAlt />
+
+							<span>
+
+								{location || "Library Hall"}
+
+							</span>
+
+						</div>
+
+						<div>
+
+							<FaUsers />
+
+							<span>
+
+								{participants || "Unlimited"} Seats
+
+							</span>
+
+						</div>
+
+					</div>
+
+					<div className="event-divider"></div>
+
+					<div className="event-footer">
+
+						<div className="event-status">
+
+							<small>Status</small>
+
+							<h5>
+
+								{isUpcoming ? "Registration Open" : "Completed"}
+
+							</h5>
+
+						</div>
+
+						<button className="event-btn">
+
+							<span>
+
+								{isUpcoming ? "Join Now" : "View Details"}
+
+							</span>
+
+							<FaArrowRight className="arrow" />
+
+						</button>
+
+					</div>
+
+				</div>
+
+				<div className="event-bottom-bar"></div>
+
+			</div>
+
 		</div>
+
 	);
+
 };
 
 export default EventCard;

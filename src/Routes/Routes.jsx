@@ -12,7 +12,7 @@ import Profile from "../Componentes/Profile/Profile";
 import News from "../Componentes/News/News";
 import SignIn from "../Componentes/SignIn/SignIn";
 import SignUp from "../Componentes/SignUp/SignUp";
-import BookDetials from "../Componentes/Shared/BookDetails/BookDetials";
+import BookDetials from "../Componentes/Shared/BookDetails/BookDetails";
 import Welcome from "../Componentes/Admin/Welcome/Welcome";
 import AddBook from "../Componentes/Admin/BookManagement/AddBook/AddBook";
 import UpdateBook from "../Componentes/Admin/BookManagement/UpdateBook/UpdateBook";
@@ -22,6 +22,7 @@ import JWTDecode from "../Componentes/JWTDecode/JWTDecode";
 import AddEvent from "../Componentes/Admin/EventManagement/AddEvent/AddEvent";
 import UpdateEvent from "../Componentes/Admin/EventManagement/UpdateEvent/UpdateEvent";
 import DeleteEvent from "../Componentes/Admin/EventManagement/DeleteEvent/DeleteEvent";
+import BookDetails from "../Componentes/Shared/BookDetails/BookDetails";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/book/:id",
-        element: <PrivateRoute><BookDetials></BookDetials></PrivateRoute>,
+        element: <PrivateRoute><BookDetails /></PrivateRoute>,
         loader: ({ params }) => fetch(`http://localhost:2000/book/${params.id}`)
       },
       {

@@ -9,7 +9,7 @@ const useAllBooks = () => {
 			return res.json();
 		}
 	})
-	return [books, refetch];
+	return [books, refetch, isLoading];
 };
 
 export default useAllBooks;

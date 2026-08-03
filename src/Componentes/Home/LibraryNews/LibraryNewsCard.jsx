@@ -1,33 +1,176 @@
+import React, { useRef, useState } from "react";
+import {
+	FaArrowRight,
+	FaCalendarAlt,
+	FaNewspaper,
+} from "react-icons/fa";
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import "./LibraryNewsCard.css";
 
-const LibraryNewsCard = (props) => {
-	const { title, description, date } = props.news;
-	const handleNewsModal = (news) => {
-		const newsModal = document.getElementById('news_modal')
-		const modalImage = document.getElementById('news_modal_image');
-		const modalTitle = document.getElementById('news_modal_title');
-		const modalDate = document.getElementById('news_modal_date');
-		const modalDescription = document.getElementById('news_modal_description');
-		const home = document.getElementById('home');
-		newsModal.classList.remove('hidden');
-		newsModal.classList.add('flex');
-		modalImage.src = news.image_url;
-		modalTitle.innerText = news.title;
-		modalDate.innerText = news.date;
-		modalDescription.innerText = news.description;
-	}
+const LibraryNewsCard = ({ news }) => {
+
+	const {
+		title,
+		description,
+		date,
+		image_url,
+	} = news;
+
+	const cardRef = useRef(null);
+
+	const [style, setStyle] = useState({});
+
+	const handleMove = (e) => {
+
+		const rect = cardRef.current.getBoundingClientRect();
+
+		const x = e.clientX - rect.left;
+
+		const y = e.clientY - rect.top;
+
+		const rotateY = ((x / rect.width) - .5) * 22;
+
+		const rotateX = ((rect.height / 2 - y) / rect.height) * 22;
+
+		setStyle({
+
+			transform: `
+                perspective(1300px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                scale3d(1.04,1.04,1.04)
+            `
+
+		});
+
+	};
+
+	const handleLeave = () => {
+
+		setStyle({
+
+			transform:
+				"perspective(1300px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)"
+
+		});
+
+	};
+
+	const handleNewsModal = () => {
+
+		const newsModal = document.getElementById("news_modal");
+
+		const modalImage = document.getElementById("news_modal_image");
+
+		const modalTitle = document.getElementById("news_modal_title");
+
+		const modalDate = document.getElementById("news_modal_date");
+
+		const modalDescription = document.getElementById("news_modal_description");
+
+		newsModal.classList.remove("hidden");
+
+		newsModal.classList.add("flex");
+
+		modalImage.src = image_url;
+
+		modalTitle.innerText = title;
+
+		modalDate.innerText = date;
+
+		modalDescription.innerText = description;
+
+	};
+
 	return (
-		<div className="border border-teal-500 p-6 rounded-lg shadow-lg hover:shadow-xl shadow-teal-500 transition-shadow duration-300 flex flex-col">
-			<h3 className="text-2xl font-semibold">{title}</h3>
-			<p className='mb-4 text-gray-500'>{date}</p>
-			<p className="mb-4">{description.split(' ').slice(0, 15).join(' ')}</p>
-			<div className='flex-grow flex items-end'>
-				<button onClick={() => handleNewsModal(props.news)} className="text-teal-500 hover:underline">Read more</button>
+
+		<div
+			className="news-wrapper"
+			onMouseMove={handleMove}
+			onMouseLeave={handleLeave}
+		>
+
+			<div
+				ref={cardRef}
+				style={style}
+				className="news-card"
+			>
+
+				<span className="news-glow"></span>
+
+				<span className="news-reflection"></span>
+
+				<div className="flex items-center justify-between pt-5 px-5">
+					<div className="news-badge">
+
+						NEWS
+
+					</div>
+
+					<div className="news-date">
+
+						<FaCalendarAlt />
+
+						<span>{date}</span>
+
+					</div>
+				</div>
+
+				<div className="news-image-wrapper">
+
+					<img
+						src={image_url}
+						alt={title}
+						className="news-image"
+					/>
+
+				</div>
+
+				<div className="news-body">
+
+					<div className="news-type">
+
+						<FaNewspaper />
+
+						<span>Library Update</span>
+
+					</div>
+
+					<h2>
+
+						{title}
+
+					</h2>
+
+					<p>
+
+						{description.split(" ").slice(0, 22).join(" ")}...
+
+					</p>
+
+					<div className="news-divider"></div>
+
+					<button
+						onClick={handleNewsModal}
+						className="news-btn"
+					>
+
+						<span>Read Full News</span>
+
+						<FaArrowRight className="arrow" />
+
+					</button>
+
+				</div>
+
+				<div className="news-bottom-bar"></div>
+
 			</div>
+
 		</div>
+
 	);
+
 };
 
 export default LibraryNewsCard;

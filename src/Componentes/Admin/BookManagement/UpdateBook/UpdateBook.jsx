@@ -8,20 +8,20 @@ const UpdateBook = () => {
 	const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
 	const [error, setError] = useState('');
 	const { book } = useContext(getBookContext);
-	const token = localStorage.getItem('token');
+	console.log(book)
 
 	useEffect(() => {
 		if (book) {
-			setValue('book_name', book.book_name);
-			setValue('author_name', book.author_name);
-			setValue('publisher_name', book.publisher_name);
-			setValue('publication_date', book.publication_date);
-			setValue('language', book.language);
-			setValue('genre', book.genre);
-			setValue('number_of_pages', book.number_of_pages);
-			setValue('price', book.price);
-			setValue('height', book.dimensions?.height);
-			setValue('width', book.dimensions?.width);
+			setValue('book_name', book[0]?.book_name);
+			setValue('author_name', book[0]?.author_name);
+			setValue('publisher_name', book[0]?.publisher_name);
+			setValue('publication_date', book[0]?.publication_date);
+			setValue('language', book[0]?.language);
+			setValue('genre', book[0]?.genre);
+			setValue('number_of_pages', book[0]?.number_of_pages);
+			setValue('price', book[0]?.price);
+			setValue('height', book[0]?.dimensions?.height);
+			setValue('width', book[0]?.dimensions?.width);
 		}
 	}, [book, setValue]);
 
@@ -30,11 +30,10 @@ const UpdateBook = () => {
 
 		const bookData = { book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, price, height, width };
 
-		fetch(`http://localhost:2000/books/?id=${book?._id}`, {
+		fetch(`http://localhost:2000/books/${book[0]?._id}`, {
 			method: 'PUT',
 			headers: {
-				'content-type': 'application/json',
-				authorization: `Bearar ${token}`
+				'content-type': 'application/json'
 			},
 			body: JSON.stringify(bookData)
 		})

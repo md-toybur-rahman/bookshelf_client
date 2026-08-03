@@ -20,13 +20,13 @@ const AddBook = () => {
 			.then(res => res.json())
 			.then(imgData => {
 				const image = imgData.secure_url;
-				console.log(image);
-				const bookData = { book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, price, height, width, book_id, cover_image: image }
+				const public_id = imgData.public_id;
+				console.log(public_id);
+				const bookData = { book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, price, height, width, book_id, cover_image: image, public_id }
 				fetch(`http://localhost:2000/book/`, {
 					method: "POST",
 					headers: {
-						'content-type': 'application/json',
-						authorization: `Barer ${token}`
+						'content-type': 'application/json'
 					},
 					body: JSON.stringify(bookData)
 				})
