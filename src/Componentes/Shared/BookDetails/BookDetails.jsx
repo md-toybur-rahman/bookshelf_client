@@ -63,71 +63,96 @@ const BookDetails = () => {
 
 	const handleCart = async () => {
 
-		const token = localStorage.getItem("token");
-
-		const cartData = {
-
-			email: user.email,
-
-			book: book[0]._id,
-
-		};
-
-		const res = await fetch("http://localhost:2000/cart", {
-
-			method: "POST",
-
-			headers: {
-
-				"Content-Type": "application/json",
-
-				authorization: `Bearer ${token}`,
-
-			},
-
-			body: JSON.stringify(cartData),
-
-		});
-
-		const data = await res.json();
-
-		if (data.success) {
+		if (!user) {
 
 			Swal.fire({
+				icon: "warning",
+				title: "Please login first"
+			});
 
-				icon: "success",
+			return;
+		}
 
-				title: data.message,
+		try {
 
-				timer: 1500,
+			const token = localStorage.getItem("token");
 
-				showConfirmButton: false,
+			const cartData = {
+				email: user.email,
+				book: book[0]._id
+			};
+
+			const res = await fetch("http://localhost:2000/cart", {
+
+				method: "POST",
+
+				headers: {
+
+					"Content-Type": "application/json",
+
+					authorization: `Bearer ${token}`
+
+				},
+
+				body: JSON.stringify(cartData)
 
 			});
 
+			const data = await res.json();
+
+			if (data.success) {
+
+				Swal.fire({
+
+					icon: "success",
+
+					title: data.message,
+
+					timer: 1500,
+
+					showConfirmButton: false
+
+				});
+
+			}
+
+			else if (data.alreadyExists) {
+
+				Swal.fire({
+
+					icon: "info",
+
+					title: "Already Added",
+
+					text: data.message
+
+				});
+
+			}
+
+			else {
+
+				Swal.fire({
+
+					icon: "error",
+
+					title: data.message || "Failed to add book"
+
+				});
+
+			}
+
 		}
 
-		else if (data.alreadyExists) {
+		catch (error) {
 
-			Swal.fire({
-
-				icon: "info",
-
-				title: "Already Added",
-
-				text: "This book is already in your cart.",
-
-			});
-
-		}
-
-		else {
+			console.log(error);
 
 			Swal.fire({
 
 				icon: "error",
 
-				title: "Something went wrong",
+				title: "Network Error"
 
 			});
 

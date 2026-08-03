@@ -95,84 +95,97 @@ const SignIn = () => {
 
 	};
 
-	const handleGoogleSignIn = () => {
+	const handleGoogleSignIn = async () => {
 
-		setLoading(true);
+		try {
 
-		googleLogin()
+			setLoading(true);
 
-			.then((result) => {
+			const result = await googleLogin();
+
+			const user = result.user;
+			console.log(user)
+
+			// check existing user
+			const res = await fetch(
+				`http://localhost:2000/users/${user?.email}`
+			);
+
+			const existingUser = await res.json();
+
+			// create if doesn't exist
+			if (existingUser.length === 0) {
 
 				const saveUser = {
 
-					name: result.user.displayName,
+					first_name:
+						result.user.displayName?.split(" ")[0] || "",
+
+					last_name:
+						result.user.displayName?.split(" ").slice(1).join(" ") || "",
 
 					email: result.user.email,
 
-					photo: result.user.photoURL,
+					phone_number: "",
+
+					address: "",
+
+					gender: "",
+
+					image: result.user.photoURL,
+
+					type: 'member'
 
 				};
 
-				fetch("http://localhost:2000/users", {
+				await fetch(
+					"http://localhost:2000/users",
+					{
+						method: "POST",
+						headers: {
+							"content-type":
+								"application/json",
+						},
+						body: JSON.stringify(saveUser),
+					}
+				);
 
-					method: "POST",
+			}
+			Swal.fire({
 
-					headers: {
+				icon: "success",
 
-						"content-type": "application/json",
+				title: "Welcome",
 
-					},
+				timer: 1500,
 
-					body: JSON.stringify(saveUser),
-
-				})
-					.then((res) => res.json())
-					.then(() => {
-
-						Swal.fire({
-
-							icon: "success",
-
-							title: "Google Login Successful",
-
-							showConfirmButton: false,
-
-							timer: 1500,
-
-						});
-
-						navigate(from, {
-
-							replace: true,
-
-						});
-
-					});
-
-			})
-
-			.catch((err) => {
-
-				Swal.fire({
-
-					icon: "error",
-
-					title: "Oops...",
-
-					text: err.message,
-
-				});
-
-			})
-
-			.finally(() => {
-
-				setLoading(false);
+				showConfirmButton: false,
 
 			});
 
-	};
+			navigate(from, {
+				replace: true,
+			});
 
+		} catch (err) {
+
+			Swal.fire({
+
+				icon: "error",
+
+				title: "Google Sign Up Failed",
+
+				text: err.message,
+
+			});
+
+		} finally {
+
+			setLoading(false);
+
+		}
+
+	};
 	return (
 
 		<div className="relative min-h-screen overflow-hidden bg-[#120d09]">

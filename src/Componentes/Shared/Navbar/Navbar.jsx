@@ -3,6 +3,7 @@ import {
 	Link,
 	NavLink,
 	useLocation,
+	useNavigate,
 } from "react-router-dom";
 import {
 	FaBars,
@@ -29,6 +30,8 @@ const Navbar = () => {
 	const [profileMenu, setProfileMenu] = useState(false);
 
 	const location = useLocation();
+
+	const navigate = useNavigate();
 
 	const profileRef = useRef();
 
@@ -70,6 +73,9 @@ const Navbar = () => {
 
 		localStorage.removeItem("token");
 
+		navigate('/')
+
+
 	};
 
 	const {
@@ -95,7 +101,6 @@ const Navbar = () => {
 	const profile = Array.isArray(currentUser)
 		? currentUser[0]
 		: currentUser;
-
 	const navLink =
 		"relative px-3 py-2 text-[15px] font-semibold text-[#e8d8c7] transition duration-300 hover:text-[#d4af37]";
 
@@ -150,14 +155,16 @@ const Navbar = () => {
 				Contact
 			</NavLink>
 
-			<NavLink
-				to="/cart"
-				className={({ isActive }) =>
-					`${navLink} ${isActive ? active : ""}`
-				}
-			>
-				Cart
-			</NavLink>
+			{
+				user ? <NavLink
+					to="/cart"
+					className={({ isActive }) =>
+						`${navLink} ${isActive ? active : ""}`
+					}
+				>
+					Cart
+				</NavLink> : ''
+			}
 
 		</>
 	);
@@ -261,7 +268,7 @@ const Navbar = () => {
 
 									<p className="text-xs text-[#d4af37]">
 
-										Member
+										{profile?.type?.slice(0, 1)?.toUpperCase()}{profile?.type?.slice(1)}
 
 									</p>
 
@@ -273,14 +280,14 @@ const Navbar = () => {
 
 							<div
 								className={`absolute right-0 mt-4 w-72 overflow-hidden rounded-3xl border border-[#5d4638] bg-[#1c1612] shadow-2xl transition-all duration-300 ${profileMenu
-										? "visible translate-y-0 opacity-100"
-										: "invisible -translate-y-3 opacity-0"
+									? "visible translate-y-0 opacity-100"
+									: "invisible -translate-y-3 opacity-0"
 									}`}
 							>
 
-								<div className="border-b border-[#3b2e26] bg-gradient-to-r from-[#d4af37]/10 to-[#8b5a2b]/20 p-6">
+								<div className="border-b border-[#3b2e26] bg-gradient-to-r from-[#d4af37]/10 to-[#8b5a2b]/20 p-6 overflow-hidden">
 
-									<div className="flex items-center gap-4">
+									<div className="flex items-center gap-4 overflow-hidden">
 
 										<img
 											src={
@@ -316,6 +323,7 @@ const Navbar = () => {
 
 									<Link
 										to="/profile"
+										onClick={() => {if(profileMenu === true) { setProfileMenu(false)}}}
 										className="flex items-center gap-3 rounded-xl px-4 py-3 text-[#d7c8b7] transition hover:bg-[#2d221c] hover:text-[#d4af37]"
 									>
 										<FaUserCircle />
@@ -324,6 +332,7 @@ const Navbar = () => {
 
 									<Link
 										to="/cart"
+										onClick={() => {if(profileMenu === true) { setProfileMenu(false)}}}
 										className="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-[#d7c8b7] transition hover:bg-[#2d221c] hover:text-[#d4af37]"
 									>
 										<FaShoppingBag />
@@ -372,8 +381,8 @@ const Navbar = () => {
 			<div
 				ref={mobileRef}
 				className={`overflow-hidden border-t border-[#3c3027] bg-[#17120e] transition-all duration-500 lg:hidden ${mobileMenu
-						? "max-h-[700px]"
-						: "max-h-0"
+					? "max-h-[700px]"
+					: "max-h-0"
 					}`}
 			>
 

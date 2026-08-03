@@ -8,7 +8,6 @@ import Books from "../Componentes/Books/Books";
 import Events from "../Componentes/Events/Events";
 import Contact from "../Componentes/Contact/Contact";
 import Admin from "../Componentes/Admin/Admin";
-import Profile from "../Componentes/Profile/Profile";
 import News from "../Componentes/News/News";
 import SignIn from "../Componentes/SignIn/SignIn";
 import SignUp from "../Componentes/SignUp/SignUp";
@@ -23,6 +22,8 @@ import AddEvent from "../Componentes/Admin/EventManagement/AddEvent/AddEvent";
 import UpdateEvent from "../Componentes/Admin/EventManagement/UpdateEvent/UpdateEvent";
 import DeleteEvent from "../Componentes/Admin/EventManagement/DeleteEvent/DeleteEvent";
 import BookDetails from "../Componentes/Shared/BookDetails/BookDetails";
+import Cart from "../Componentes/Cart/Cart";
+import MyProfile from "../Componentes/MyProfile/MyProfile";
 
 const router = createBrowserRouter([
   {
@@ -55,8 +56,12 @@ const router = createBrowserRouter([
         element: <Contact></Contact>
       },
       {
+        path: "/cart",
+        element: <Cart />
+      },
+      {
         path: "/profile",
-        element: <Profile></Profile>
+        element: <MyProfile />
       },
       {
         path: "/admin",

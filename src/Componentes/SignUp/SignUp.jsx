@@ -130,6 +130,8 @@ const SignUp = () => {
 
 					image,
 
+					type: 'member'
+
 				};
 
 				await fetch(
@@ -190,38 +192,53 @@ const SignUp = () => {
 
 			const result = await googleLogin();
 
-			const saveUser = {
+			const user = result.user;
 
-				first_name:
-					result.user.displayName?.split(" ")[0] || "",
-
-				last_name:
-					result.user.displayName?.split(" ").slice(1).join(" ") || "",
-
-				email: result.user.email,
-
-				phone_number: "",
-
-				address: "",
-
-				gender: "",
-
-				image: result.user.photoURL,
-
-			};
-
-			await fetch(
-				"http://localhost:2000/users",
-				{
-					method: "POST",
-					headers: {
-						"content-type":
-							"application/json",
-					},
-					body: JSON.stringify(saveUser),
-				}
+			// check existing user
+			const res = await fetch(
+				`http://localhost:2000/users/${user?.email}`
 			);
 
+			const existingUser = await res.json();
+
+			// create if doesn't exist
+			if (existingUser.length === 0) {
+
+				const saveUser = {
+
+					first_name:
+						result.user.displayName?.split(" ")[0] || "",
+
+					last_name:
+						result.user.displayName?.split(" ").slice(1).join(" ") || "",
+
+					email: result.user.email,
+
+					phone_number: "",
+
+					address: "",
+
+					gender: "",
+
+					image: result.user.photoURL,
+
+					type: 'member'
+
+				};
+
+				await fetch(
+					"http://localhost:2000/users",
+					{
+						method: "POST",
+						headers: {
+							"content-type":
+								"application/json",
+						},
+						body: JSON.stringify(saveUser),
+					}
+				);
+
+			}
 			Swal.fire({
 
 				icon: "success",
