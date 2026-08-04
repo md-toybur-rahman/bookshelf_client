@@ -171,7 +171,7 @@ const FeaturesBook = () => {
 					{
 
 						books
-							.slice(0, 10)
+							.slice(1, 10)
 							.map((book) => (
 
 								<SwiperSlide key={book._id}>

@@ -19,6 +19,8 @@ const BookCard = ({ book }) => {
 		category,
 		quantity,
 		rating,
+		available,
+		stock
 	} = book;
 
 	const cardRef = useRef(null);
@@ -39,7 +41,7 @@ const BookCard = ({ book }) => {
 
 		const rotateY = ((x / rect.width) - 0.5) * 24;
 
-		const rotateX = ((rect.height / 2 - y) / rect.height) * 24;
+		const rotateX = ((rect.height / 2 - y) / rect.height) * 10;
 
 		setStyle({
 
@@ -135,7 +137,7 @@ const BookCard = ({ book }) => {
 
 						<small>
 
-							{quantity || 0} Copies
+							{available || 0} Copies
 
 						</small>
 
@@ -170,7 +172,7 @@ const BookCard = ({ book }) => {
 
 								<small>Collection</small>
 
-								<h5>Available</h5>
+								<h5>{available ? 'Available' : 'Stock Out'}</h5>
 
 							</div>
 

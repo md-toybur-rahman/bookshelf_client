@@ -1,83 +1,302 @@
-import React, { useContext } from 'react';
-import SearchField from '../../../Shared/SearchField/SearchField';
-import { getBookContext } from '../../../../Providers/GetBookProvider';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import {
+	FaTrashAlt,
+	FaSearch,
+	FaBook,
+	FaUserEdit,
+	FaCalendarAlt,
+	FaDollarSign,
+} from "react-icons/fa";
 
 const DeleteBook = () => {
-	const { book, setBook } = useContext(getBookContext);
-	console.log(book)
 
-	const handleDelete = (id) => {
-		console.log(book[0]?.public_id)
-		Swal.fire({
-			title: "Are you sure?",
-			text: "You won't be able to revert this!",
+	const [books, setBooks] = useState([]);
+	const [filteredBooks, setFilteredBooks] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [search, setSearch] = useState("");
+
+	useEffect(() => {
+		fetchBooks();
+	}, []);
+
+	useEffect(() => {
+
+		const value = search.toLowerCase();
+
+		const result = books.filter(book =>
+			book.book_name.toLowerCase().includes(value) ||
+			book.author_name.toLowerCase().includes(value) ||
+			book.genre.toLowerCase().includes(value) ||
+			book.book_id.toLowerCase().includes(value)
+		);
+
+		setFilteredBooks(result);
+
+	}, [search, books]);
+
+	const fetchBooks = async () => {
+
+		try {
+
+			const res = await fetch("http://localhost:2000/books");
+			const data = await res.json();
+
+			setBooks(data);
+			setFilteredBooks(data);
+
+		}
+		catch (err) {
+			console.log(err);
+		}
+		finally {
+			setLoading(false);
+		}
+
+	};
+
+	const handleDelete = async (book) => {
+
+		const confirm = await Swal.fire({
+
+			title: "Delete Book?",
+			text: `Do you want to delete "${book.book_name}" ?`,
 			icon: "warning",
 			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete it!"
-		}).then(async (result) => {
-			if (result.isConfirmed) {
-				if (book[0]?.public_id) {
-					fetch(`http://localhost:2000/delete-image`, {
-						method: 'DELETE',
-						headers: {
-							'content-type' : 'applicaiton/json'
-						},
-						body: JSON.stringify({ public_id: book[0].public_id })
-					})
-						.then(res => res.json())
-						.then(data => {
-							console.log(data.message)
-						})
-				}
-				await fetch(`http://localhost:2000/books/${id}`, {
-					method: 'DELETE',
-					headers: {
-					}
-				})
-					.then(res => res.json())
-					.then(data => {
-						console.log(data)
-						if (data.acknowledged) {
-							Swal.fire({
-								title: "Deleted!",
-								text: "Your file has been deleted.",
-								icon: "success"
-							});
-							location.reload();
-						}
-						setBook([])
-					})
-			}
-		});
-	}
-	return (
-		<div>
-			<div className='mb-10'>
-				<SearchField />
-			</div>
-			<div className="h-[80vh] flex items-center justify-center">
-				<div className="text-center border border-red-500 p-6 rounded-lg shadow-lg hover:shadow-xl shadow-red-500 transition-shadow duration-300 w-full max-w-[510px] h-[320px]">
-					<div className="logo-animation">
-						<div className=' flex flex-col items-center gap-2 text-2xl text-red-500 lg:text-red-700 font-bold font-logo'>
-							<img className='w-24 h-32' src={book[0]?.cover_image ? book[0].cover_image : `https://i.ibb.co/8NrNt04/icons8-error-80.png`} alt="Warning Logo" />
-							<span>{book[0]?.book_name}</span>
-						</div>
-					</div>
-					<h1 className={`${book[0]?.book_name ? 'text-xl' : 'text-4xl'}  font-bold mt-4 text-red-700`}>{book[0]?.cover_image ? 'are you want to delete this book?' : `Warning: Delete Section`}</h1>
-					{
-						book[0]?.book_name ?
-							<button onClick={() => { handleDelete(book[0]?._id) }} className="mt-4 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-colors duration-300">Delete</button> :
-							<p className="text-lg mt-2 text-red-600">Be Careful</p>
+			confirmButtonColor: "#d33",
+			cancelButtonColor: "#555",
+			confirmButtonText: "Delete",
 
-					}
+		});
+
+		if (!confirm.isConfirmed) return;
+
+		try {
+
+			/* Delete Image */
+
+			if (book.public_id) {
+
+				await fetch("http://localhost:2000/delete-image", {
+
+					method: "DELETE",
+
+					headers: {
+						"content-type": "application/json",
+					},
+
+					body: JSON.stringify({
+						public_id: book.public_id,
+					}),
+
+				});
+
+			}
+
+			/* Delete Book */
+
+			const res = await fetch(
+				`http://localhost:2000/books/${book._id}`,
+				{
+					method: "DELETE",
+				}
+			);
+
+			const data = await res.json();
+
+			if (data.deletedCount > 0) {
+
+				Swal.fire({
+
+					icon: "success",
+					title: "Book Deleted",
+					timer: 1200,
+					showConfirmButton: false,
+
+				});
+
+				const remaining = books.filter(
+					item => item._id !== book._id
+				);
+
+				setBooks(remaining);
+
+			}
+
+		}
+		catch (err) {
+
+			Swal.fire({
+				icon: "error",
+				title: err.message,
+			});
+
+		}
+
+	};
+
+	if (loading) {
+
+		return (
+
+			<div className="h-[70vh] flex justify-center items-center">
+
+				<span className="loading loading-spinner loading-lg text-amber-400"></span>
+
+			</div>
+
+		);
+
+	}
+
+	return (
+
+		<section className="max-w-7xl mx-auto">
+
+			{/* Header */}
+
+			<div className="rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-10 mb-10 relative overflow-hidden">
+
+				<div className="absolute -right-20 -top-20 w-80 h-80 bg-amber-500/10 rounded-full blur-[120px]"></div>
+
+				<div className="flex items-center gap-6">
+
+					<div className="w-20 h-20 rounded-3xl bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center">
+
+						<FaTrashAlt className="text-4xl text-white" />
+
+					</div>
+
+					<div>
+
+						<p className="uppercase tracking-[5px] text-amber-400">
+
+							Bookshelf Admin
+
+						</p>
+
+						<h1 className="text-5xl font-black text-white">
+
+							Delete Books
+
+						</h1>
+
+					</div>
 
 				</div>
+
 			</div>
-		</div>
+
+			{/* Search */}
+
+			<div className="relative mb-10">
+
+				<FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" />
+
+				<input
+
+					value={search}
+
+					onChange={(e) => setSearch(e.target.value)}
+
+					className="w-full pl-14 pr-5 py-4 rounded-2xl border border-amber-500/20 bg-[#1a120d] text-white outline-none focus:border-amber-400"
+
+					placeholder="Search Book..."
+
+				/>
+
+			</div>
+
+			{/* Books */}
+
+			<div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+				{
+
+					filteredBooks.map(book => (
+
+						<div
+							key={book._id}
+							className="rounded-[30px] overflow-hidden border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] hover:border-red-500/40 duration-300 shadow-[0_20px_40px_rgba(0,0,0,.4)]"
+						>
+
+							<img
+								src={book.cover_image}
+								className="h-[350px] w-full object-cover"
+							/>
+
+							<div className="p-7">
+
+								<h2 className="text-2xl font-bold text-white">
+
+									{book.book_name}
+
+								</h2>
+
+								<div className="space-y-3 mt-6 text-slate-300">
+
+									<p className="flex items-center gap-3">
+
+										<FaUserEdit className="text-amber-400" />
+
+										{book.author_name}
+
+									</p>
+
+									<p className="flex items-center gap-3">
+
+										<FaBook className="text-amber-400" />
+
+										{book.genre}
+
+									</p>
+
+									<p className="flex items-center gap-3">
+
+										<FaCalendarAlt className="text-amber-400" />
+
+										{book.publication_date}
+
+									</p>
+
+									<p className="flex items-center gap-3">
+
+										<FaDollarSign className="text-amber-400" />
+
+										${book.price}
+
+									</p>
+
+								</div>
+
+								<button
+
+									onClick={() => handleDelete(book)}
+
+									className="mt-8 w-full py-4 rounded-2xl bg-gradient-to-r from-red-500 to-red-700 text-white font-bold hover:scale-[1.02] duration-300 flex justify-center items-center gap-3"
+
+								>
+
+									<FaTrashAlt />
+
+									Delete Book
+
+								</button>
+
+							</div>
+
+						</div>
+
+					))
+
+				}
+
+			</div>
+
+		</section>
+
 	);
+
 };
 
 export default DeleteBook;

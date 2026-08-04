@@ -30,7 +30,7 @@ const LibraryNewsCard = ({ news }) => {
 
 		const rotateY = ((x / rect.width) - .5) * 22;
 
-		const rotateX = ((rect.height / 2 - y) / rect.height) * 22;
+		const rotateX = ((rect.height / 2 - y) / rect.height) * 12;
 
 		setStyle({
 

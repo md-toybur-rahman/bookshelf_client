@@ -38,9 +38,9 @@ const EventCard = ({ event }) => {
 
 		const y = e.clientY - rect.top;
 
-		const rotateY = ((x / rect.width) - 0.5) * 24;
+		const rotateY = ((x / rect.width) - 0.5) * 20;
 
-		const rotateX = ((rect.height / 2 - y) / rect.height) * 24;
+		const rotateX = ((rect.height / 2 - y) / rect.height) * 10;
 
 		setStyle({
 

@@ -20,6 +20,7 @@ import {
 } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
 
@@ -28,6 +29,12 @@ const Navbar = () => {
 	const [mobileMenu, setMobileMenu] = useState(false);
 
 	const [profileMenu, setProfileMenu] = useState(false);
+
+	const [selectedRole, setSelectedRole] = useState("Member");
+
+	const [roleMenu, setRoleMenu] = useState(false);
+
+	const roleRef = useRef();
 
 	const location = useLocation();
 
@@ -55,7 +62,14 @@ const Navbar = () => {
 				setMobileMenu(false);
 			}
 
+			if (
+				roleRef.current &&
+				!roleRef.current.contains(e.target)
+			) {
+				setRoleMenu(false);
+			}
 		};
+
 
 		document.addEventListener("mousedown", handleClickOutside);
 
@@ -66,6 +80,55 @@ const Navbar = () => {
 			);
 
 	}, []);
+
+
+	const handleRoleChange = async (role) => {
+
+		try {
+
+			const res = await fetch(
+				`http://localhost:2000/users/role/${user.email}`,
+				{
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						type: role.toLowerCase(),
+					}),
+				}
+			);
+
+			const data = await res.json();
+
+			if (data.success) {
+
+				setSelectedRole(role);
+
+				Swal.fire({
+					icon: "success",
+					title: "Role Updated",
+					text: `Current Role: ${role}`,
+					timer: 1500,
+					showConfirmButton: false,
+				});
+
+			}
+
+		}
+
+		catch (err) {
+
+			Swal.fire({
+				icon: "error",
+				title: "Update Failed",
+				text: err.message,
+			});
+
+		}
+
+	};
+
 
 	const handleLogOut = async () => {
 
@@ -164,6 +227,93 @@ const Navbar = () => {
 				>
 					Cart
 				</NavLink> : ''
+			}
+			{
+				user && (
+					<div
+						ref={roleRef}
+						className="relative"
+					>
+
+						<button
+							onClick={() => setRoleMenu(!roleMenu)}
+							className={`${navLink} flex items-center gap-2`}
+						>
+
+							Change Role
+
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className={`w-4 h-4 duration-300 ${roleMenu ? "rotate-180" : ""
+									}`}
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={2}
+									d="M19 9l-7 7-7-7"
+								/>
+							</svg>
+
+						</button>
+
+						<div
+							className={`absolute left-1/2 top-full mt-5
+                -translate-x-1/2
+                w-56
+                rounded-3xl
+                border border-[#5d4638]
+                bg-[#1b120d]
+                shadow-[0_20px_60px_rgba(0,0,0,.45)]
+                overflow-hidden
+                transition-all duration-300
+                ${roleMenu
+									? "opacity-100 visible translate-y-0"
+									: "opacity-0 invisible -translate-y-2"
+								}`}
+						>
+
+							<div className="p-2">
+
+								{["Member", "Admin", "Volunteer"].map(role => (
+
+									<button
+										key={role}
+										onClick={() => {
+
+											handleRoleChange(role);
+
+											setRoleMenu(false);
+
+										}}
+										className={`w-full
+                            text-left
+                            px-5
+                            py-3
+                            rounded-2xl
+                            duration-300
+
+                            ${selectedRole === role
+												? "bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-[#1b1712] font-bold"
+												: "text-[#d7c8b7] hover:bg-[#2b221b] hover:text-[#d4af37]"
+											}`}
+									>
+
+										{role}
+
+									</button>
+
+								))}
+
+							</div>
+
+						</div>
+
+					</div>
+				)
 			}
 
 		</>
@@ -323,7 +473,7 @@ const Navbar = () => {
 
 									<Link
 										to="/profile"
-										onClick={() => {if(profileMenu === true) { setProfileMenu(false)}}}
+										onClick={() => { if (profileMenu === true) { setProfileMenu(false) } }}
 										className="flex items-center gap-3 rounded-xl px-4 py-3 text-[#d7c8b7] transition hover:bg-[#2d221c] hover:text-[#d4af37]"
 									>
 										<FaUserCircle />
@@ -332,7 +482,7 @@ const Navbar = () => {
 
 									<Link
 										to="/cart"
-										onClick={() => {if(profileMenu === true) { setProfileMenu(false)}}}
+										onClick={() => { if (profileMenu === true) { setProfileMenu(false) } }}
 										className="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-[#d7c8b7] transition hover:bg-[#2d221c] hover:text-[#d4af37]"
 									>
 										<FaShoppingBag />

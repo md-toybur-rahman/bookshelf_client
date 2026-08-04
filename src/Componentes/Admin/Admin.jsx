@@ -1,93 +1,568 @@
-import React, { useContext, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { getBookContext } from '../../Providers/GetBookProvider';
+import React, { useContext, useState } from "react";
+import {
+	Link,
+	Outlet,
+	useLocation,
+} from "react-router-dom";
+
+import {
+	FaBook,
+	FaUsers,
+	FaNewspaper,
+	FaCalendarAlt,
+	FaChartPie,
+	FaChevronDown,
+	FaChevronRight,
+	FaCog,
+	FaEnvelope,
+	FaHome,
+	FaSignOutAlt,
+	FaShoppingCart,
+} from "react-icons/fa";
+
+import { getBookContext } from "../../Providers/GetBookProvider";
 
 const Admin = () => {
-	const [isBook, setIsBook] = useState(false);
-	const [isEvent, setIsEvent] = useState(false);
-	const [isNews, setIsNews] = useState(false);
-	const [isMember, setIsMember] = useState(false);
-	const [isAdmin, setIsAdmin] = useState(false);
+
 	const location = useLocation();
-	const {setBook} = useContext(getBookContext);
+
+	const { setBook } = useContext(getBookContext);
+
+	const [sidebarOpen, setSidebarOpen] = useState(false);
+
+	const [openMenu, setOpenMenu] = useState("");
+
+	const toggleMenu = (menu) => {
+
+		if (openMenu === menu) {
+
+			setOpenMenu("");
+
+		}
+
+		else {
+
+			setOpenMenu(menu);
+
+		}
+
+	};
+
+	const menuBtn =
+		"flex items-center justify-between w-full px-5 py-4 rounded-2xl duration-300 hover:bg-[#24160f] hover:text-[#d4af37]";
+
+	const subBtn =
+		"block w-full text-left px-5 py-3 rounded-xl duration-300 hover:bg-[#2c2016] hover:text-[#d4af37]";
 
 	return (
-		<div className='relative lg:grid grid-cols-12 min-h-[80vh]'>
-			<div className={`pt-10 absolute z-60 lg:static col-span-3 from-[#01001a] from-0% via-teal-900 to-100% duration-200 flex items-start ${isAdmin ? 'left-0 bg-gradient-to-r' : '-left-[230px] md:-left-[250px]'}`}>
-				<div className='px-5 py-2 flex flex-col items-center md:justify-center text-xs md:text-base w-full'>
-					<div>
-						<div className='flex flex-col items-center gap-2 text-2xl text-[#39d5ff] lg:text-[#39d5ff] font-bold font-logo'>
-							<img className='w-24' src={`https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png`} />
-							{/* <img className='w-14 lg:hidden' src={`https://i.ibb.co/qNHZb6B/Elegant-Public-Library-Logo-Template-2-Photoroom-2.png`} />  */}
 
-							<span className=''>Bookshelf Admin</span>
-						</div>
-						<div>
-						</div>
-					</div>
-					<div className='border h-2 rounded-full border-teal-500 shadow-lg shadow-teal-500 w-[80%] mx-auto mt-3' />
+		<div className="min-h-screen bg-[#120d09] text-[#f8ead7]">
 
-					<div className='flex flex-col gap-4 items-center justify-center w-full mt-10'>
+			{/* Overlay */}
 
-						<div className='w-full flex flex-col items-center'>
-							<h1 onClick={() => { setIsBook(!isBook) }} className='cursor-pointer font-bold flex items-center gap-4 hover:text-teal-500 mb-4'>Book Management <span className={`font-bold cursor-pointer duration-300 ${isBook ? 'rotate-180' : 'rotate-90'}`}>︿</span></h1>
-							<div className={`flex flex-col gap-4 items-center justify-center w-full ${isBook ? 'h-32' : 'h-0'} overflow-hidden duration-300`}>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Add A Book</Link>
-								<Link onClick={() => {setBook([])}} to={"/admin/update_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A Book</Link>
-								<Link onClick={() => {setBook([])}} to={"/admin/delete_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A Book</Link>
-							</div>
-						</div>
-						<div className='w-full flex flex-col items-center'>
-							<h1 onClick={() => { setIsEvent(!isEvent) }} className='cursor-pointer font-bold flex items-center gap-4 hover:text-teal-500 mb-4'>Event Management <span className={`font-bold cursor-pointer duration-300 ${isEvent ? 'rotate-180' : 'rotate-90'}`}>︿</span></h1>
-							<div className={`flex flex-col gap-4 items-center justify-center w-full ${isEvent ? 'h-32' : 'h-0'} overflow-hidden duration-300`}>
-								<Link to={"/admin/add_event"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Add A Event</Link>
-								<Link to={"/admin/update_event"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A Event</Link>
-								<Link to={"/admin/delete_event"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A Event</Link>
-							</div>
-						</div>
-						<div className='w-full flex flex-col items-center'>
-							<h1 onClick={() => { setIsNews(!isNews) }} className='cursor-pointer  font-bold flex items-center gap-4 hover:text-teal-500 mb-4'>News Management <span className={`font-bold cursor-pointer duration-300 ${isNews ? 'rotate-180' : 'rotate-90'}`}>︿</span></h1>
-							<div className={`flex flex-col gap-4 items-center justify-center w-full ${isNews ? 'h-32' : 'h-0'} overflow-hidden duration-300`}>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Add A News</Link>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A News</Link>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A News</Link>
-							</div>
-						</div>
-						<div className='w-full flex flex-col items-center'>
-							<h1 onClick={() => { setIsMember(!isMember) }} className='cursor-pointer font-bold flex items-center gap-4 hover:text-teal-500 mb-4'>Member Management <span className={`font-bold cursor-pointer duration-300 ${isMember ? 'rotate-180' : 'rotate-90'}`}>︿</span></h1>
-							<div className={`flex flex-col gap-4 items-center justify-center w-full ${isMember ? 'h-32' : 'h-0'} overflow-hidden duration-300`}>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Add A Member</Link>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Update A Member</Link>
-								<Link to={"/admin/add_book"} className='w-[80%] text-center py-1 border-2 border-teal-500 hover:bg-teal-500 duration-300 text-sm font-semibold rounded-lg shadow-lg'>Delete A Member</Link>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className='h-full'>
-					<div className='w-2 h-[80%] rounded-full div-glow'></div>
-				</div>
-				<div onClick={() => { setIsAdmin(!isAdmin) }} className='lg:hidden'>
-					<img className='w-8 md:w-14 h-8 md:h-auto' src="https://i.ibb.co/LrnVn4m/icons8-sidebar-100.png" alt="" />
-				</div>
-			</div>
-			<div></div>
 			{
-				location.pathname == '/admin' ? ''
-					: 
-					<div className='lg:hidden pt-10'>
-						<div className='flex flex-col items-center gap-2 text-2xl text-[#39d5ff] lg:text-[#39d5ff] font-bold font-logo'>
-							<img className='w-24' src={`https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png`} />
-							{/* <img className='w-14 lg:hidden' src={`https://i.ibb.co/qNHZb6B/Elegant-Public-Library-Logo-Template-2-Photoroom-2.png`} />  */}
+				sidebarOpen && (
 
-							<span className=''>Bookshelf Admin</span>
-						</div>
-					</div>
+					<div
+
+						onClick={() => setSidebarOpen(false)}
+
+						className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+
+					/>
+
+				)
 			}
-			<div className='col-span-8 py-10 px-5'>
-				<Outlet></Outlet>
+
+			<div className="flex">
+
+				{/* Sidebar */}
+
+				<aside
+
+					className={`
+
+                    fixed
+
+                    lg:static
+
+                    z-50
+
+                    top-0
+
+                    left-0
+
+                    h-screen
+
+                    w-[310px]
+
+                    bg-gradient-to-b
+
+                    from-[#1d140f]
+
+                    via-[#17100c]
+
+                    to-[#120d09]
+
+                    border-r
+
+                    border-[#3d2c21]
+
+                    duration-300
+
+                    shadow-[0_0_40px_rgba(0,0,0,.45)]
+
+                    ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+
+                `}
+
+				>
+
+					{/* Logo */}
+
+					<div className="py-10 px-6 text-center border-b border-[#3b2a1e]">
+
+						<img
+
+							src="https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png"
+
+							className="w-24 mx-auto"
+
+						/>
+
+						<h2 className="mt-5 text-2xl font-bold bg-gradient-to-r from-[#f6d778] to-[#b8860b] bg-clip-text text-transparent">
+
+							Bookshelf Admin
+
+						</h2>
+
+						<p className="text-sm text-[#8f7a66] mt-2">
+
+							Library Management Panel
+
+						</p>
+
+					</div>
+
+					{/* Navigation */}
+
+					<div className="px-4 py-6 space-y-2 overflow-y-auto h-[calc(100vh-170px)]">
+
+						{/* Dashboard */}
+
+						<Link
+
+							to="/admin"
+
+							className={`${menuBtn} ${location.pathname === "/admin"
+
+								? "bg-[#2c2016] text-[#d4af37]"
+
+								: ""
+
+								}`}
+
+						>
+
+							<span className="flex items-center gap-4">
+
+								<FaChartPie />
+
+								Dashboard
+
+							</span>
+
+						</Link>
+
+						{/* Book */}
+
+						<div>
+
+							<button
+
+								onClick={() => toggleMenu("book")}
+
+								className={menuBtn}
+
+							>
+
+								<span className="flex items-center gap-4">
+
+									<FaBook />
+
+									Book Management
+
+								</span>
+
+								{
+
+									openMenu === "book"
+
+										?
+
+										<FaChevronDown />
+
+										:
+
+										<FaChevronRight />
+
+								}
+
+							</button>
+
+							<div
+
+								className={`overflow-hidden duration-300 ${openMenu === "book"
+
+									? "max-h-60 mt-2"
+
+									: "max-h-0"
+
+									}`}
+
+							>
+
+								<div className="space-y-2 pl-5">
+
+									<Link
+
+										to="/admin/add_book"
+
+										className={subBtn}
+
+									>
+
+										Add Book
+
+									</Link>
+
+									<Link
+
+										onClick={() => setBook([])}
+
+										to="/admin/update_book"
+
+										className={subBtn}
+
+									>
+
+										Update Book
+
+									</Link>
+
+									<Link
+
+										onClick={() => setBook([])}
+
+										to="/admin/delete_book"
+
+										className={subBtn}
+
+									>
+
+										Delete Book
+
+									</Link>
+
+								</div>
+
+							</div>
+
+						</div>
+						{/* Event */}
+
+						<div>
+
+							<button
+								onClick={() => toggleMenu("event")}
+								className={menuBtn}
+							>
+
+								<span className="flex items-center gap-4">
+
+									<FaCalendarAlt />
+
+									Event Management
+
+								</span>
+
+								{
+									openMenu === "event"
+										? <FaChevronDown />
+										: <FaChevronRight />
+								}
+
+							</button>
+
+							<div
+								className={`overflow-hidden duration-300 ${openMenu === "event"
+									? "max-h-60 mt-2"
+									: "max-h-0"
+									}`}
+							>
+
+								<div className="space-y-2 pl-5">
+
+									<Link
+										to="/admin/add_event"
+										className={subBtn}
+									>
+										Add Event
+									</Link>
+
+									<Link
+										to="/admin/update_event"
+										className={subBtn}
+									>
+										Update Event
+									</Link>
+
+									<Link
+										to="/admin/delete_event"
+										className={subBtn}
+									>
+										Delete Event
+									</Link>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						{/* News */}
+
+						<div>
+
+							<button
+								onClick={() => toggleMenu("news")}
+								className={menuBtn}
+							>
+
+								<span className="flex items-center gap-4">
+
+									<FaNewspaper />
+
+									News Management
+
+								</span>
+
+								{
+									openMenu === "news"
+										? <FaChevronDown />
+										: <FaChevronRight />
+								}
+
+							</button>
+
+							<div
+								className={`overflow-hidden duration-300 ${openMenu === "news"
+									? "max-h-60 mt-2"
+									: "max-h-0"
+									}`}
+							>
+
+								<div className="space-y-2 pl-5">
+
+									<Link
+										to="/admin/add_news"
+										className={subBtn}
+									>
+										Add News
+									</Link>
+
+									<Link
+										to="/admin/update_news"
+										className={subBtn}
+									>
+										Update News
+									</Link>
+
+									<Link
+										to="/admin/delete_news"
+										className={subBtn}
+									>
+										Delete News
+									</Link>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						{/* Community */}
+
+						<Link
+							to="/admin/community"
+							className={menuBtn}
+						>
+
+							<span className="flex items-center gap-4">
+
+								<FaUsers />
+
+								Community
+
+							</span>
+
+						</Link>
+
+						{/* Users */}
+
+						<Link
+							to="/admin/users"
+							className={menuBtn}
+						>
+
+							<span className="flex items-center gap-4">
+
+								<FaUsers />
+
+								Users
+
+							</span>
+
+						</Link>
+
+						{/* Cart */}
+
+						{/* <Link
+							to="/admin/cart"
+							className={menuBtn}
+						>
+
+							<span className="flex items-center gap-4">
+
+								<FaShoppingCart />
+
+								Borrow / Cart
+
+							</span>
+
+						</Link> */}
+
+						{/* Messages */}
+
+						<Link
+							to="/admin/messages"
+							className={menuBtn}
+						>
+
+							<span className="flex items-center gap-4">
+
+								<FaEnvelope />
+
+								Contact Messages
+
+							</span>
+
+						</Link>
+
+						{/* Settings */}
+
+						<Link
+							to="/admin/settings"
+							className={menuBtn}
+						>
+
+							<span className="flex items-center gap-4">
+
+								<FaCog />
+
+								Settings
+
+							</span>
+
+						</Link>
+
+					</div>
+
+					{/* Footer */}
+
+					<div className="border-t border-[#3b2a1e] p-5 space-y-3">
+
+						<Link
+							to="/"
+							className="flex items-center justify-center gap-3 rounded-2xl py-3 bg-[#24160f] hover:bg-[#2d1d14] duration-300"
+						>
+
+							<FaHome />
+
+							Back Home
+
+						</Link>
+
+						<button
+							className="w-full flex items-center justify-center gap-3 rounded-2xl py-3 bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-[#18120d] font-bold hover:scale-[1.02] duration-300"
+						>
+
+							<FaSignOutAlt />
+
+							Logout
+
+						</button>
+
+					</div>
+
+				</aside>
+
+				{/* Main */}
+
+				<div className="flex-1 lg:ml-0">
+
+					{/* Header */}
+
+					<header className="sticky top-0 z-30 h-20 px-6 flex items-center justify-between bg-[#120d09]/90 backdrop-blur-xl border-b border-[#3b2a1e]">
+
+						<button
+							onClick={() => setSidebarOpen(true)}
+							className="lg:hidden text-3xl text-[#d4af37]"
+						>
+
+							☰
+
+						</button>
+
+						<div>
+
+							<h2 className="text-3xl font-bold text-[#f7e8d1]">
+
+								Admin Dashboard
+
+							</h2>
+
+							<p className="text-[#9d8b79]">
+
+								Bookshelf Library Management
+
+							</p>
+
+						</div>
+
+						<img
+							src="https://i.pravatar.cc/100"
+							className="w-12 h-12 rounded-full border-2 border-[#d4af37]"
+						/>
+
+					</header>
+
+					{/* Content */}
+
+					<main className="p-8">
+
+						<Outlet />
+
+					</main>
+
+				</div>
+
 			</div>
+
 		</div>
+
 	);
+
 };
 
 export default Admin;

@@ -24,6 +24,13 @@ import DeleteEvent from "../Componentes/Admin/EventManagement/DeleteEvent/Delete
 import BookDetails from "../Componentes/Shared/BookDetails/BookDetails";
 import Cart from "../Componentes/Cart/Cart";
 import MyProfile from "../Componentes/MyProfile/MyProfile";
+import AddNews from "../Componentes/Admin/NewsManagement/AddNews/AddNews";
+import UpdateNews from "../Componentes/Admin/NewsManagement/UpdateNews/UpdateNews";
+import DeleteNews from "../Componentes/Admin/NewsManagement/DeleteNews/DeleteNews";
+import Community from "../Componentes/Admin/Community/Community";
+import ContactMessage from "../Componentes/Admin/ContactMessage/ContactMessage";
+import Settings from "../Componentes/Admin/Settings/Settings";
+import Users from "../Componentes/Admin/Users/Users";
 
 const router = createBrowserRouter([
   {
@@ -94,6 +101,34 @@ const router = createBrowserRouter([
           {
             path: "/admin/delete_event",
             element: <PrivateRoute><DeleteEvent></DeleteEvent></PrivateRoute>
+          },
+          {
+            path: "/admin/add_news",
+            element: <PrivateRoute><AddNews /></PrivateRoute>
+          },
+          {
+            path: "/admin/update_news",
+            element: <PrivateRoute><UpdateNews /></PrivateRoute>
+          },
+          {
+            path: "/admin/delete_news",
+            element: <PrivateRoute><DeleteNews /></PrivateRoute>
+          },
+          {
+            path: "/admin/community",
+            element: <PrivateRoute><Community /></PrivateRoute>
+          },
+          {
+            path: "/admin/messages",
+            element: <PrivateRoute><ContactMessage /></PrivateRoute>
+          },
+          {
+            path: "/admin/users",
+            element: <PrivateRoute><Users /></PrivateRoute>
+          },
+          {
+            path: "/admin/settings",
+            element: <PrivateRoute><Settings /></PrivateRoute>
           },
         ]
       },

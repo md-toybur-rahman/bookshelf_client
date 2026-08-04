@@ -165,23 +165,17 @@ const BestSellers = () => {
 				>
 
 					{
-
 						books
+							.sort((a, b) => (b.stock - b.available) - (a.stock - a.available))
 							.slice(0, 10)
 							.map((book) => (
-
 								<SwiperSlide key={book._id}>
-
 									<BookCard
 										book={book}
 									/>
-
 								</SwiperSlide>
-
 							))
-
 					}
-
 				</Swiper>
 
 			</div>
