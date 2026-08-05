@@ -8,50 +8,56 @@ import {
 	FaCalendarAlt,
 	FaDollarSign,
 } from "react-icons/fa";
+import axios from "axios";
+import BookDetails from "../../../Shared/BookDetails/BookDetails";
 
 const DeleteBook = () => {
-
 	const [books, setBooks] = useState([]);
-	const [filteredBooks, setFilteredBooks] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [search, setSearch] = useState("");
+
+	const [searchText, setSearchText] = useState("");
+	const [filteredBooks, setFilteredBooks] = useState([]);
 
 	useEffect(() => {
-		fetchBooks();
+
+		const getBooks = async () => {
+
+			try {
+				const res = await axios.get("http://localhost:2000/books");
+				setBooks(res.data);
+				setFilteredBooks(res.data);
+			}
+			catch (err) {
+				console.log(err);
+			}
+			finally {
+				setLoading(false);
+			}
+		};
+		getBooks();
+
 	}, []);
 
-	useEffect(() => {
 
-		const value = search.toLowerCase();
+	const loadBook = (value) => {
 
-		const result = books.filter(book =>
-			book.book_name.toLowerCase().includes(value) ||
-			book.author_name.toLowerCase().includes(value) ||
-			book.genre.toLowerCase().includes(value) ||
-			book.book_id.toLowerCase().includes(value)
+		if (!value.trim()) {
+			setFilteredBooks(books);
+			return;
+
+		}
+
+		const result = books.filter(item =>
+
+			item.book_name.toLowerCase().includes(value.toLowerCase()) ||
+
+			item.author_name.toLowerCase().includes(value.toLowerCase()) ||
+
+			item.genre.toLowerCase().includes(value.toLowerCase())
+
 		);
 
 		setFilteredBooks(result);
-
-	}, [search, books]);
-
-	const fetchBooks = async () => {
-
-		try {
-
-			const res = await fetch("http://localhost:2000/books");
-			const data = await res.json();
-
-			setBooks(data);
-			setFilteredBooks(data);
-
-		}
-		catch (err) {
-			console.log(err);
-		}
-		finally {
-			setLoading(false);
-		}
 
 	};
 
@@ -119,7 +125,7 @@ const DeleteBook = () => {
 					item => item._id !== book._id
 				);
 
-				setBooks(remaining);
+				setFilteredBooks(remaining);
 
 			}
 
@@ -194,13 +200,8 @@ const DeleteBook = () => {
 				<FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" />
 
 				<input
-
-					value={search}
-
-					onChange={(e) => setSearch(e.target.value)}
-
+					onChange={(e) => loadBook(e.target.value)}
 					className="w-full pl-14 pr-5 py-4 rounded-2xl border border-amber-500/20 bg-[#1a120d] text-white outline-none focus:border-amber-400"
-
 					placeholder="Search Book..."
 
 				/>

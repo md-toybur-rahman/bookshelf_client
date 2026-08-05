@@ -31,6 +31,7 @@ import Community from "../Componentes/Admin/Community/Community";
 import ContactMessage from "../Componentes/Admin/ContactMessage/ContactMessage";
 import Settings from "../Componentes/Admin/Settings/Settings";
 import Users from "../Componentes/Admin/Users/Users";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -72,7 +73,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <PrivateRoute><Admin></Admin></PrivateRoute>,
+        element: <PrivateRoute><AdminRoute><Admin></Admin></AdminRoute></PrivateRoute>,
         children: [
           {
             path: "/admin",

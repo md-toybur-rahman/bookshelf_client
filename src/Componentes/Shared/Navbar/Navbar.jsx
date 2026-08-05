@@ -30,8 +30,6 @@ const Navbar = () => {
 
 	const [profileMenu, setProfileMenu] = useState(false);
 
-	const [selectedRole, setSelectedRole] = useState("Member");
-
 	const [roleMenu, setRoleMenu] = useState(false);
 
 	const roleRef = useRef();
@@ -102,16 +100,16 @@ const Navbar = () => {
 			const data = await res.json();
 
 			if (data.success) {
-
-				setSelectedRole(role);
-
+				// navigate('/')
 				Swal.fire({
 					icon: "success",
 					title: "Role Updated",
 					text: `Current Role: ${role}`,
 					timer: 1500,
 					showConfirmButton: false,
-				});
+				}).then(() => {
+					window.location.reload();
+				})
 
 			}
 
@@ -164,6 +162,7 @@ const Navbar = () => {
 	const profile = Array.isArray(currentUser)
 		? currentUser[0]
 		: currentUser;
+
 	const navLink =
 		"relative px-3 py-2 text-[15px] font-semibold text-[#e8d8c7] transition duration-300 hover:text-[#d4af37]";
 
@@ -229,6 +228,16 @@ const Navbar = () => {
 				</NavLink> : ''
 			}
 			{
+				profile?.type === 'admin' ? <NavLink
+					to="/admin"
+					className={({ isActive }) =>
+						`${navLink} ${isActive ? active : ""}`
+					}
+				>
+					Admin Panel
+				</NavLink> : ''
+			}
+			{
 				user && (
 					<div
 						ref={roleRef}
@@ -283,20 +292,11 @@ const Navbar = () => {
 									<button
 										key={role}
 										onClick={() => {
-
 											handleRoleChange(role);
-
 											setRoleMenu(false);
-
 										}}
-										className={`w-full
-                            text-left
-                            px-5
-                            py-3
-                            rounded-2xl
-                            duration-300
-
-                            ${selectedRole === role
+										className={`w-full text-left px-5 py-3 rounded-2xl duration-300
+                            				${`${profile?.type?.slice(0, 1)?.toUpperCase()}${profile?.type?.slice(1)}` === role
 												? "bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-[#1b1712] font-bold"
 												: "text-[#d7c8b7] hover:bg-[#2b221b] hover:text-[#d4af37]"
 											}`}
