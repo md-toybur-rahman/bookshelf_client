@@ -16,6 +16,184 @@ const Users = () => {
     const [roleFilter, setRoleFilter] = useState("All");
     const [gridView, setGridView] = useState(true);
 
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [role, setRole] = useState("");
+    const [description, setDescription] = useState("");
+    const [saving, setSaving] = useState(false);
+
+    /* ===========================
+       OPEN MODAL
+    =========================== */
+
+    const handleOpenRoleModal = (user) => {
+
+        setSelectedUser(user);
+
+        setRole(user.role || "Member");
+
+        setDescription("");
+
+        setShowModal(true);
+
+    };
+
+    /* ===========================
+       CLOSE MODAL
+    =========================== */
+
+    const handleCloseRoleModal = () => {
+
+        setSelectedUser(null);
+
+        setRole("");
+
+        setDescription("");
+
+        setShowModal(false);
+
+    };
+
+    /* ===========================
+       SUBMIT
+    =========================== */
+
+    const handleChangeRole = async () => {
+
+        if (!role) {
+
+            Swal.fire({
+
+                icon: "warning",
+
+                title: "Role Required",
+
+            });
+
+            return;
+
+        }
+
+        try {
+
+            setSaving(true);
+
+            /* ---------- Update User Role ---------- */
+
+            await fetch(
+
+                `http://localhost:2000/users/role/${selectedUser._id}`,
+
+                {
+
+                    method: "PATCH",
+
+                    headers: {
+
+                        "content-type": "application/json",
+
+                    },
+
+                    body: JSON.stringify({
+
+                        role,
+
+                    }),
+
+                }
+
+            );
+
+            /* ---------- Insert / Update Community Member ---------- */
+
+            await fetch(
+
+                "http://localhost:2000/community/member",
+
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "content-type": "application/json",
+
+                    },
+
+                    body: JSON.stringify({
+
+                        name: selectedUser.name,
+
+                        role,
+
+                        description,
+
+                        image: selectedUser.image,
+
+                    }),
+
+                }
+
+            );
+
+            /* ---------- Update Local UI ---------- */
+
+            setUsers(prev =>
+
+                prev.map(user =>
+
+                    user._id === selectedUser._id
+
+                        ? {
+
+                            ...user,
+
+                            role,
+
+                        }
+
+                        : user
+
+                )
+
+            );
+
+            handleCloseRoleModal();
+
+            Swal.fire({
+
+                icon: "success",
+
+                title: "Role Updated Successfully",
+
+                showConfirmButton: false,
+
+                timer: 1600,
+
+            });
+
+        }
+
+        catch (err) {
+
+            Swal.fire({
+
+                icon: "error",
+
+                title: err.message,
+
+            });
+
+        }
+
+        finally {
+
+            setSaving(false);
+
+        }
+
+    };
+
     // Temporary Dummy Data
     const users = [
 
@@ -386,13 +564,13 @@ const Users = () => {
 
                                                 className={`px-5 py-2 rounded-full font-semibold border ${user.role === "Admin"
 
-                                                        ? "bg-red-500/10 text-red-400 border-red-500/20"
+                                                    ? "bg-red-500/10 text-red-400 border-red-500/20"
 
-                                                        : user.role === "Volunteer"
+                                                    : user.role === "Volunteer"
 
-                                                            ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                                                        ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
 
-                                                            : "bg-green-500/10 text-green-400 border-green-500/20"
+                                                        : "bg-green-500/10 text-green-400 border-green-500/20"
 
                                                     }`}
 
@@ -412,9 +590,9 @@ const Users = () => {
 
                                                 className={`px-4 py-1 rounded-full text-sm ${user.status
 
-                                                        ? "bg-green-500/20 text-green-400"
+                                                    ? "bg-green-500/20 text-green-400"
 
-                                                        : "bg-red-500/20 text-red-400"
+                                                    : "bg-red-500/20 text-red-400"
 
                                                     }`}
 
@@ -496,10 +674,11 @@ const Users = () => {
 
                                             </button>
 
-                                            <button className="rounded-xl py-3 bg-blue-600 text-white font-bold hover:scale-105 duration-300">
-
-                                                Edit
-
+                                            <button
+                                                onClick={() => handleOpenRoleModal(user)}
+                                                className="rounded-xl py-3 bg-blue-600 text-white font-bold hover:scale-105 duration-300"
+                                            >
+                                                Change Role
                                             </button>
 
                                             <button className="rounded-xl py-3 bg-green-600 text-white font-bold hover:scale-105 duration-300">
@@ -594,13 +773,13 @@ const Users = () => {
 
                                                     className={`px-4 py-2 rounded-full text-sm font-semibold ${user.role === "Admin"
 
-                                                            ? "bg-red-500/20 text-red-400"
+                                                        ? "bg-red-500/20 text-red-400"
 
-                                                            : user.role === "Volunteer"
+                                                        : user.role === "Volunteer"
 
-                                                                ? "bg-blue-500/20 text-blue-400"
+                                                            ? "bg-blue-500/20 text-blue-400"
 
-                                                                : "bg-green-500/20 text-green-400"
+                                                            : "bg-green-500/20 text-green-400"
 
                                                         }`}
 
@@ -618,9 +797,9 @@ const Users = () => {
 
                                                     className={`px-4 py-2 rounded-full text-sm ${user.status
 
-                                                            ? "bg-green-500/20 text-green-400"
+                                                        ? "bg-green-500/20 text-green-400"
 
-                                                            : "bg-red-500/20 text-red-400"
+                                                        : "bg-red-500/20 text-red-400"
 
                                                         }`}
 
@@ -731,6 +910,191 @@ const Users = () => {
                 </div>
 
             </div>
+
+
+            {/* ===========================
+        Change Role Modal
+=========================== */}
+            {
+                showModal && (
+
+                    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-5">
+
+                        <div className="w-full max-w-xl rounded-[35px] border border-amber-500/20 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-8 shadow-[0_30px_80px_rgba(0,0,0,.55)]">
+
+                            <div className="flex items-center justify-between mb-8">
+
+                                <div>
+
+                                    <h2 className="text-3xl font-black text-white">
+
+                                        Change User Role
+
+                                    </h2>
+
+                                    <p className="text-slate-400 mt-2">
+
+                                        Assign community role
+
+                                    </p>
+
+                                </div>
+
+                                <button
+
+                                    onClick={handleCloseRoleModal}
+
+                                    className="w-12 h-12 rounded-full bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white duration-300"
+
+                                >
+
+                                    ✕
+
+                                </button>
+
+                            </div>
+
+                            <div className="flex items-center gap-5 mb-8">
+
+                                <img
+
+                                    src={selectedUser?.image}
+
+                                    className="w-20 h-20 rounded-full border-4 border-amber-400 object-cover"
+
+                                />
+
+                                <div>
+
+                                    <h2 className="text-2xl font-bold text-white">
+
+                                        {selectedUser?.name}
+
+                                    </h2>
+
+                                    <p className="text-slate-400">
+
+                                        {selectedUser?.email}
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div className="space-y-6">
+
+                                <div>
+
+                                    <label className="block mb-3 text-amber-300 font-semibold">
+
+                                        Role
+
+                                    </label>
+
+                                    <select
+
+                                        value={role}
+
+                                        onChange={(e) => setRole(e.target.value)}
+
+                                        className={inputStyle}
+
+                                    >
+
+                                        <option value="Member">
+
+                                            Member
+
+                                        </option>
+
+                                        <option value="Volunteer">
+
+                                            Volunteer
+
+                                        </option>
+
+                                        <option value="Admin">
+
+                                            Admin
+
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div>
+
+                                    <label className="block mb-3 text-amber-300 font-semibold">
+
+                                        Description
+
+                                    </label>
+
+                                    <textarea
+
+                                        rows={6}
+
+                                        value={description}
+
+                                        onChange={(e) => setDescription(e.target.value)}
+
+                                        className={`${inputStyle} resize-none`}
+
+                                        placeholder="Write a short description..."
+
+                                    />
+
+                                </div>
+
+                            </div>
+
+                            <div className="flex justify-end gap-4 mt-10">
+
+                                <button
+
+                                    onClick={handleCloseRoleModal}
+
+                                    className="px-8 py-4 rounded-2xl border border-slate-600 text-slate-300 hover:bg-slate-700 duration-300"
+
+                                >
+
+                                    Cancel
+
+                                </button>
+
+                                <button
+
+                                    onClick={handleChangeRole}
+
+                                    disabled={saving}
+
+                                    className="px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-bold hover:scale-105 duration-300"
+
+                                >
+
+                                    {
+
+                                        saving
+
+                                            ? "Saving..."
+
+                                            : "Save Changes"
+
+                                    }
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                )
+
+            }
 
         </div>
 

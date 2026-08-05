@@ -15,9 +15,8 @@ const BookCard = ({ book }) => {
 		_id,
 		book_name,
 		cover_image,
-		author,
-		category,
-		quantity,
+		author_name,
+		genre,
 		rating,
 		available,
 		stock
@@ -93,7 +92,7 @@ const BookCard = ({ book }) => {
 
 				<div className="book-category">
 
-					{category || "BOOK"}
+					{genre?.split(' ')[0] || "BOOK"}
 
 				</div>
 
@@ -155,7 +154,7 @@ const BookCard = ({ book }) => {
 
 						<span>
 
-							{author || "Unknown Author"}
+							{author_name || "Unknown Author"}
 
 						</span>
 

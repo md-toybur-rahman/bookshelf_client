@@ -3,224 +3,92 @@ import Swal from "sweetalert2";
 import {
     FaUsers,
     FaSearch,
-    FaPlus,
-    FaUserTie,
-    FaEnvelope,
-    FaPhoneAlt,
-    FaMapMarkerAlt,
-    FaTimes,
+    FaFilter,
+    FaThLarge,
+    FaListUl,
+    FaUserShield,
+    FaHandsHelping,
+    FaUserFriends,
 } from "react-icons/fa";
 
 const Community = () => {
 
-    const [users, setUsers] = useState([]);
+    const [members, setMembers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const [search, setSearch] = useState("");
-
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-
-    const [role, setRole] = useState("");
-    const [description, setDescription] = useState("");
-
-    const [loading, setLoading] = useState(false);
-
-    const inputStyle =
-        "w-full rounded-2xl border border-amber-500/20 bg-[#1d140f] px-5 py-4 text-white outline-none transition-all duration-300 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 placeholder:text-slate-500";
-
-    const labelStyle =
-        "flex items-center gap-2 text-amber-300 font-semibold mb-3";
-
-    /* ---------------- Load Users ---------------- */
+    const [roleFilter, setRoleFilter] = useState("All");
+    const [gridView, setGridView] = useState(true);
 
     useEffect(() => {
 
-        fetch("http://localhost:2000/users")
+        fetch("http://localhost:2000/community_members")
 
             .then(res => res.json())
 
             .then(data => {
 
-                setUsers(data);
+                setMembers(data);
+
+                setLoading(false);
 
             });
 
     }, []);
 
-    /* ---------------- Search Users ---------------- */
+    const filteredMembers = useMemo(() => {
 
-    const filteredUsers = useMemo(() => {
+        return members.filter(member => {
 
-        const value = search.toLowerCase();
+            const matchSearch =
 
-        return users.filter(user => {
+                member.name.toLowerCase().includes(search.toLowerCase()) ||
 
-            const fullName =
-                `${user.first_name || ""} ${user.last_name || ""}`.toLowerCase();
+                member.role.toLowerCase().includes(search.toLowerCase());
 
-            return (
+            const matchRole =
 
-                fullName.includes(value) ||
+                roleFilter === "All"
 
-                user.email?.toLowerCase().includes(value) ||
+                    ? true
 
-                user.phone_number?.includes(value)
+                    : member.role === roleFilter;
 
-            );
+            return matchSearch && matchRole;
 
         });
 
-    }, [search, users]);
+    }, [members, search, roleFilter]);
 
-    /* ---------------- Open Modal ---------------- */
+    const totalMembers = members.length;
 
-    const handleOpenModal = (user) => {
+    const totalVolunteers = members.filter(
 
-        setSelectedUser(user);
+        member => member.role === "Volunteer"
 
-        setRole("");
+    ).length;
 
-        setDescription("");
+    const totalAdmins = members.filter(
 
-        setShowModal(true);
+        member => member.role === "Admin"
 
-    };
+    ).length;
 
-    /* ---------------- Close Modal ---------------- */
+    const totalOthers = members.filter(
 
-    const handleCloseModal = () => {
+        member =>
 
-        setSelectedUser(null);
+            member.role !== "Volunteer" &&
 
-        setRole("");
+            member.role !== "Admin"
 
-        setDescription("");
+    ).length;
 
-        setShowModal(false);
+    const cardStyle =
+        "rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_20px_60px_rgba(0,0,0,.45)]";
 
-    };
-
-    /* ---------------- Add Community Member ---------------- */
-
-    const handleSubmit = async () => {
-
-        if (!selectedUser) return;
-
-        if (!role.trim()) {
-
-            Swal.fire({
-
-                icon: "warning",
-
-                title: "Role is required",
-
-            });
-
-            return;
-
-        }
-
-        if (!description.trim()) {
-
-            Swal.fire({
-
-                icon: "warning",
-
-                title: "Description is required",
-
-            });
-
-            return;
-
-        }
-
-        try {
-
-            setLoading(true);
-
-            const memberData = {
-
-                name:
-                    `${selectedUser.first_name || ""} ${selectedUser.last_name || ""}`.trim(),
-
-                role,
-
-                description,
-
-                image_url: selectedUser.image,
-
-            };
-
-            const res = await fetch(
-
-                "http://localhost:2000/community_member",
-
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "content-type": "application/json",
-
-                    },
-
-                    body: JSON.stringify(memberData),
-
-                }
-
-            );
-
-            const data = await res.json();
-
-            if (data.success === false) {
-
-                Swal.fire({
-
-                    icon: "warning",
-
-                    title: data.message || "Already Exists",
-
-                });
-
-                return;
-
-            }
-
-            Swal.fire({
-
-                icon: "success",
-
-                title: "Community Member Added",
-
-                showConfirmButton: false,
-
-                timer: 1600,
-
-            });
-
-            handleCloseModal();
-
-        }
-        catch (err) {
-
-            Swal.fire({
-
-                icon: "error",
-
-                title: "Failed",
-
-                text: err.message,
-
-            });
-
-        }
-        finally {
-
-            setLoading(false);
-
-        }
-
-    };
+    const inputStyle =
+        "w-full rounded-2xl border border-amber-500/20 bg-[#1d140f] px-5 py-4 text-white outline-none focus:border-amber-400";
 
     return (
 
@@ -228,9 +96,9 @@ const Community = () => {
 
             {/* Header */}
 
-            <div className="relative overflow-hidden rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-10 mb-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
+            <div className={`${cardStyle} relative overflow-hidden p-10 mb-10`}>
 
-                <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-amber-500/10 blur-[120px]" />
+                <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-amber-500/10 blur-[120px]" />
 
                 <div className="flex items-center gap-6">
 
@@ -256,7 +124,7 @@ const Community = () => {
 
                         <p className="mt-2 text-slate-400">
 
-                            Convert registered users into community members.
+                            Manage all volunteers, admins and community leaders.
 
                         </p>
 
@@ -266,280 +134,486 @@ const Community = () => {
 
             </div>
 
-            {/* Search */}
+            {/* Statistics */}
 
-            <div className="relative mb-10">
+            <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 mb-10">
 
-                <FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <div className={`${cardStyle} p-6`}>
 
-                <input
+                    <div className="flex justify-between items-center">
 
-                    value={search}
+                        <div>
 
-                    onChange={(e) => setSearch(e.target.value)}
+                            <p className="text-slate-400">
 
-                    className={`${inputStyle} pl-14`}
+                                Community Members
 
-                    placeholder="Search user by name, email or phone..."
+                            </p>
 
-                />
+                            <h2 className="text-4xl font-black text-white mt-2">
+
+                                {totalMembers}
+
+                            </h2>
+
+                        </div>
+
+                        <FaUsers className="text-5xl text-amber-400" />
+
+                    </div>
+
+                </div>
+
+                <div className={`${cardStyle} p-6`}>
+
+                    <div className="flex justify-between items-center">
+
+                        <div>
+
+                            <p className="text-slate-400">
+
+                                Volunteers
+
+                            </p>
+
+                            <h2 className="text-4xl font-black text-white mt-2">
+
+                                {totalVolunteers}
+
+                            </h2>
+
+                        </div>
+
+                        <FaHandsHelping className="text-5xl text-blue-400" />
+
+                    </div>
+
+                </div>
+
+                <div className={`${cardStyle} p-6`}>
+
+                    <div className="flex justify-between items-center">
+
+                        <div>
+
+                            <p className="text-slate-400">
+
+                                Admins
+
+                            </p>
+
+                            <h2 className="text-4xl font-black text-white mt-2">
+
+                                {totalAdmins}
+
+                            </h2>
+
+                        </div>
+
+                        <FaUserShield className="text-5xl text-red-400" />
+
+                    </div>
+
+                </div>
+
+                <div className={`${cardStyle} p-6`}>
+
+                    <div className="flex justify-between items-center">
+
+                        <div>
+
+                            <p className="text-slate-400">
+
+                                Others
+
+                            </p>
+
+                            <h2 className="text-4xl font-black text-white mt-2">
+
+                                {totalOthers}
+
+                            </h2>
+
+                        </div>
+
+                        <FaUserFriends className="text-5xl text-green-400" />
+
+                    </div>
+
+                </div>
 
             </div>
-            {/* Users */}
 
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
+            {/* Search */}
 
-                {
+            <div className={`${cardStyle} p-6 mb-10 flex flex-wrap gap-5 items-center`}>
 
-                    filteredUsers.map(user => (
+                <div className="relative flex-1 min-w-[300px]">
 
-                        <div
-                            key={user._id}
-                            className="group rounded-[30px] overflow-hidden border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_20px_60px_rgba(0,0,0,.45)] hover:border-amber-400/40 hover:-translate-y-2 duration-300"
-                        >
+                    <FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
 
-                            <div className="relative">
+                    <input
 
-                                <img
-                                    src={user.image}
-                                    alt={user.first_name}
-                                    className="w-full h-64 object-cover group-hover:scale-105 duration-500"
-                                />
+                        type="text"
 
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#120b08] via-transparent to-transparent"></div>
+                        value={search}
 
-                            </div>
+                        onChange={(e) => setSearch(e.target.value)}
 
-                            <div className="p-7">
+                        placeholder="Search member..."
 
-                                <h2 className="text-2xl font-bold text-white">
+                        className={`${inputStyle} pl-14`}
 
-                                    {user.first_name} {user.last_name}
+                    />
 
-                                </h2>
+                </div>
 
-                                <div className="mt-6 space-y-4">
+                <div className="relative">
 
-                                    <div className="flex items-center gap-3 text-slate-400">
+                    <FaFilter className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
 
-                                        <FaEnvelope className="text-amber-400" />
+                    <select
 
-                                        <span className="break-all">
+                        value={roleFilter}
 
-                                            {user.email}
+                        onChange={(e) => setRoleFilter(e.target.value)}
 
-                                        </span>
+                        className={`${inputStyle} pl-12 pr-10`}
+
+                    >
+
+                        <option>All</option>
+                        <option>Volunteer</option>
+                        <option>Admin</option>
+
+                    </select>
+
+                </div>
+
+                <div className="flex rounded-2xl overflow-hidden border border-amber-500/20">
+
+                    <button
+
+                        onClick={() => setGridView(true)}
+
+                        className={`p-4 ${gridView ? "bg-amber-500 text-black" : "bg-[#1d140f] text-white"}`}
+
+                    >
+
+                        <FaThLarge />
+
+                    </button>
+
+                    <button
+
+                        onClick={() => setGridView(false)}
+
+                        className={`p-4 ${!gridView ? "bg-amber-500 text-black" : "bg-[#1d140f] text-white"}`}
+
+                    >
+
+                        <FaListUl />
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            {
+
+                gridView ? (
+
+                    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+                        {
+
+                            filteredMembers.map(member => (
+
+                                <div
+
+                                    key={member._id}
+
+                                    className={`${cardStyle} group overflow-hidden hover:-translate-y-2 duration-300`}
+
+                                >
+
+                                    <div className="relative p-8">
+
+                                        <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-amber-500/10 blur-[80px]" />
+
+                                        {/* Avatar */}
+
+                                        <div className="flex justify-center">
+
+                                            <div className="relative">
+
+                                                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 blur-xl opacity-30" />
+
+                                                <img
+
+                                                    src={member.image}
+
+                                                    alt={member.name}
+
+                                                    className="relative w-32 h-32 rounded-full border-4 border-amber-400 object-cover"
+
+                                                />
+
+                                            </div>
+
+                                        </div>
+
+                                        {/* Name */}
+
+                                        <div className="text-center mt-6">
+
+                                            <h2 className="text-2xl font-black text-white">
+
+                                                {member.name}
+
+                                            </h2>
+
+                                            <p className="mt-2 inline-flex px-4 py-2 rounded-full bg-amber-500/10 border border-amber-400/20 text-amber-300 text-sm font-semibold">
+
+                                                {member.role}
+
+                                            </p>
+
+                                        </div>
+
+                                        {/* Description */}
+
+                                        <p className="text-slate-400 leading-7 mt-6 text-center min-h-[90px]">
+
+                                            {member.description}
+
+                                        </p>
+
+                                        <div className="border-t border-amber-500/10 my-6" />
+
+                                        <div className="grid grid-cols-3 gap-3">
+
+                                            <button className="rounded-xl py-3 bg-amber-500 text-slate-900 font-bold hover:scale-105 duration-300">
+
+                                                View
+
+                                            </button>
+
+                                            <button className="rounded-xl py-3 bg-green-600 text-white font-bold hover:scale-105 duration-300">
+
+                                                Message
+
+                                            </button>
+
+                                            <button
+
+                                                className="rounded-xl py-3 bg-red-600 text-white font-bold hover:scale-105 duration-300"
+
+                                            >
+
+                                                Remove
+
+                                            </button>
+
+                                        </div>
 
                                     </div>
 
-                                    {
-
-                                        user.phone_number &&
-
-                                        <div className="flex items-center gap-3 text-slate-400">
-
-                                            <FaPhoneAlt className="text-amber-400" />
-
-                                            <span>
-
-                                                {user.phone_number}
-
-                                            </span>
-
-                                        </div>
-
-                                    }
-
-                                    {
-
-                                        user.address &&
-
-                                        <div className="flex items-start gap-3 text-slate-400">
-
-                                            <FaMapMarkerAlt className="text-amber-400 mt-1" />
-
-                                            <span>
-
-                                                {user.address}
-
-                                            </span>
-
-                                        </div>
-
-                                    }
-
                                 </div>
 
-                                <div className="mt-8 flex items-center justify-between">
+                            ))
 
-                                    <span className="px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm font-semibold">
+                        }
 
-                                        {user.type || "User"}
+                    </div>
 
-                                    </span>
+                ) : (
 
-                                    <button
+                    <div className="overflow-hidden rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c]">
 
-                                        onClick={() => handleOpenModal(user)}
+                        <table className="w-full">
 
-                                        className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-bold hover:scale-105 duration-300"
+                            <thead className="bg-amber-500/10">
 
-                                    >
+                                <tr className="text-left">
 
-                                        <FaPlus />
+                                    <th className="px-6 py-5">Member</th>
+                                    <th className="px-6 py-5">Role</th>
+                                    <th className="px-6 py-5">Description</th>
+                                    <th className="px-6 py-5">Actions</th>
 
-                                        Add
+                                </tr>
 
-                                    </button>
+                            </thead>
 
-                                </div>
+                            <tbody>
 
-                            </div>
+                                {
 
-                        </div>
+                                    filteredMembers.map(member => (
 
-                    ))
+                                        <tr
 
-                }
+                                            key={member._id}
 
-            </div>
-            {/* Modal */}
+                                            className="border-t border-amber-500/10 hover:bg-white/5 duration-300"
 
-            {
-                showModal && (
+                                        >
 
-                    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-5">
+                                            <td className="px-6 py-5">
 
-                        <div className="w-full max-w-2xl rounded-[35px] border border-amber-500/20 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-8 shadow-[0_30px_80px_rgba(0,0,0,.55)] animate-[fadeIn_.25s_ease]">
+                                                <div className="flex items-center gap-4">
 
-                            <div className="flex items-center justify-between mb-8">
+                                                    <img
 
-                                <div>
+                                                        src={member.image}
 
-                                    <h2 className="text-3xl font-black text-white">
+                                                        alt={member.name}
 
-                                        Add Community Member
+                                                        className="w-14 h-14 rounded-full border-2 border-amber-400 object-cover"
 
-                                    </h2>
+                                                    />
 
-                                    <p className="text-slate-400 mt-2">
+                                                    <div>
 
-                                        {selectedUser?.first_name} {selectedUser?.last_name}
+                                                        <h2 className="font-bold text-white">
 
-                                    </p>
+                                                            {member.name}
 
-                                </div>
+                                                        </h2>
 
-                                <button
+                                                    </div>
 
-                                    onClick={handleCloseModal}
+                                                </div>
 
-                                    className="w-12 h-12 rounded-full bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white flex items-center justify-center duration-300"
+                                            </td>
 
-                                >
+                                            <td className="px-6 py-5">
 
-                                    <FaTimes />
+                                                <span
 
-                                </button>
+                                                    className={`px-4 py-2 rounded-full text-sm font-semibold ${member.role === "Admin"
 
-                            </div>
+                                                            ? "bg-red-500/20 text-red-400"
 
-                            <div className="grid gap-7">
+                                                            : member.role === "Volunteer"
 
-                                <div>
+                                                                ? "bg-blue-500/20 text-blue-400"
 
-                                    <label className={labelStyle}>
+                                                                : "bg-green-500/20 text-green-400"
 
-                                        <FaUserTie />
+                                                        }`}
 
-                                        Role
+                                                >
 
-                                    </label>
+                                                    {member.role}
 
-                                    <input
+                                                </span>
 
-                                        value={role}
+                                            </td>
 
-                                        onChange={(e) => setRole(e.target.value)}
+                                            <td className="px-6 py-5">
 
-                                        className={inputStyle}
+                                                <p className="text-slate-300 max-w-md line-clamp-2">
 
-                                        placeholder="President / Librarian / Volunteer..."
+                                                    {member.description}
 
-                                    />
+                                                </p>
 
-                                </div>
+                                            </td>
 
-                                <div>
+                                            <td className="px-6 py-5">
 
-                                    <label className={labelStyle}>
+                                                <div className="flex gap-2">
 
-                                        <FaUsers />
+                                                    <button className="px-4 py-2 rounded-xl bg-amber-500 text-slate-900 font-semibold hover:scale-105 duration-300">
 
-                                        Description
+                                                        View
 
-                                    </label>
+                                                    </button>
 
-                                    <textarea
+                                                    <button className="px-4 py-2 rounded-xl bg-green-600 text-white font-semibold hover:scale-105 duration-300">
 
-                                        rows={7}
+                                                        Message
 
-                                        value={description}
+                                                    </button>
 
-                                        onChange={(e) => setDescription(e.target.value)}
+                                                    <button
 
-                                        className={`${inputStyle} resize-none`}
+                                                        className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:scale-105 duration-300"
 
-                                        placeholder="Write a short description..."
+                                                    >
 
-                                    />
+                                                        Remove
 
-                                </div>
+                                                    </button>
 
-                            </div>
+                                                </div>
 
-                            <div className="flex justify-end gap-4 mt-10">
+                                            </td>
 
-                                <button
+                                        </tr>
 
-                                    onClick={handleCloseModal}
+                                    ))
 
-                                    className="px-8 py-4 rounded-2xl border border-slate-600 text-slate-300 hover:bg-slate-700 duration-300"
+                                }
 
-                                >
+                            </tbody>
 
-                                    Cancel
-
-                                </button>
-
-                                <button
-
-                                    onClick={handleSubmit}
-
-                                    disabled={loading}
-
-                                    className="px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-bold hover:scale-105 duration-300"
-
-                                >
-
-                                    {
-
-                                        loading
-                                            ? "Adding..."
-                                            : "Add Member"
-
-                                    }
-
-                                </button>
-
-                            </div>
-
-                        </div>
+                        </table>
 
                     </div>
 
                 )
+
             }
+
+            {/* Pagination */}
+
+            <div className="mt-10 flex items-center justify-between">
+
+                <p className="text-slate-400">
+
+                    Showing {filteredMembers.length} of {members.length} community members
+
+                </p>
+
+                <div className="flex gap-3">
+
+                    <button className="px-5 py-3 rounded-xl border border-amber-500/20 bg-[#1d140f] text-white hover:bg-amber-500 hover:text-slate-900 duration-300">
+
+                        Previous
+
+                    </button>
+
+                    <button className="w-12 h-12 rounded-xl bg-amber-500 text-slate-900 font-bold">
+
+                        1
+
+                    </button>
+
+                    <button className="w-12 h-12 rounded-xl border border-amber-500/20 bg-[#1d140f] text-white hover:bg-amber-500 hover:text-slate-900 duration-300">
+
+                        2
+
+                    </button>
+
+                    <button className="w-12 h-12 rounded-xl border border-amber-500/20 bg-[#1d140f] text-white hover:bg-amber-500 hover:text-slate-900 duration-300">
+
+                        3
+
+                    </button>
+
+                    <button className="px-5 py-3 rounded-xl border border-amber-500/20 bg-[#1d140f] text-white hover:bg-amber-500 hover:text-slate-900 duration-300">
+
+                        Next
+
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
 

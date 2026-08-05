@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
 	FaBook,
 	FaUsers,
@@ -8,40 +9,86 @@ import {
 	FaPlus,
 	FaChartLine,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Welcome = () => {
+
+	const [books, setBooks] = useState([]);
+	const [users, setUsers] = useState([]);
+	const [events, setEvents] = useState([]);
+	const [news, setNews] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+
+		const getData = async () => {
+
+			try {
+
+				const [
+					booksRes,
+					usersRes,
+					eventsRes,
+					newsRes
+				] = await Promise.all([
+					axios.get("http://localhost:2000/books"),
+					axios.get("http://localhost:2000/users"),
+					axios.get("http://localhost:2000/events"),
+					axios.get("http://localhost:2000/news"),
+				]);
+				setBooks(booksRes.data);
+				setUsers(usersRes.data);
+				setEvents(eventsRes.data);
+				setNews(newsRes.data);
+			}catch (error) {
+				console.error(error);
+			}finally {
+				setLoading(false);
+			}
+
+		};
+
+		getData();
+
+	}, []);
 
 	const stats = [
 
 		{
 			title: "Total Books",
-			value: "1,248",
+			value: books?.length,
 			icon: <FaBook />,
 			color: "from-amber-300 to-yellow-600",
 		},
 
 		{
 			title: "Members",
-			value: "352",
+			value: users?.length,
 			icon: <FaUsers />,
 			color: "from-orange-300 to-amber-600",
 		},
 
 		{
 			title: "Events",
-			value: "24",
+			value: events?.length,
 			icon: <FaCalendarAlt />,
 			color: "from-yellow-300 to-orange-500",
 		},
 
 		{
 			title: "News",
-			value: "18",
+			value: news?.length,
 			icon: <FaNewspaper />,
 			color: "from-amber-400 to-yellow-500",
 		},
 
 	];
+
+	if (loading) {
+
+		return <h2>Loading...</h2>;
+
+	}
 
 	return (
 
@@ -172,101 +219,109 @@ const Welcome = () => {
 
 					<div className="grid sm:grid-cols-2 gap-6 mt-10">
 
-						<button className="group rounded-2xl border border-amber-500/20 p-6 hover:border-amber-400 duration-300 hover:bg-[#2a1b12]">
+						<Link to="/admin/add_book">
+							<button className="group rounded-2xl border border-amber-500/20 p-6 hover:border-amber-400 duration-300 hover:bg-[#2a1b12]">
 
-							<h3 className="text-xl font-bold">
+								<h3 className="text-xl font-bold">
 
-								Add New Book
+									Add New Book
 
-							</h3>
+								</h3>
 
-							<p className="mt-3 text-[#a88d70]">
+								<p className="mt-3 text-[#a88d70]">
 
-								Upload a new book to the library.
+									Upload a new book to the library.
 
-							</p>
+								</p>
 
-							<div className="flex items-center gap-2 mt-6 text-amber-400">
+								<div className="flex items-center gap-2 mt-6 text-amber-400">
 
-								Continue
+									Continue
 
-								<FaArrowRight className="group-hover:translate-x-2 duration-300" />
+									<FaArrowRight className="group-hover:translate-x-2 duration-300" />
 
-							</div>
+								</div>
 
-						</button>
+							</button>
+						</Link>
 
-						<button className="group rounded-2xl border border-amber-500/20 p-6 hover:border-amber-400 duration-300 hover:bg-[#2a1b12]">
+						<Link to="/admin/add_event">
+							<button className="group rounded-2xl border border-amber-500/20 p-6 hover:border-amber-400 duration-300 hover:bg-[#2a1b12]">
 
-							<h3 className="text-xl font-bold">
+								<h3 className="text-xl font-bold">
 
-								Create Event
+									Create Event
 
-							</h3>
+								</h3>
 
-							<p className="mt-3 text-[#a88d70]">
+								<p className="mt-3 text-[#a88d70]">
 
-								Publish upcoming library events.
+									Publish upcoming library events.
 
-							</p>
+								</p>
 
-							<div className="flex items-center gap-2 mt-6 text-amber-400">
+								<div className="flex items-center gap-2 mt-6 text-amber-400">
 
-								Continue
+									Continue
 
-								<FaArrowRight className="group-hover:translate-x-2 duration-300" />
+									<FaArrowRight className="group-hover:translate-x-2 duration-300" />
 
-							</div>
+								</div>
 
-						</button>
+							</button>
+						</Link>
 
-						<button className="group rounded-2xl border border-amber-500/20 p-6 hover:border-amber-400 duration-300 hover:bg-[#2a1b12]">
+						<Link to="/admin/add_news">
+							<button className="group rounded-2xl border border-amber-500/20 p-6 hover:border-amber-400 duration-300 hover:bg-[#2a1b12]">
 
-							<h3 className="text-xl font-bold">
+								<h3 className="text-xl font-bold">
 
-								Publish News
+									Publish News
 
-							</h3>
+								</h3>
 
-							<p className="mt-3 text-[#a88d70]">
+								<p className="mt-3 text-[#a88d70]">
 
-								Share announcements with members.
+									Share announcements with members.
 
-							</p>
+								</p>
 
-							<div className="flex items-center gap-2 mt-6 text-amber-400">
+								<div className="flex items-center gap-2 mt-6 text-amber-400">
 
-								Continue
+									Continue
 
-								<FaArrowRight className="group-hover:translate-x-2 duration-300" />
+									<FaArrowRight className="group-hover:translate-x-2 duration-300" />
 
-							</div>
+								</div>
 
-						</button>
+							</button>
+						</Link>
 
-						<button className="group rounded-2xl border border-amber-500/20 p-6 hover:border-amber-400 duration-300 hover:bg-[#2a1b12]">
+						<Link to="/admin/community">
+							<button className="group rounded-2xl border border-amber-500/20 p-6 hover:border-amber-400 duration-300 hover:bg-[#2a1b12]">
 
-							<h3 className="text-xl font-bold">
+								<h3 className="text-xl font-bold">
 
-								Manage Members
+									Manage Members
 
-							</h3>
+								</h3>
 
-							<p className="mt-3 text-[#a88d70]">
+								<p className="mt-3 text-[#a88d70]">
 
-								Update community members.
+									Update community members.
 
-							</p>
+								</p>
 
-							<div className="flex items-center gap-2 mt-6 text-amber-400">
+								<div className="flex items-center gap-2 mt-6 text-amber-400">
 
-								Continue
+									Continue
 
-								<FaArrowRight className="group-hover:translate-x-2 duration-300" />
+									<FaArrowRight className="group-hover:translate-x-2 duration-300" />
 
-							</div>
+								</div>
 
-						</button>
+							</button>
+						</Link>
 
 					</div>
 

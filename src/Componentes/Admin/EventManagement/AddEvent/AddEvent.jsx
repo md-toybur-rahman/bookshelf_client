@@ -248,7 +248,7 @@ const AddEvent = () => {
 							<input
 								type="date"
 								{...register("date", { required: true })}
-								className={inputStyle}
+								className={`${inputStyle} relative cursor-pointer`}
 							/>
 
 						</div>
@@ -290,7 +290,7 @@ const AddEvent = () => {
 							<input
 								type="time"
 								{...register("start_time", { required: true })}
-								className={inputStyle}
+								className={`${inputStyle} relative cursor-pointer`}
 							/>
 
 						</div>
@@ -310,7 +310,7 @@ const AddEvent = () => {
 							<input
 								type="time"
 								{...register("end_time", { required: true })}
-								className={inputStyle}
+								className={`${inputStyle} relative cursor-pointer`}
 							/>
 
 						</div>

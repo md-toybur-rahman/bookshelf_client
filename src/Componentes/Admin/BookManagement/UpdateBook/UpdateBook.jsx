@@ -4,28 +4,27 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-import {
-	FaBook,
-	FaUserEdit,
-	FaBuilding,
-	FaCalendarAlt,
-	FaLanguage,
-	FaTags,
-	FaDollarSign,
-	FaFileAlt,
-	FaBoxes,
-	FaRulerVertical,
-	FaRulerHorizontal,
-	FaExpandArrowsAlt,
-	FaAlignLeft,
-	FaImage,
-	FaSearch,
-	FaPen,
-} from "react-icons/fa";
+import { FaBook, FaUserEdit, FaBuilding, FaCalendarAlt, FaLanguage, FaTags, FaDollarSign, FaFileAlt, FaBoxes, FaRulerVertical, FaRulerHorizontal, FaExpandArrowsAlt, FaAlignLeft, FaImage, FaSearch, FaPen } from "react-icons/fa";
 
 const UpdateBook = () => {
 
 	const navigate = useNavigate();
+	const [books, setBooks] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const getData = async () => {
+			try {
+				const [booksRes] = await Promise.all([axios.get("http://localhost:2000/books")]);
+				setBooks(booksRes.data)
+			} catch (error) {
+				console.error(error);
+			} finally {
+				setLoading(false);
+			}
+		};
+		getData();
+	}, []);
 
 	const {
 		register,
@@ -35,11 +34,6 @@ const UpdateBook = () => {
 		formState: { errors },
 	} = useForm();
 
-	const [loading, setLoading] = useState(false);
-	const [searchLoading, setSearchLoading] = useState(false);
-	const [book, setBook] = useState(null);
-	const [previewImage, setPreviewImage] = useState("");
-	const [searchId, setSearchId] = useState("");
 
 	const inputStyle =
 		"w-full rounded-2xl border border-amber-500/20 bg-white/5 px-5 py-4 text-white placeholder:text-gray-500 outline-none focus:border-amber-400 duration-300";
@@ -47,80 +41,75 @@ const UpdateBook = () => {
 	const labelStyle =
 		"flex items-center gap-2 text-sm font-semibold text-slate-300 mb-2";
 
-	const loadBook = async () => {
+	const [searchLoading, setSearchLoading] = useState(false);
+	const [book, setBook] = useState(null);
+	const [previewImage, setPreviewImage] = useState("");
+	const [searchText, setSearchText] = useState("");
+	const [filteredBooks, setFilteredBooks] = useState([]);
 
-		if (!searchId) {
+	const loadBook = (value) => {
 
-			Swal.fire({
-				icon: "warning",
-				title: "Enter Book ID",
-			});
+		setSearchText(value);
+
+		if (!value.trim()) {
+
+			setFilteredBooks([]);
 
 			return;
-		}
-
-		try {
-
-			setSearchLoading(true);
-
-			const res = await fetch(`http://localhost:2000/book/${searchId}`);
-
-			const data = await res.json();
-
-			if (!data.length) {
-
-				Swal.fire({
-					icon: "error",
-					title: "Book Not Found",
-				});
-
-				return;
-			}
-
-			const item = data[0];
-
-			setBook(item);
-
-			setPreviewImage(item.cover_image);
-
-			setValue("book_name", item.book_name);
-			setValue("author_name", item.author_name);
-			setValue("publisher_name", item.publisher_name);
-			setValue("publication_date", item.publication_date);
-			setValue("language", item.language);
-			setValue("genre", item.genre);
-			setValue("number_of_pages", item.number_of_pages);
-			setValue("stock", item.stock);
-			setValue("price", item.price);
-			setValue("height", item.dimensions?.height);
-			setValue("width", item.dimensions?.width);
-			setValue("depth", item.dimensions?.depth);
-			setValue("description", item.description);
-			setValue("keywords", item.keywords?.join(", "));
-
-			Swal.fire({
-				icon: "success",
-				title: "Book Loaded",
-				timer: 1200,
-				showConfirmButton: false,
-			});
 
 		}
 
-		catch (err) {
+		setSearchLoading(true);
 
-			Swal.fire({
-				icon: "error",
-				title: err.message,
-			});
+		const result = books.filter(item =>
+			item.book_name.toLowerCase().includes(value.toLowerCase())
+		);
 
-		}
+		setFilteredBooks(result);
 
-		finally {
+		setSearchLoading(false);
 
-			setSearchLoading(false);
+	};
 
-		}
+	const handleSelectBook = (item) => {
+
+		setBook(item);
+
+		setPreviewImage(item.cover_image);
+
+		setSearchText(item.book_name);
+
+		setFilteredBooks([]);
+
+		setValue("book_name", item.book_name);
+		setValue("author_name", item.author_name);
+		setValue("publisher_name", item.publisher_name);
+		setValue("publication_date", item.publication_date);
+		setValue("language", item.language);
+		setValue("genre", item.genre);
+		setValue("number_of_pages", item.number_of_pages);
+		setValue("stock", item.stock);
+		setValue("price", item.price);
+
+		setValue("height", item.dimensions?.height || "");
+		setValue("width", item.dimensions?.width || "");
+		setValue("depth", item.dimensions?.depth || "");
+
+		setValue("description", item.description);
+
+		setValue("keywords", item.keywords?.join(", "));
+
+		Swal.fire({
+
+			icon: "success",
+
+			title: "Book Selected",
+
+			timer: 1200,
+
+			showConfirmButton: false,
+
+		});
 
 	};
 
@@ -135,31 +124,22 @@ const UpdateBook = () => {
 	};
 
 	const onSubmit = async (data) => {
-
 		if (!book) {
-
 			Swal.fire({
 				icon: "warning",
 				title: "Search a book first",
 			});
-
 			return;
-
 		}
 
 		try {
-
 			setLoading(true);
-
 			let image = book.cover_image;
 			let public_id = book.public_id;
 
 			if (data.cover_image?.length > 0) {
-
 				const formData = new FormData();
-
 				formData.append("file", data.cover_image[0]);
-
 				formData.append(
 					"upload_preset",
 					import.meta.env.VITE_preset
@@ -169,10 +149,8 @@ const UpdateBook = () => {
 					`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_cloudinary_name}/image/upload`,
 					formData
 				);
-
 				image = uploadRes.data.secure_url;
 				public_id = uploadRes.data.public_id;
-
 			}
 
 			const keywordsArray = data.keywords
@@ -181,7 +159,6 @@ const UpdateBook = () => {
 				.filter((item) => item !== "");
 
 			const updateBook = {
-
 				book_name: data.book_name,
 				author_name: data.author_name,
 				publisher_name: data.publisher_name,
@@ -189,82 +166,48 @@ const UpdateBook = () => {
 				language: data.language,
 				genre: data.genre,
 				number_of_pages: Number(data.number_of_pages),
-
 				dimensions: {
 					height: data.height,
 					width: data.width,
 					depth: data.depth,
 				},
-
 				price: Number(data.price),
 				stock: Number(data.stock),
 				available: Number(data.stock),
-
 				description: data.description,
-
 				keywords: keywordsArray,
-
 				cover_image: image,
-
 				public_id,
-
 			};
 
-			const res = await fetch(
-
-				`http://localhost:2000/books/${book._id}`,
-
+			const res = await fetch(`http://localhost:2000/books/${book._id}`,
 				{
 					method: "PUT",
-
 					headers: {
 						"content-type": "application/json",
 					},
-
 					body: JSON.stringify(updateBook),
-
 				}
-
 			);
 
 			const result = await res.json();
 
 			if (result.modifiedCount > 0 || result.matchedCount > 0) {
-
 				Swal.fire({
-
 					icon: "success",
-
 					title: "Book Updated Successfully",
-
 					timer: 1500,
-
 					showConfirmButton: false,
-
 				});
-
 			}
-
-		}
-
-		catch (err) {
-
+		}catch (err) {
 			Swal.fire({
-
 				icon: "error",
-
 				title: err.message,
-
 			});
-
-		}
-
-		finally {
-
+		}finally {
 			setLoading(false);
-
 		}
-
 	};
 
 	return (
@@ -315,36 +258,80 @@ const UpdateBook = () => {
 
 			{/* Search */}
 
-			<div className="mb-8 rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-8">
+			<div className="relative mb-8 rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-8">
 
-				<div className="flex gap-4">
+				<input
+					value={searchText}
+					onChange={(e) => loadBook(e.target.value)}
+					className={inputStyle}
+					placeholder="Search book by name..."
+				/>
 
-					<input
-						value={searchId}
-						onChange={(e) => setSearchId(e.target.value)}
-						className={`${inputStyle} flex-1`}
-						placeholder="Enter Book MongoDB ID"
-					/>
+				{
+					searchLoading && (
+						<div className="mt-3 text-sm text-amber-400">
+							Searching...
+						</div>
+					)
+				}
 
-					<button
-						type="button"
-						onClick={loadBook}
-						className="px-8 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 font-bold flex items-center gap-3"
-					>
+				{
+					filteredBooks.length > 0 && (
 
-						<FaSearch />
+						<div className="absolute left-8 right-8 top-full mt-3 rounded-2xl border border-amber-500/20 bg-[#1d140f] shadow-2xl max-h-80 overflow-y-auto z-50">
 
-						{
+							{
+								filteredBooks.map(item => (
 
-							searchLoading
-								? "Searching..."
-								: "Search"
+									<div
+										key={item._id}
+										className="flex items-center justify-between gap-5 p-4 border-b border-amber-500/10 hover:bg-white/5 duration-300"
+									>
 
-						}
+										<div className="flex items-center gap-4">
 
-					</button>
+											<img
+												src={item.cover_image}
+												className="w-14 h-20 rounded-lg object-cover"
+											/>
 
-				</div>
+											<div>
+
+												<h2 className="text-white font-bold">
+
+													{item.book_name}
+
+												</h2>
+
+												<p className="text-sm text-slate-400">
+
+													{item.author_name}
+
+												</p>
+
+											</div>
+
+										</div>
+
+										<button
+											type="button"
+											onClick={() => handleSelectBook(item)}
+											className="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 font-bold hover:scale-105 duration-300"
+										>
+
+											Select
+
+										</button>
+
+									</div>
+
+								))
+							}
+
+						</div>
+
+					)
+				}
 
 			</div>
 
@@ -358,7 +345,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaBook />
+								<FaBook className="text-amber-400" />
 								Book Name
 							</label>
 
@@ -374,7 +361,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaUserEdit />
+								<FaUserEdit className="text-amber-400" />
 								Author
 							</label>
 
@@ -390,7 +377,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaBuilding />
+								<FaBuilding className="text-amber-400" />
 								Publisher
 							</label>
 
@@ -406,14 +393,14 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaCalendarAlt />
+								<FaCalendarAlt className="text-amber-400" />
 								Publication Date
 							</label>
 
 							<input
 								type="date"
 								{...register("publication_date")}
-								className={inputStyle}
+								className={`${inputStyle} relative cursor-pointer`}
 							/>
 
 						</div>
@@ -423,7 +410,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaLanguage />
+								<FaLanguage className="text-amber-400" />
 								Language
 							</label>
 
@@ -439,7 +426,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaTags />
+								<FaTags className="text-amber-400" />
 								Genre
 							</label>
 
@@ -455,7 +442,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaFileAlt />
+								<FaFileAlt className="text-amber-400" />
 								Pages
 							</label>
 
@@ -472,7 +459,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaBoxes />
+								<FaBoxes className="text-amber-400" />
 								Stock
 							</label>
 
@@ -489,7 +476,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaDollarSign />
+								<FaDollarSign className="text-amber-400" />
 								Price
 							</label>
 
@@ -507,7 +494,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaRulerVertical />
+								<FaRulerVertical className="text-amber-400" />
 								Height
 							</label>
 
@@ -523,7 +510,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaRulerHorizontal />
+								<FaRulerHorizontal className="text-amber-400" />
 								Width
 							</label>
 
@@ -539,7 +526,7 @@ const UpdateBook = () => {
 						<div>
 
 							<label className={labelStyle}>
-								<FaExpandArrowsAlt />
+								<FaExpandArrowsAlt className="text-amber-400" />
 								Depth
 							</label>
 
@@ -555,7 +542,7 @@ const UpdateBook = () => {
 						<div className="md:col-span-2">
 
 							<label className={labelStyle}>
-								<FaTags />
+								<FaTags className="text-amber-400" />
 								Keywords
 							</label>
 
@@ -571,7 +558,7 @@ const UpdateBook = () => {
 						<div className="md:col-span-2">
 
 							<label className={labelStyle}>
-								<FaAlignLeft />
+								<FaAlignLeft className="text-amber-400" />
 								Description
 							</label>
 
@@ -588,7 +575,7 @@ const UpdateBook = () => {
 						<div className="md:col-span-2">
 
 							<label className={labelStyle}>
-								<FaImage />
+								<FaImage className="text-amber-400" />
 								New Cover Image (Optional)
 							</label>
 

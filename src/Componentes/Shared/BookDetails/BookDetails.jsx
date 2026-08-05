@@ -3,9 +3,11 @@ import { useLoaderData } from "react-router-dom";
 import {
 	FaBook,
 	FaBookOpen,
+	FaBoxes,
 	FaCartPlus,
 	FaGlobe,
 	FaLayerGroup,
+	FaRulerCombined,
 	FaStar,
 	FaUserEdit,
 } from "react-icons/fa";
@@ -16,10 +18,14 @@ import Swal from "sweetalert2";
 const BookDetails = () => {
 
 	const { user } = useContext(AuthContext);
-
 	const book = useLoaderData();
+	const { _id, book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, cover_image, stock, available, description, dimensions, price, keywords, user_reviews } = book[0];
+	const [showReviewModal, setShowReviewModal] = useState(false);
+	const [reviewRating, setReviewRating] = useState(5);
+	const [reviewComment, setReviewComment] = useState("");
+	const [reviewLoading, setReviewLoading] = useState(false);
 
-	const { _id, book_name, author_name, publisher_name, publication_date, language, genre, number_of_pages, cover_image, price, user_reviews } = book[0];
+
 
 	const cardRef = useRef(null);
 
@@ -59,6 +65,59 @@ const BookDetails = () => {
 
 		});
 
+	};
+
+	const handleReviewSubmit = async () => {
+		if (!reviewComment.trim()) {
+			Swal.fire({
+				icon: "warning",
+				title: "Please write a review",
+			});
+			return;
+		}
+
+		try {
+			setReviewLoading(true);
+
+			const reviewData = {
+				user: user?.displayName || "Anonymous",
+				rating: Number(reviewRating),
+				comment: reviewComment,
+			};
+
+			const res = await fetch(`http://localhost:2000/books/review/${_id}`, {
+				method: "PATCH",
+				headers: {
+					"content-type": "application/json",
+				},
+				body: JSON.stringify(reviewData),
+			});
+
+			const result = await res.json();
+
+			if (result.modifiedCount > 0) {
+				Swal.fire({
+					icon: "success",
+					title: "Review Added",
+					timer: 1500,
+					showConfirmButton: false,
+				}).then(() => {
+					setShowReviewModal(false);
+					setReviewRating(5);
+					setReviewComment("");
+				}).then(() => {
+					window.location.reload();
+				})
+
+			}
+		} catch (err) {
+			Swal.fire({
+				icon: "error",
+				title: err.message,
+			});
+		} finally {
+			setReviewLoading(false);
+		}
 	};
 
 	const handleCart = async () => {
@@ -310,6 +369,35 @@ const BookDetails = () => {
 							</div>
 
 						</div>
+						<div className="info-card">
+
+							<FaRulerCombined />
+
+							<div>
+
+								<small>Dimensions</small>
+
+								<h4>
+									{dimensions?.height} × {dimensions?.width} × {dimensions?.depth}
+								</h4>
+
+							</div>
+
+						</div>
+
+						<div className="info-card">
+
+							<FaBoxes />
+
+							<div>
+
+								<small>Available Copies</small>
+
+								<h4>{available}</h4>
+
+							</div>
+
+						</div>
 
 					</div>
 
@@ -344,11 +432,170 @@ const BookDetails = () => {
 
 						</button>
 
+						<button
+							onClick={() => setShowReviewModal(true)}
+							className="review-btn"
+						>
+							<FaStar />
+							<span>Review</span>
+						</button>
+
 					</div>
 
 				</div>
 
 			</div>
+
+			<section className="book-description">
+
+				<h2>
+
+					<FaBookOpen />
+
+					About this Book
+
+				</h2>
+
+				<p>
+
+					{description}
+
+				</p>
+
+				<div className="keyword-wrapper">
+
+					{
+
+						keywords?.map((item, index) => (
+
+							<span key={index}>
+
+								#{item}
+
+							</span>
+
+						))
+
+					}
+
+				</div>
+
+			</section>
+
+			<section className="review-section">
+
+				<h2>
+
+					User Reviews
+
+				</h2>
+
+				{
+
+					user_reviews?.length > 0 ?
+
+						user_reviews.map((review, index) => (
+
+							<div
+								key={index}
+								className="review-card"
+							>
+
+								<div className="review-top">
+
+									<h3>
+
+										{review.user}
+
+									</h3>
+
+									<span>
+
+										⭐ {review.rating}/5
+
+									</span>
+
+								</div>
+
+								<p>
+
+									{review.comment}
+
+								</p>
+
+							</div>
+
+						))
+
+						:
+
+						<div className="no-review">
+
+							No Reviews Yet
+
+						</div>
+
+				}
+
+			</section>
+
+			{showReviewModal && (
+				<div className="review-modal-overlay">
+					<div className="review-modal">
+						<div className="review-modal-header">
+							<h2>Write a Review</h2>
+							<button
+								onClick={() => setShowReviewModal(false)}
+								className="close-btn"
+							>
+								✕
+							</button>
+						</div>
+
+						<div className="rating-wrapper">
+							<label>Rating</label>
+							<div className="rating-stars">
+								{[1, 2, 3, 4, 5].map((star) => (
+									<button
+										key={star}
+										type="button"
+										onClick={() => setReviewRating(star)}
+										className={star <= reviewRating ? "active-star" : ""}
+									>
+										★
+									</button>
+								))}
+							</div>
+						</div>
+
+						<div className="comment-wrapper">
+							<label>Comment</label>
+							<textarea
+								rows={6}
+								value={reviewComment}
+								onChange={(e) => setReviewComment(e.target.value)}
+								placeholder="Share your reading experience..."
+							/>
+						</div>
+
+						<div className="review-modal-actions">
+							<button
+								onClick={() => setShowReviewModal(false)}
+								className="cancel-review-btn"
+							>
+								Cancel
+							</button>
+
+							<button
+								onClick={handleReviewSubmit}
+								className="submit-review-btn"
+							>
+								{reviewLoading ? "Submitting..." : "Submit Review"}
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 
 		</section>
 

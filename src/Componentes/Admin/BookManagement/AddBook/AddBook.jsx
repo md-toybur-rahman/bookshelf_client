@@ -261,7 +261,7 @@ const AddBook = () => {
 									{...register("publication_date", {
 										required: true,
 									})}
-									className={inputStyle}
+									className={`${inputStyle} relative cursor-pointer`}
 								/>
 							</div>
 
