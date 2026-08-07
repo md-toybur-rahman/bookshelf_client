@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AuthContext } from "../Providers/AuthProvider";
 
@@ -6,32 +7,30 @@ const useUserRole = () => {
 
     const { user } = useContext(AuthContext);
 
-    const [role, setRole] = useState("");
+    const {
+        data,
+        isLoading: roleLoading,
+    } = useQuery({
+        queryKey: ["userRole", user?.email],
+        enabled: !!user?.email,
+        staleTime: 1000 * 60 * 10,
+        gcTime: 1000 * 60 * 20,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        retry: 1,
+        queryFn: async () => {
+            const res = await axios.get(
+                `http://localhost:2000/users/${user?.email}`
+            );
 
-    const [roleLoading, setRoleLoading] = useState(true);
+            return res.data?.[0]?.type || "";
+        },
+    });
 
-    useEffect(() => {
-        if (!user?.email) {
-            setRoleLoading(false);
-            return;
-        }
-        axios
-            .get(`http://localhost:2000/users/${user?.email}`)
-            .then(res => {
-                setRole(res.data[0]?.type);
-
-                setRoleLoading(false);
-
-            })
-            .catch(() => {
-
-                setRoleLoading(false);
-
-            });
-
-    }, [user]);
-
-    return { role, roleLoading };
+    return {
+        role: data || "",
+        roleLoading,
+    };
 
 };
 

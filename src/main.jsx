@@ -8,18 +8,15 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import AuthProvider from './Providers/AuthProvider.jsx'
-import GetBookProvider from './Providers/GetBookProvider.jsx'
 
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <GetBookProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </GetBookProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </AuthProvider>
   </React.StrictMode>,
 )

@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa";
 
 const Users = () => {
-
     const [search, setSearch] = useState("");
     const [roleFilter, setRoleFilter] = useState("All");
     const [gridView, setGridView] = useState(true);
@@ -619,15 +618,35 @@ const Users = () => {
                                             <div className="flex justify-between">
 
                                                 <span className="text-slate-500">
+                                                    First Name
+                                                </span>
 
+                                                <span className="text-white">
+                                                    {user.first_name}
+                                                </span>
+
+                                            </div>
+
+                                            <div className="flex justify-between">
+
+                                                <span className="text-slate-500">
+                                                    Last Name
+                                                </span>
+
+                                                <span className="text-white">
+                                                    {user.last_name}
+                                                </span>
+
+                                            </div>
+
+                                            <div className="flex justify-between">
+
+                                                <span className="text-slate-500">
                                                     Phone
-
                                                 </span>
 
                                                 <span className="text-white">
-
-                                                    {user.phone}
-
+                                                    {user.phone_number}
                                                 </span>
 
                                             </div>
@@ -635,15 +654,11 @@ const Users = () => {
                                             <div className="flex justify-between">
 
                                                 <span className="text-slate-500">
-
-                                                    Joined
-
+                                                    Gender
                                                 </span>
 
                                                 <span className="text-white">
-
-                                                    {user.joined}
-
+                                                    {user.gender}
                                                 </span>
 
                                             </div>
@@ -651,28 +666,43 @@ const Users = () => {
                                             <div className="flex justify-between">
 
                                                 <span className="text-slate-500">
-
-                                                    Last Login
-
+                                                    Address
                                                 </span>
 
-                                                <span className="text-amber-300">
+                                                <span className="text-white">
+                                                    {user.address}
+                                                </span>
 
-                                                    {user.last_login}
+                                            </div>
 
+                                            <div className="flex justify-between">
+
+                                                <span className="text-slate-500">
+                                                    Role
+                                                </span>
+
+                                                <span
+                                                    className={`font-semibold ${user.type === "admin"
+                                                            ? "text-red-400"
+                                                            : user.type === "librarian"
+                                                                ? "text-amber-400"
+                                                                : "text-green-400"
+                                                        }`}
+                                                >
+                                                    {user.type}
                                                 </span>
 
                                             </div>
 
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-3 mt-8">
+                                        <button className="rounded-xl py-3 bg-amber-500 text-slate-900 font-bold hover:scale-105 duration-300 w-full mt-8">
 
-                                            <button className="rounded-xl py-3 bg-amber-500 text-slate-900 font-bold hover:scale-105 duration-300">
+                                            View
 
-                                                View
+                                        </button>
+                                        <div className="grid grid-cols-2 gap-3 mt-4">
 
-                                            </button>
 
                                             <button
                                                 onClick={() => handleOpenRoleModal(user)}

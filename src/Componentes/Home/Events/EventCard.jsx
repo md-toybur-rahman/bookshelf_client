@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
 	FaArrowRight,
 	FaCalendarAlt,
@@ -8,19 +8,24 @@ import {
 } from "react-icons/fa";
 
 import "./EventCard.css";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../../Providers/AuthProvider";
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, userEvents, onViewDetails }) => {
 
 	const {
+		_id,
 		title,
 		description,
 		date,
-		image_url,
+		image,
 		start_time,
 		end_time,
-		location,
-		participants,
+		available_seats,
+		status,
 	} = event;
+
+	const { user } = useContext(AuthContext);
 
 	const cardRef = useRef(null);
 
@@ -72,6 +77,19 @@ const EventCard = ({ event }) => {
 
 	const isUpcoming = eventDate >= now;
 
+
+	const seatStatus = () => {
+		if (available_seats <= 0) {
+			return "Housefull"
+		} else {
+			if (isUpcoming) {
+				return "Open"
+			} else {
+				return "Complete"
+			}
+		}
+	}
+
 	return (
 
 		<div
@@ -119,7 +137,7 @@ const EventCard = ({ event }) => {
 				<div className="event-image-wrapper">
 
 					<img
-						src={image_url}
+						src={image}
 						alt={title}
 						className="event-image"
 					/>
@@ -134,7 +152,16 @@ const EventCard = ({ event }) => {
 
 					<p className="event-description">
 
-						{description}
+						{
+							description
+								?.split(' ')
+								.slice(0, 8)
+								.join(' ')
+						}
+						{
+							description
+								?.split(' ').length > 8 ? ' . . . .' : ''
+						}
 
 					</p>
 
@@ -158,7 +185,7 @@ const EventCard = ({ event }) => {
 
 							<span>
 
-								{location || "Library Hall"}
+								{"Library Hall"}
 
 							</span>
 
@@ -170,7 +197,7 @@ const EventCard = ({ event }) => {
 
 							<span>
 
-								{participants || "Unlimited"} Seats
+								{available_seats} Seats Available
 
 							</span>
 
@@ -187,25 +214,20 @@ const EventCard = ({ event }) => {
 							<small>Status</small>
 
 							<h5>
-
-								{isUpcoming ? "Registration Open" : "Completed"}
+								{
+									seatStatus()
+								}
 
 							</h5>
 
 						</div>
-
-						<button className="event-btn">
-
-							<span>
-
-								{isUpcoming ? "Join Now" : "View Details"}
-
-							</span>
-
+						<button
+							onClick={() => onViewDetails(event)}
+							className="event-btn"
+						>
+							<span>View Details</span>
 							<FaArrowRight className="arrow" />
-
 						</button>
-
 					</div>
 
 				</div>

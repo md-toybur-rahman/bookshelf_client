@@ -22,7 +22,7 @@ const Community = () => {
 
     useEffect(() => {
 
-        fetch("http://localhost:2000/community_members")
+        fetch("http://localhost:2000/members")
 
             .then(res => res.json())
 

@@ -85,7 +85,7 @@ const Navbar = () => {
 		try {
 
 			const res = await fetch(
-				`http://localhost:2000/users/role/${user.email}`,
+				`http://localhost:2000/users/role/${user?.email}`,
 				{
 					method: "PATCH",
 					headers: {
@@ -150,7 +150,7 @@ const Navbar = () => {
 		queryFn: async () => {
 
 			const res = await fetch(
-				`http://localhost:2000/users/${user.email}`
+				`http://localhost:2000/users/${user?.email}`
 			);
 
 			return res.json();
@@ -400,7 +400,7 @@ const Navbar = () => {
 									<img
 										src={
 											profile?.image ||
-											"https://i.ibb.co/ZYW3VTp/brown-user.png"
+											"https://i.pravatar.cc/100"
 										}
 										className="h-full w-full object-cover"
 										alt=""

@@ -12,7 +12,9 @@
 
     width: 350px;
 
-    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    min-height: 610px;
 
     margin: auto;
 
@@ -201,7 +203,21 @@
 
 }
 
+.news-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    min-height: 64px;
+}
+
+
 .news-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 
     padding: 24px;
 
@@ -257,13 +273,26 @@
 
 }
 
+.news-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    min-height: 112px;
+}
+
 .news-divider {
 
     width: 100%;
 
     height: 1px;
 
+
+    /* margin-top:auto; */
     margin: 24px 0;
+
 
     background:
         linear-gradient(90deg,

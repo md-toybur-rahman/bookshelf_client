@@ -23,6 +23,20 @@ const UpdateNews = () => {
     const [news, setNews] = useState([]);
     const [filteredNews, setFilteredNews] = useState([]);
     const [selectedNews, setSelectedNews] = useState(null);
+    /* ---------------- Load News ---------------- */
+
+    useEffect(() => {
+        setLoading(true);
+        fetch("http://localhost:2000/news")
+            .then(res => res.json())
+            .then(data => {
+                setNews(data);
+                setFilteredNews(data);
+            }).then(() => {
+                setLoading(false)
+            })
+
+    }, []);
 
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
@@ -34,20 +48,6 @@ const UpdateNews = () => {
     const labelStyle =
         "flex items-center gap-2 text-amber-300 font-semibold mb-3";
 
-    /* ---------------- Load News ---------------- */
-
-    useEffect(() => {
-
-        fetch("http://localhost:2000/news")
-            .then(res => res.json())
-            .then(data => {
-
-                setNews(data);
-                setFilteredNews(data);
-
-            });
-
-    }, []);
 
     /* ---------------- Search ---------------- */
 
@@ -186,7 +186,7 @@ const UpdateNews = () => {
 
             await fetch(
 
-                `http://localhost:2000/news/${selectedNews._id}`,
+                `http://localhost:2000/news/${selectedNews?._id}`,
 
                 {
 
@@ -225,12 +225,7 @@ const UpdateNews = () => {
             setNews(updatedNews);
             setFilteredNews(updatedNews);
 
-            setSelectedNews({
-
-                ...selectedNews,
-                ...updateData,
-
-            });
+            setSelectedNews(null);
 
         }
         catch (err) {
@@ -251,6 +246,10 @@ const UpdateNews = () => {
         }
 
     };
+
+    if (loading) {
+        return <h1>Loading .....</h1>
+    }
 
     return (
 
@@ -311,48 +310,49 @@ const UpdateNews = () => {
             </div>
             {/* News List */}
 
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-12">
+            {
+                !selectedNews && (
+                    <div className={`grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-12`}>
 
-                {
-                    filteredNews.map(item => (
+                        {
+                            filteredNews.sort((a, b) => new Date(a.date) - new Date(b.date)).reverse().map(item => (
 
-                        <div
-                            key={item._id}
-                            onClick={() => handleSelectNews(item)}
-                            className={`cursor-pointer rounded-[30px] overflow-hidden border transition-all duration-300 hover:-translate-y-2 hover:border-amber-400/40 ${selectedNews?._id === item._id
-                                    ? "border-amber-400 shadow-[0_0_35px_rgba(251,191,36,.25)]"
-                                    : "border-amber-500/15"
-                                }`}
-                        >
+                                <div
+                                    key={item._id}
+                                    onClick={() => handleSelectNews(item)}
+                                    className={`cursor-pointer rounded-[30px] overflow-hidden border transition-all duration-300 hover:-translate-y-2 hover:border-amber-400/40 border-amber-400 shadow-[0_0_35px_rgba(251,191,36,.10)]`}
+                                >
 
-                            <img
-                                src={item.image}
-                                alt={item.title}
-                                className="h-52 w-full object-cover"
-                            />
+                                    <img
+                                        src={item.image}
+                                        alt={item.title}
+                                        className="h-52 w-full object-cover"
+                                    />
 
-                            <div className="p-6 bg-[#1b120d]">
+                                    <div className="p-6 bg-[#1b120d]">
 
-                                <h3 className="text-xl font-bold text-white">
+                                        <h3 className="text-xl font-bold text-white leading-8 line-clamp-2 min-h-16 break-words">
 
-                                    {item.title}
+                                            {item.title}
 
-                                </h3>
+                                        </h3>
 
-                                <p className="text-slate-400 mt-2">
+                                        <p className="text-slate-400 mt-2">
 
-                                    {item.date}
+                                            {item.date}
 
-                                </p>
+                                        </p>
 
-                            </div>
+                                    </div>
 
-                        </div>
+                                </div>
 
-                    ))
-                }
+                            ))
+                        }
 
-            </div>
+                    </div>
+                )
+            }
 
             {
                 selectedNews && (
@@ -418,7 +418,7 @@ const UpdateNews = () => {
                                     <input
                                         type="date"
                                         {...register("date", { required: true })}
-                                        className={inputStyle}
+                                        className={`${inputStyle} relative cursor-pointer`}
                                     />
 
                                 </div>

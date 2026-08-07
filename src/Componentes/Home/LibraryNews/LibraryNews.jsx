@@ -10,7 +10,7 @@ const LibraryNews = () => {
 
 	const latestNews = [...newses]
 		.sort((a, b) => new Date(b.date) - new Date(a.date))
-		.slice(0, 3);
+		.slice(0, 3).reverse();
 
 	return (
 

@@ -1,82 +1,115 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaCalendarAlt } from "react-icons/fa";
 import useEvents from "../../../Hooks/useEvents";
 import EventCard from "./EventCard";
+import EventDetailsModal from "./EventDetailsModal";
 
 const Events = () => {
-    const [events] = useEvents();
+	const [events, , userEvents, refetch] = useEvents();
 
-    return (
-        <section className="relative overflow-hidden py-28">
 
-            {/* Background Glow */}
+	const [selectedEvent, setSelectedEvent] = useState(null);
+	const [openModal, setOpenModal] = useState(false);
 
-            <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-yellow-500/10 blur-[140px]" />
+	const handleOpenModal = (event) => {
+		setSelectedEvent(event);
+		setOpenModal(true);
+	};
 
-            <div className="absolute right-0 bottom-0 h-72 w-72 rounded-full bg-orange-500/10 blur-[150px]" />
+	const handleCloseModal = () => {
+		setOpenModal(false);
+		setSelectedEvent(null);
+	};
 
-            <div className="mx-auto max-w-7xl px-6">
+	const today = new Date();
 
-                {/* Header */}
+	const upcomingEvents = events.filter(event => {
 
-                <div className="mb-20 flex flex-col items-center text-center">
+		return new Date(event.date) >= today;
 
-                    <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-yellow-500/20 bg-yellow-500/10 px-5 py-2 backdrop-blur-xl">
+	});
 
-                        <FaCalendarAlt className="text-yellow-400" />
+	const pastEvents = events.filter(event => {
 
-                        <span className="text-sm font-semibold uppercase tracking-[4px] text-yellow-300">
+		return new Date(event.date) < today;
 
-                            Upcoming Activities
+	});
+	return (
+		<section className="relative overflow-hidden py-28">
 
-                        </span>
+			{/* Background Glow */}
 
-                    </div>
+			<div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-yellow-500/10 blur-[140px]" />
 
-                    <h2 className="text-5xl font-black text-white md:text-6xl">
+			<div className="absolute right-0 bottom-0 h-72 w-72 rounded-full bg-orange-500/10 blur-[150px]" />
 
-                        Events &
-                        <span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
+			<div className="mx-auto max-w-7xl px-6">
 
-                            {" "}Workshops
+				{/* Header */}
 
-                        </span>
+				<div className="mb-20 flex flex-col items-center text-center">
 
-                    </h2>
+					<div className="mb-5 inline-flex items-center gap-3 rounded-full border border-yellow-500/20 bg-yellow-500/10 px-5 py-2 backdrop-blur-xl">
 
-                    <p className="mt-8 max-w-3xl text-lg leading-8 text-slate-300">
+						<FaCalendarAlt className="text-yellow-400" />
 
-                        Join exciting workshops, author meetups,
-                        reading competitions and community events
-                        designed to inspire every book lover.
+						<span className="text-sm font-semibold uppercase tracking-[4px] text-yellow-300">
 
-                    </p>
+							Upcoming Activities
 
-                </div>
+						</span>
 
-                {/* Cards */}
+					</div>
 
-                <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-3">
+					<h2 className="text-5xl font-black text-white md:text-6xl">
 
-                    {events
-                        ?.slice(0, 3)
-                        .map((event) => (
-                            <EventCard
-                                key={event._id}
-                                event={event}
-                            />
-                        ))}
+						Events &
+						<span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
 
-                </div>
+							{" "}Workshops
 
-                {/* Button */}
+						</span>
 
-                <div className="mt-20 flex justify-center">
+					</h2>
 
-                    <Link
-                        to="/events"
-                        className="
+					<p className="mt-8 max-w-3xl text-lg leading-8 text-slate-300">
+
+						Join exciting workshops, author meetups,
+						reading competitions and community events
+						designed to inspire every book lover.
+
+					</p>
+
+				</div>
+
+				{/* Cards */}
+
+				<div className="grid gap-10 md:grid-cols-2 xl:grid-cols-3">
+
+					{
+						events
+							?.slice(-3)
+							.sort((a, b) => new Date(a.date) - new Date(b.date))
+							.map(event => (
+								<EventCard
+									key={event._id}
+									event={event}
+									userEvents={userEvents}
+									onViewDetails={handleOpenModal}
+								/>
+							))
+					}
+
+				</div>
+
+				{/* Button */}
+
+				<div className="mt-20 flex justify-center">
+
+					<Link
+						to="/events"
+						className="
                         group
                         relative
                         overflow-hidden
@@ -94,26 +127,33 @@ const Events = () => {
                         hover:-translate-y-2
                         hover:shadow-[0_30px_80px_rgba(212,175,55,.35)]
                         "
-                    >
+					>
 
-                        <span className="relative z-10 flex items-center gap-3">
+						<span className="relative z-10 flex items-center gap-3">
 
-                            View All Events
+							View All Events
 
-                            <FaArrowRight className="transition duration-300 group-hover:translate-x-2" />
+							<FaArrowRight className="transition duration-300 group-hover:translate-x-2" />
 
-                        </span>
+						</span>
 
-                        <div className="absolute inset-0 -translate-x-full bg-white/20 transition duration-700 group-hover:translate-x-full" />
+						<div className="absolute inset-0 -translate-x-full bg-white/20 transition duration-700 group-hover:translate-x-full" />
 
-                    </Link>
+					</Link>
 
-                </div>
+				</div>
 
-            </div>
+			</div>
+			<EventDetailsModal
+				open={openModal}
+				event={selectedEvent}
+				onClose={handleCloseModal}
+				userEvents={userEvents}
+				refetch={refetch}
+			/>
 
-        </section>
-    );
+		</section>
+	);
 };
 
 export default Events;

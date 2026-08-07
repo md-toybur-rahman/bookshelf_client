@@ -25,7 +25,7 @@ const Contact = () => {
 
 		try {
 
-			const res = await fetch("http://localhost:2000/users_responses", {
+			const res = await fetch("http://localhost:2000/responses", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

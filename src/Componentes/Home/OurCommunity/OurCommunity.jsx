@@ -97,9 +97,10 @@ const OurCommunity = () => {
 
 					{
 
-						members.map(member => (
+						members?.map(member => (
 
 							<div
+								key={ member._id}
 								onMouseMove={handleMove}
 								onMouseLeave={handleLeave}
 							>
@@ -125,7 +126,7 @@ const OurCommunity = () => {
 											<div className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-300 to-yellow-600 blur-xl opacity-40"></div>
 
 											<img
-												src={member.image_url}
+												src={member.image}
 												alt={member.name}
 												className="relative w-40 h-40 rounded-full object-cover border-4 border-amber-400 shadow-2xl group-hover:scale-105 duration-500"
 											/>

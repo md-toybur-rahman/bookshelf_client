@@ -66,12 +66,10 @@ const AddEvent = () => {
 				);
 
 				image = upload.data.secure_url;
-				public_id = upload.data.public_id;
 
 			}
 
 			const eventData = {
-
 				title: data.title,
 				description: data.description,
 				date: data.date,
@@ -79,41 +77,24 @@ const AddEvent = () => {
 				end_time: data.end_time,
 				available_seats: Number(data.available_seats),
 				image,
-				public_id,
-				status: true,
-				createdAt: new Date(),
+				created_at: new Date(),
 
 			};
 			await fetch("http://localhost:2000/event", {
-
 				method: "POST",
-
 				headers: {
-
 					"content-type": "application/json",
-
 				},
-
 				body: JSON.stringify(eventData),
-
 			});
-
 			Swal.fire({
-
 				icon: "success",
-
 				title: "Event Added Successfully",
-
 				showConfirmButton: false,
-
 				timer: 1600,
-
 			});
-
 			reset();
-
 			setPreviewImage(null);
-
 		}
 		catch (err) {
 

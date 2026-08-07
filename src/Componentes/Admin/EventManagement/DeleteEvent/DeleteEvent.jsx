@@ -130,6 +130,7 @@ const DeleteEvent = () => {
 		}
 
 	};
+
 	return (
 
 		<div className="max-w-7xl mx-auto">
@@ -200,101 +201,111 @@ const DeleteEvent = () => {
 
 				{
 
-					filteredEvents.map(event => (
+					filteredEvents.sort((a, b) => new Date(a.date) - new Date(b.date)).reverse().map((event) => {
+						const now = new Date();
+						const eventDate = new Date(event?.date);
+						const isUpcoming = eventDate >= now;
+						const seatStatus = () => {
+							if (event?.available_seats <= 0) {
+								return "Housefull"
+							} else {
+								if (isUpcoming) {
+									return "Open"
+								} else {
+									return "Complete"
+								}
+							}
+						}
+						return (
 
-						<div
-							key={event._id}
-							className="group rounded-[30px] overflow-hidden border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_20px_60px_rgba(0,0,0,.45)] hover:border-red-500/50 hover:-translate-y-2 duration-300"
-						>
+							<div
+								key={event._id}
+								className="group rounded-[30px] overflow-hidden border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_20px_60px_rgba(0,0,0,.45)] hover:border-red-500/50 hover:-translate-y-2 duration-300 flex flex-col min-h-[580px]"
+							>
+								<img
+									src={event.image}
+									alt={event.title}
+									className="h-56 w-full object-cover group-hover:scale-105 duration-500"
+								/>
 
-							<img
-								src={event.image}
-								alt={event.title}
-								className="h-56 w-full object-cover group-hover:scale-105 duration-500"
-							/>
+								<div className="p-6 flex flex-col flex-1">
 
-							<div className="p-6">
+									<div className="flex items-start justify-between gap-3 mb-4">
 
-								<div className="flex items-center justify-between mb-3">
+										<h2
+											className="text-2xl font-bold text-white leading-8 line-clamp-2 min-h-16 break-words flex-1"
+										>
+											{event.title}
+										</h2>
 
-									<h2 className="text-2xl font-bold text-white">
-
-										{event.title}
-
-									</h2>
-
-									<span className={`px-3 py-1 rounded-full text-xs font-bold ${event.status
-										? "bg-green-500/20 text-green-400"
-										: "bg-red-500/20 text-red-400"
-										}`}>
-
-										{event.status ? "OPEN" : "CLOSED"}
-
-									</span>
-
-								</div>
-
-								<div className="space-y-3 text-slate-400">
-
-									<div className="flex items-center gap-3">
-
-										<FaCalendarAlt className="text-amber-400" />
-
-										<span>{event.date}</span>
-
-									</div>
-
-									<div className="flex items-center gap-3">
-
-										<FaClock className="text-amber-400" />
-
-										<span>
-
-											{event.start_time} - {event.end_time}
-
+										<span
+											className={`shrink-0 px-3 py-1 rounded-full text-xs font-bold ${seatStatus() === "Housefull"
+													? "bg-orange-500/20 text-orange-400"
+													: seatStatus() === "Open"
+														? "bg-green-500/20 text-green-400"
+														: "bg-red-500/20 text-red-400"
+												}`}
+										>
+											{seatStatus()}
 										</span>
 
 									</div>
 
-									<div className="flex items-center gap-3">
+									<div className="space-y-3 text-slate-400">
 
-										<FaUsers className="text-amber-400" />
+										<div className="flex items-center gap-3">
 
-										<span>
+											<FaCalendarAlt className="text-amber-400 shrink-0" />
 
-											{event.available_seats} Seats
+											<span>{event.date}</span>
 
-										</span>
+										</div>
+
+										<div className="flex items-center gap-3">
+
+											<FaClock className="text-amber-400 shrink-0" />
+
+											<span>
+												{event.start_time} - {event.end_time}
+											</span>
+
+										</div>
+
+										<div className="flex items-center gap-3">
+
+											<FaUsers className="text-amber-400 shrink-0" />
+
+											<span>
+												{event.available_seats} Seats
+											</span>
+
+										</div>
 
 									</div>
 
+									<p
+										className="mt-5 text-slate-500 leading-7 line-clamp-4 min-h-28 break-words"
+									>
+										{event.description}
+									</p>
+
+									<button
+										onClick={() => handleDelete(event)}
+										className="mt-6 w-full py-4 rounded-2xl bg-gradient-to-r from-red-600 via-red-500 to-orange-500 text-white font-bold hover:scale-[1.02] duration-300 flex items-center justify-center gap-3"
+									>
+
+										<FaTrashAlt />
+
+										Delete Event
+
+									</button>
+
 								</div>
-
-								<p className="text-slate-500 mt-5 leading-7">
-
-									{event.description?.slice(0, 120)}...
-
-								</p>
-
-								<button
-
-									onClick={() => handleDelete(event)}
-
-									className="mt-8 w-full py-4 rounded-2xl bg-gradient-to-r from-red-600 via-red-500 to-orange-500 text-white font-bold hover:scale-[1.02] duration-300 flex items-center justify-center gap-3"
-
-								>
-
-									<FaTrashAlt />
-
-									Delete Event
-
-								</button>
 
 							</div>
 
-						</div>
-
-					))
+						)
+					})
 
 				}
 

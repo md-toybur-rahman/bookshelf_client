@@ -14,8 +14,6 @@ import BookDetails from "../../../Shared/BookDetails/BookDetails";
 const DeleteBook = () => {
 	const [books, setBooks] = useState([]);
 	const [loading, setLoading] = useState(true);
-
-	const [searchText, setSearchText] = useState("");
 	const [filteredBooks, setFilteredBooks] = useState([]);
 
 	useEffect(() => {

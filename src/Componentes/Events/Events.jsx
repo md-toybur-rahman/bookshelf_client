@@ -1,376 +1,317 @@
-import React from "react";
+import React, { useState } from "react";
 import useEvents from "../../Hooks/useEvents";
 import EventCard from "../Home/Events/EventCard";
 import {
-    FaCalendarAlt,
-    FaClock,
-    FaUsers,
-    FaArrowDown,
+	FaCalendarAlt,
+	FaClock,
+	FaUsers,
+	FaArrowDown,
 } from "react-icons/fa";
+import EventDetailsModal from "../Home/Events/EventDetailsModal";
 
 const Events = () => {
 
-    const [events] = useEvents();
+	const [events, , userEvents, refetch] = useEvents();
 
-    const today = new Date();
 
-    const upcomingEvents = events.filter(event => {
+	const [selectedEvent, setSelectedEvent] = useState(null);
+	const [openModal, setOpenModal] = useState(false);
 
-        return new Date(event.date) >= today;
+	const handleOpenModal = (event) => {
+		setSelectedEvent(event);
+		setOpenModal(true);
+	};
 
-    });
+	const handleCloseModal = () => {
+		setOpenModal(false);
+		setSelectedEvent(null);
+	};
 
-    const pastEvents = events.filter(event => {
+	const today = new Date();
 
-        return new Date(event.date) < today;
+	const upcomingEvents = events.filter(event => {
 
-    });
+		return new Date(event.date) >= today;
 
-    return (
+	});
 
-        <div className="relative overflow-hidden">
+	const pastEvents = events.filter(event => {
 
-            {/* Background */}
+		return new Date(event.date) < today;
 
-            <div className="absolute top-0 left-0 w-96 h-96 bg-amber-400/10 blur-[170px] rounded-full"></div>
+	});
+	return (
 
-            <div className="absolute right-0 top-1/2 w-[450px] h-[450px] bg-orange-500/10 blur-[180px] rounded-full"></div>
+		<div className="relative overflow-hidden">
 
-            {/* ================= HERO ================= */}
+			{/* Background */}
 
-            <section className="relative min-h-[85vh] flex items-center justify-center">
+			<div className="absolute top-0 left-0 w-96 h-96 bg-amber-400/10 blur-[170px] rounded-full"></div>
 
-                <div className="absolute inset-0">
+			<div className="absolute right-0 top-1/2 w-[450px] h-[450px] bg-orange-500/10 blur-[180px] rounded-full"></div>
 
-                    <img
-                        src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=80"
-                        className="w-full h-full object-cover"
-                        alt=""
-                    />
+			{/* ================= HERO ================= */}
 
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#090603]/70 via-[#120b06]/90 to-[#090603]"></div>
+			<section className="relative min-h-[85vh] flex items-center justify-center">
 
-                </div>
+				<div className="absolute inset-0">
 
-                <div className="relative z-10 max-w-7xl mx-auto px-5">
+					<img
+						src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=80"
+						className="w-full h-full object-cover"
+						alt=""
+					/>
 
-                    <div className="text-center max-w-4xl mx-auto">
+					<div className="absolute inset-0 bg-gradient-to-b from-[#090603]/70 via-[#120b06]/90 to-[#090603]"></div>
 
-                        <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-amber-400/20 backdrop-blur-xl text-amber-300 uppercase tracking-[3px] text-sm">
+				</div>
 
-                            <FaCalendarAlt />
+				<div className="relative z-10 max-w-7xl mx-auto px-5">
 
-                            Library Events
+					<div className="text-center max-w-4xl mx-auto">
 
-                        </div>
+						<div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-amber-400/20 backdrop-blur-xl text-amber-300 uppercase tracking-[3px] text-sm">
 
-                        <h1 className="mt-8 text-6xl lg:text-8xl font-black leading-none text-white">
+							<FaCalendarAlt />
 
-                            Learn.
+							Library Events
 
-                            <span className="block bg-gradient-to-r from-amber-300 via-yellow-500 to-orange-500 bg-clip-text text-transparent">
+						</div>
 
-                                Connect. Grow.
+						<h1 className="mt-8 text-6xl lg:text-8xl font-black leading-none text-white">
 
-                            </span>
+							Learn.
 
-                        </h1>
+							<span className="block bg-gradient-to-r from-amber-300 via-yellow-500 to-orange-500 bg-clip-text text-transparent">
 
-                        <p className="mt-8 text-xl text-gray-300 leading-9">
+								Connect. Grow.
 
-                            Participate in inspiring workshops, author sessions,
-                            book fairs and community meetups designed for every
-                            passionate reader.
+							</span>
 
-                        </p>
+						</h1>
 
-                        <div className="flex flex-wrap justify-center gap-5 mt-12">
+						<p className="mt-8 text-xl text-gray-300 leading-9">
 
-                            <div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
+							Participate in inspiring workshops, author sessions,
+							book fairs and community meetups designed for every
+							passionate reader.
 
-                                <div className="flex items-center gap-3">
+						</p>
 
-                                    <FaCalendarAlt className="text-amber-400 text-xl" />
+						<div className="flex flex-wrap justify-center gap-5 mt-12">
 
-                                    <div className="text-left">
+							<div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
 
-                                        <p className="text-2xl font-bold text-white">
+								<div className="flex items-center gap-3">
 
-                                            {events.length}
+									<FaCalendarAlt className="text-amber-400 text-xl" />
 
-                                        </p>
+									<div className="text-left">
 
-                                        <small className="text-gray-400">
+										<p className="text-2xl font-bold text-white">
 
-                                            Total Events
+											{events.length}
 
-                                        </small>
+										</p>
 
-                                    </div>
+										<small className="text-gray-400">
 
-                                </div>
+											Total Events
 
-                            </div>
+										</small>
 
-                            <div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
+									</div>
 
-                                <div className="flex items-center gap-3">
+								</div>
 
-                                    <FaClock className="text-amber-400 text-xl" />
+							</div>
 
-                                    <div className="text-left">
+							<div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
 
-                                        <p className="text-2xl font-bold text-white">
+								<div className="flex items-center gap-3">
 
-                                            {upcomingEvents.length}
+									<FaClock className="text-amber-400 text-xl" />
 
-                                        </p>
+									<div className="text-left">
 
-                                        <small className="text-gray-400">
+										<p className="text-2xl font-bold text-white">
 
-                                            Upcoming
+											{upcomingEvents?.length}
 
-                                        </small>
+										</p>
 
-                                    </div>
+										<small className="text-gray-400">
 
-                                </div>
+											Upcoming
 
-                            </div>
+										</small>
 
-                            <div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
+									</div>
 
-                                <div className="flex items-center gap-3">
+								</div>
 
-                                    <FaUsers className="text-amber-400 text-xl" />
+							</div>
 
-                                    <div className="text-left">
+							<div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
 
-                                        <p className="text-2xl font-bold text-white">
+								<div className="flex items-center gap-3">
 
-                                            12K+
+									<FaUsers className="text-amber-400 text-xl" />
 
-                                        </p>
+									<div className="text-left">
 
-                                        <small className="text-gray-400">
+										<p className="text-2xl font-bold text-white">
 
-                                            Participants
+											12K+
 
-                                        </small>
+										</p>
 
-                                    </div>
+										<small className="text-gray-400">
 
-                                </div>
+											Participants
 
-                            </div>
+										</small>
 
-                        </div>
+									</div>
 
-                    </div>
+								</div>
 
-                </div>
+							</div>
 
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+						</div>
 
-                    <FaArrowDown className="text-amber-400 text-2xl" />
+					</div>
 
-                </div>
+				</div>
 
-            </section>
+				<div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
 
-            {/* ================= UPCOMING ================= */}
+					<FaArrowDown className="text-amber-400 text-2xl" />
 
-            {
+				</div>
 
-                upcomingEvents.length > 0 &&
+			</section>
 
-                <section className="py-24">
+			{/* ================= UPCOMING ================= */}
 
-                    <div className="max-w-7xl mx-auto px-5">
+			{
 
-                        <div className="text-center mb-16">
+				upcomingEvents.length > 0 &&
 
-                            <h2 className="text-5xl font-black text-white">
+				<section className="py-24">
 
-                                Upcoming Events
+					<div className="max-w-7xl mx-auto px-5">
 
-                            </h2>
+						<div className="text-center mb-16">
 
-                            <p className="mt-5 text-gray-400">
+							<h2 className="text-5xl font-black text-white">
 
-                                Don't miss our upcoming library activities.
+								Upcoming Events
 
-                            </p>
+							</h2>
 
-                        </div>
+							<p className="mt-5 text-gray-400">
 
-                        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
+								Don't miss our upcoming library activities.
 
-                            {
+							</p>
 
-                                upcomingEvents.map(event => (
+						</div>
 
-                                    <EventCard
-                                        key={event._id}
-                                        event={event}
-                                    />
+						<div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
 
-                                ))
+							{
+								upcomingEvents
+									?.slice()
+									.sort((a, b) => new Date(a.date) - new Date(b.date))
+									.map(event => (
+										<EventCard
+											key={event._id}
+											event={event}
+											userEvents={userEvents}
+											onViewDetails={handleOpenModal}
+										/>
+									))
+							}
 
-                            }
+						</div>
 
-                        </div>
+					</div>
 
-                    </div>
+				</section>
 
-                </section>
+			}
 
-            }
+			{/* Divider */}
 
-            {/* Divider */}
+			<div className="max-w-6xl mx-auto">
 
-            <div className="max-w-6xl mx-auto">
+				<div className="h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent"></div>
 
-                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent"></div>
+			</div>
 
-            </div>
+			{/* ================= PAST ================= */}
 
-            {/* ================= PAST ================= */}
+			<section className="py-24">
 
-            <section className="py-24">
+				<div className="max-w-7xl mx-auto px-5">
 
-                <div className="max-w-7xl mx-auto px-5">
+					<div className="text-center mb-16">
 
-                    <div className="text-center mb-16">
+						<h2 className="text-5xl font-black text-white">
 
-                        <h2 className="text-5xl font-black text-white">
+							Past Events
 
-                            Past Events
+						</h2>
 
-                        </h2>
+						<p className="mt-5 text-gray-400">
 
-                        <p className="mt-5 text-gray-400">
+							Moments that brought our community together.
 
-                            Moments that brought our community together.
+						</p>
 
-                        </p>
+					</div>
 
-                    </div>
+					<div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
 
-                    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
+						{
+							pastEvents?.slice()
+								.sort((a, b) => new Date(a.date) - new Date(b.date))
+								.reverse()
+								.map(event => (
+									<EventCard
+										key={event._id}
+										event={event}
+										userEvents={userEvents}
+										onViewDetails={handleOpenModal}
+									/>
+								))
+						}
 
-                        {
+					</div>
 
-                            pastEvents.slice(0,6).map(event => (
+				</div>
 
-                                <EventCard
-                                    key={event._id}
-                                    event={event}
-                                />
+			</section>
 
-                            ))
+			{/* Divider */}
 
-                        }
+			<div className="max-w-6xl mx-auto">
 
-                    </div>
+				<div className="h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent"></div>
 
-                </div>
+			</div>
 
-            </section>
+			<EventDetailsModal
+				open={openModal}
+				event={selectedEvent}
+				onClose={handleCloseModal}
+				userEvents={userEvents}
+				refetch={refetch()}
+			/>
+		</div>
 
-            {/* Divider */}
-
-            <div className="max-w-6xl mx-auto">
-
-                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent"></div>
-
-            </div>
-
-            {/* ================= WORKSHOPS ================= */}
-
-            <section className="py-24">
-
-                <div className="max-w-7xl mx-auto px-5">
-
-                    <div className="text-center mb-16">
-
-                        <h2 className="text-5xl font-black text-white">
-
-                            Workshops
-
-                        </h2>
-
-                    </div>
-
-                    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
-
-                        {
-
-                            events.slice(5,8).map(event => (
-
-                                <EventCard
-                                    key={event._id}
-                                    event={event}
-                                />
-
-                            ))
-
-                        }
-
-                    </div>
-
-                </div>
-
-            </section>
-
-            {/* Divider */}
-
-            <div className="max-w-6xl mx-auto">
-
-                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent"></div>
-
-            </div>
-
-            {/* ================= MEETUPS ================= */}
-
-            <section className="py-24">
-
-                <div className="max-w-7xl mx-auto px-5">
-
-                    <div className="text-center mb-16">
-
-                        <h2 className="text-5xl font-black text-white">
-
-                            Community Meetups
-
-                        </h2>
-
-                    </div>
-
-                    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
-
-                        {
-
-                            events.slice(8,11).map(event => (
-
-                                <EventCard
-                                    key={event._id}
-                                    event={event}
-                                />
-
-                            ))
-
-                        }
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </div>
-
-    );
+	);
 
 };
 

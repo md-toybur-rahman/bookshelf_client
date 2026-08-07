@@ -16,7 +16,6 @@ const AdminRoute = ({ children }) => {
 		return <h1>Loading ....</h1>;
 
 	}
-    console.log(user)
 	if (user && role === "admin") {
 
 		return children;

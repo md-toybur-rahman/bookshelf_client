@@ -231,7 +231,7 @@ const AddNews = () => {
                             <input
                                 type="date"
                                 {...register("date", { required: true })}
-                                className={inputStyle}
+                                className={`${inputStyle} relative cursor-pointer`}
                             />
 
                         </div>

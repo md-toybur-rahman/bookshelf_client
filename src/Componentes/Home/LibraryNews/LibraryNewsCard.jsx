@@ -13,7 +13,7 @@ const LibraryNewsCard = ({ news }) => {
 		title,
 		description,
 		date,
-		image_url,
+		image,
 	} = news;
 
 	const cardRef = useRef(null);
@@ -72,7 +72,7 @@ const LibraryNewsCard = ({ news }) => {
 
 		newsModal.classList.add("flex");
 
-		modalImage.src = image_url;
+		modalImage.src = image;
 
 		modalTitle.innerText = title;
 
@@ -89,11 +89,10 @@ const LibraryNewsCard = ({ news }) => {
 			onMouseMove={handleMove}
 			onMouseLeave={handleLeave}
 		>
-
 			<div
 				ref={cardRef}
 				style={style}
-				className="news-card"
+				className="news-card h-full min-h-[610px] flex flex-col"
 			>
 
 				<span className="news-glow"></span>
@@ -101,32 +100,29 @@ const LibraryNewsCard = ({ news }) => {
 				<span className="news-reflection"></span>
 
 				<div className="flex items-center justify-between pt-5 px-5">
+
 					<div className="news-badge">
-
 						NEWS
-
 					</div>
 
 					<div className="news-date">
-
 						<FaCalendarAlt />
-
 						<span>{date}</span>
-
 					</div>
+
 				</div>
 
 				<div className="news-image-wrapper">
 
 					<img
-						src={image_url}
+						src={image}
 						alt={title}
 						className="news-image"
 					/>
 
 				</div>
 
-				<div className="news-body">
+				<div className="news-body flex flex-col flex-1">
 
 					<div className="news-type">
 
@@ -136,19 +132,19 @@ const LibraryNewsCard = ({ news }) => {
 
 					</div>
 
-					<h2>
+					<h2 className="news-title">
 
 						{title}
 
 					</h2>
 
-					<p>
+					<p className="news-description">
 
-						{description.split(" ").slice(0, 22).join(" ")}...
+						{description}
 
 					</p>
 
-					<div className="news-divider"></div>
+					<div className="news-divider mt-auto"></div>
 
 					<button
 						onClick={handleNewsModal}

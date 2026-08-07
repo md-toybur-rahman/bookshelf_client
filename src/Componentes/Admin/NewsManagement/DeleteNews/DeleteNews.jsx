@@ -200,7 +200,7 @@ const DeleteNews = () => {
 
                 {
 
-                    filteredNews.map(item => (
+                    filteredNews.sort((a, b) => new Date(a.date) - new Date(b.date)).reverse().map(item => (
 
                         <div
                             key={item._id}
@@ -217,13 +217,15 @@ const DeleteNews = () => {
 
                                 <div className="flex items-center justify-between mb-3">
 
-                                    <h2 className="text-2xl font-bold text-white">
+                                    <h3 className="text-xl font-bold text-white leading-8 line-clamp-2 min-h-16 break-words">
 
                                         {item.title}
 
-                                    </h2>
+                                    </h3>
 
-                                    <FaNewspaper className="text-amber-400 text-xl" />
+                                    <div className="flex items-center justify-center min-w-5">
+                                        <FaNewspaper className="text-amber-400 text-xl" />
+                                    </div>
 
                                 </div>
 
@@ -235,9 +237,9 @@ const DeleteNews = () => {
 
                                 </div>
 
-                                <p className="mt-5 text-slate-500 leading-7">
+                                <p className="mt-5 text-slate-500 leading-7 line-clamp-4 min-h-28 break-words">
 
-                                    {item.description?.slice(0, 130)}...
+                                    {item?.description}...
 
                                 </p>
 

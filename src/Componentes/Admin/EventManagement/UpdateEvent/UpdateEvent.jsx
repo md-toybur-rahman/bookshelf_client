@@ -27,7 +27,8 @@ const UpdateEvent = () => {
 	const [filteredEvents, setFilteredEvents] = useState([]);
 	const [selectedEvent, setSelectedEvent] = useState(null);
 
-	const [search, setSearch] = useState("");
+	const [searchText, setSearchText] = useState("");
+	const [searchLoading, setSearchLoading] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	const [previewImage, setPreviewImage] = useState("");
@@ -41,31 +42,37 @@ const UpdateEvent = () => {
 	/* ---------------- Load Events ---------------- */
 
 	useEffect(() => {
-
 		fetch("http://localhost:2000/events")
 			.then(res => res.json())
 			.then(data => {
-
 				setEvents(data);
 				setFilteredEvents(data);
-
 			});
 
 	}, []);
 
-	/* ---------------- Search ---------------- */
 
-	useEffect(() => {
+	const loadEvents= (value) => {
 
-		const value = search.toLowerCase();
+		if (!value.trim()) {
+			setFilteredEvents(events);
+			return;
 
-		const result = events.filter(event =>
-			event.title.toLowerCase().includes(value)
+		}
+
+		const result = events.filter(item =>
+
+			item.title.toLowerCase().includes(value.toLowerCase()) ||
+
+			item.date.includes(value)
+
 		);
 
 		setFilteredEvents(result);
 
-	}, [search, events]);
+	};
+
+
 
 	/* ---------------- Select Event ---------------- */
 
@@ -75,6 +82,10 @@ const UpdateEvent = () => {
 
 		setPreviewImage(event.image);
 
+		setSearchText(event.title);
+
+		setFilteredEvents([]);
+
 		setValue("title", event.title);
 		setValue("description", event.description);
 		setValue("date", event.date);
@@ -83,10 +94,8 @@ const UpdateEvent = () => {
 		setValue("available_seats", event.available_seats);
 
 		window.scrollTo({
-
 			top: 0,
 			behavior: "smooth",
-
 		});
 
 	};
@@ -172,44 +181,29 @@ const UpdateEvent = () => {
 			}
 
 			const updateData = {
-
 				title: data.title,
 				description: data.description,
 				date: data.date,
 				start_time: data.start_time,
 				end_time: data.end_time,
 				available_seats: Number(data.available_seats),
-				image,
-				public_id,
-				status: true,
-
+				image
 			};
-
 			await fetch(
-
 				`http://localhost:2000/events/${selectedEvent._id}`,
-
 				{
-
 					method: "PUT",
-
 					headers: {
 						"content-type": "application/json",
 					},
-
 					body: JSON.stringify(updateData),
-
 				}
-
 			);
-
 			Swal.fire({
-
 				icon: "success",
 				title: "Event Updated Successfully",
 				timer: 1500,
 				showConfirmButton: false,
-
 			});
 
 			const updatedEvents = events.map(item =>
@@ -221,10 +215,7 @@ const UpdateEvent = () => {
 			setEvents(updatedEvents);
 			setFilteredEvents(updatedEvents);
 
-			setSelectedEvent({
-				...selectedEvent,
-				...updateData,
-			});
+			setSelectedEvent(null);
 
 		}
 		catch (err) {
@@ -290,8 +281,7 @@ const UpdateEvent = () => {
 				<FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
 
 				<input
-					value={search}
-					onChange={(e) => setSearch(e.target.value)}
+					onChange={(e) => loadEvents(e.target.value)}
 					className={`${inputStyle} pl-14`}
 					placeholder="Search Event..."
 				/>
@@ -302,7 +292,7 @@ const UpdateEvent = () => {
 			<div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-12">
 
 				{
-					filteredEvents.map((event) => (
+					filteredEvents.sort((a, b) => new Date(a.date) - new Date(b.date)).reverse().map((event) => (
 
 						<div
 							key={event._id}
@@ -399,7 +389,7 @@ const UpdateEvent = () => {
 									<input
 										type="date"
 										{...register("date", { required: true })}
-										className={inputStyle}
+										className={`${inputStyle} relative cursor-pointer`}
 									/>
 
 								</div>
@@ -435,7 +425,7 @@ const UpdateEvent = () => {
 									<input
 										type="time"
 										{...register("start_time", { required: true })}
-										className={inputStyle}
+										className={`${inputStyle} relative cursor-pointer`}
 									/>
 
 								</div>
@@ -453,7 +443,7 @@ const UpdateEvent = () => {
 									<input
 										type="time"
 										{...register("end_time", { required: true })}
-										className={inputStyle}
+										className={`${inputStyle} relative cursor-pointer`}
 									/>
 
 								</div>

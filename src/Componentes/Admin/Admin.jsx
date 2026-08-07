@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Link,
 	Outlet,
@@ -20,13 +20,9 @@ import {
 	FaShoppingCart,
 } from "react-icons/fa";
 
-import { getBookContext } from "../../Providers/GetBookProvider";
-
 const Admin = () => {
 
 	const location = useLocation();
-
-	const { setBook } = useContext(getBookContext);
 
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -53,6 +49,12 @@ const Admin = () => {
 
 	const subBtn =
 		"block w-full text-left px-5 py-3 rounded-xl duration-300 hover:bg-[#2c2016] hover:text-[#d4af37]";
+
+	const activeEffect = (route) => {
+		return location.pathname === `/admin/${route}`
+			? "bg-[#24160f] text-[#d4af37]"
+			: "";
+	};
 
 	return (
 
@@ -182,7 +184,7 @@ const Admin = () => {
 
 								onClick={() => toggleMenu("book")}
 
-								className={menuBtn}
+								className={`${menuBtn}`}
 
 							>
 
@@ -228,7 +230,7 @@ const Admin = () => {
 
 										to="/admin/add_book"
 
-										className={subBtn}
+										className={`${subBtn} ${activeEffect("add_book")}`}
 
 									>
 
@@ -237,31 +239,17 @@ const Admin = () => {
 									</Link>
 
 									<Link
-
-										onClick={() => setBook([])}
-
 										to="/admin/update_book"
-
-										className={subBtn}
-
+										className={`${subBtn} ${activeEffect("update_book")}`}
 									>
-
 										Update Book
-
 									</Link>
 
 									<Link
-
-										onClick={() => setBook([])}
-
 										to="/admin/delete_book"
-
-										className={subBtn}
-
+										className={`${subBtn} ${activeEffect("delete_book")}`}
 									>
-
 										Delete Book
-
 									</Link>
 
 								</div>
@@ -305,21 +293,21 @@ const Admin = () => {
 
 									<Link
 										to="/admin/add_event"
-										className={subBtn}
+										className={`${subBtn} ${activeEffect("add_event")}`}
 									>
 										Add Event
 									</Link>
 
 									<Link
 										to="/admin/update_event"
-										className={subBtn}
+										className={`${subBtn} ${activeEffect("update_event")}`}
 									>
 										Update Event
 									</Link>
 
 									<Link
 										to="/admin/delete_event"
-										className={subBtn}
+										className={`${subBtn} ${activeEffect("delete_event")}`}
 									>
 										Delete Event
 									</Link>
@@ -366,21 +354,21 @@ const Admin = () => {
 
 									<Link
 										to="/admin/add_news"
-										className={subBtn}
+										className={`${subBtn} ${activeEffect("add_news")}`}
 									>
 										Add News
 									</Link>
 
 									<Link
 										to="/admin/update_news"
-										className={subBtn}
+										className={`${subBtn} ${activeEffect("update_news")}`}
 									>
 										Update News
 									</Link>
 
 									<Link
 										to="/admin/delete_news"
-										className={subBtn}
+										className={`${subBtn} ${activeEffect("delete_news")}`}
 									>
 										Delete News
 									</Link>
@@ -395,7 +383,7 @@ const Admin = () => {
 
 						<Link
 							to="/admin/community"
-							className={menuBtn}
+							className={`${menuBtn} ${activeEffect("community")}`}
 						>
 
 							<span className="flex items-center gap-4">
@@ -412,7 +400,7 @@ const Admin = () => {
 
 						<Link
 							to="/admin/users"
-							className={menuBtn}
+							className={`${menuBtn} ${activeEffect("users")}`}
 						>
 
 							<span className="flex items-center gap-4">
@@ -446,7 +434,7 @@ const Admin = () => {
 
 						<Link
 							to="/admin/messages"
-							className={menuBtn}
+							className={`${menuBtn} ${activeEffect("messages")}`}
 						>
 
 							<span className="flex items-center gap-4">
@@ -463,7 +451,7 @@ const Admin = () => {
 
 						<Link
 							to="/admin/settings"
-							className={menuBtn}
+							className={`${menuBtn} ${activeEffect("settings")}`}
 						>
 
 							<span className="flex items-center gap-4">
