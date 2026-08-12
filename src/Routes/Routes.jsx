@@ -32,6 +32,9 @@ import ContactMessage from "../Componentes/Admin/ContactMessage/ContactMessage";
 import Settings from "../Componentes/Admin/Settings/Settings";
 import Users from "../Componentes/Admin/Users/Users";
 import AdminRoute from "./AdminRoute";
+import AdminMessages from "../Componentes/Admin/AdminMessages/AdminMessages";
+import AdminSupportMessages from "../Componentes/Admin/AdminSupportMessages/AdminSupportMessages";
+import Members from "../Componentes/Members/Members";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +64,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/contact",
-        element: <Contact></Contact>
+        element: <PrivateRoute><Contact/></PrivateRoute>
+      },
+      {
+        path: "/members",
+        element: <PrivateRoute><Members /></PrivateRoute>
       },
       {
         path: "/cart",
@@ -120,8 +127,12 @@ const router = createBrowserRouter([
             element: <PrivateRoute><Community /></PrivateRoute>
           },
           {
+            path: "/admin/contact_messages",
+            element: <PrivateRoute><AdminSupportMessages /></PrivateRoute>
+          },
+          {
             path: "/admin/messages",
-            element: <PrivateRoute><ContactMessage /></PrivateRoute>
+            element: <PrivateRoute><AdminMessages /></PrivateRoute>
           },
           {
             path: "/admin/users",

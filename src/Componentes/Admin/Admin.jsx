@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
 	Link,
 	Outlet,
@@ -19,30 +19,218 @@ import {
 	FaSignOutAlt,
 	FaShoppingCart,
 } from "react-icons/fa";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const Admin = () => {
+
+	const { user } = useContext(AuthContext);
 
 	const location = useLocation();
 
 	const [sidebarOpen, setSidebarOpen] = useState(false);
-
 	const [openMenu, setOpenMenu] = useState("");
 
-	const toggleMenu = (menu) => {
+	const [supportConversations, setSupportConversations] =
+		useState([]);
+	const [admin, setAdmin] = useState(null);
+	const [adminLoading, setAdminLoading] = useState(true);
+	const [readCount, setReadCount] = useState(0);
+	const [selectedConversation, setSelectedConversation] = useState(null)
 
+
+	// =========================================================
+	// Menu
+	// =========================================================
+
+	const toggleMenu = menu => {
 		if (openMenu === menu) {
-
 			setOpenMenu("");
-
-		}
-
-		else {
-
+		} else {
 			setOpenMenu(menu);
-
 		}
-
 	};
+
+
+	// =========================================================
+	// Get MongoDB Admin
+	// Firebase user -> email -> MongoDB user
+	// =========================================================
+
+	const loadAdmin = useCallback(async () => {
+		if (!user?.email) return;
+
+		try {
+			setAdminLoading(true);
+
+			const res = await fetch(
+				`http://localhost:2000/users/${encodeURIComponent(
+					user.email
+				)}`
+			);
+
+			if (!res.ok) {
+				throw new Error(
+					"Failed to fetch admin information"
+				);
+			}
+
+			const data = await res.json();
+
+			const mongoUser = Array.isArray(data)
+				? data[0]
+				: data;
+
+			if (!mongoUser?._id) {
+				throw new Error(
+					"MongoDB admin ID not found"
+				);
+			}
+
+			setAdmin(mongoUser);
+		} catch (error) {
+			console.error(
+				"Admin loading error:",
+				error
+			);
+
+			setAdmin(null);
+		} finally {
+			setAdminLoading(false);
+		}
+	}, [user?.email]);
+
+	// =========================================================
+	// Load MongoDB Admin when Firebase user is available
+	// =========================================================
+
+	useEffect(() => {
+		loadAdmin();
+	}, [loadAdmin]);
+
+
+	// =========================================================
+	// Fetch Support Conversations
+	// =========================================================
+
+	const fetchConversations = useCallback(async () => {
+		try {
+			const res = await fetch(
+				"http://localhost:2000/conversations/support"
+			);
+
+			if (!res.ok) {
+				throw new Error(
+					"Failed to load conversations"
+				);
+			}
+
+			const data = await res.json();
+
+			if (!data.success) {
+				throw new Error(
+					data.message ||
+					"Failed to load conversations"
+				);
+			}
+
+			const newConversations =
+				data.conversations || [];
+
+			// =================================================
+			// Calculate total unread for current admin
+			// =================================================
+
+			const totalUnread = newConversations.reduce(
+				(total, conversation) => {
+					return (
+						total +
+						Number(
+							conversation?.unread?.[
+							admin?._id
+							] || 0
+						)
+					);
+				},
+				0
+			);
+
+			// Set total unread count for sidebar badge
+			setReadCount(totalUnread);
+
+			// =================================================
+			// Keep currently opened conversation updated
+			// =================================================
+
+			setSelectedConversation(prev => {
+				if (!prev?._id) {
+					return prev;
+				}
+
+				const updatedConversation =
+					newConversations.find(
+						item =>
+							String(item._id) ===
+							String(prev._id)
+					);
+
+				// Conversation no longer exists
+				if (!updatedConversation) {
+					return null;
+				}
+
+				// Update opened conversation
+				return updatedConversation;
+			});
+		} catch (error) {
+			console.error(
+				"Conversation loading error:",
+				error
+			);
+		} finally {
+			setAdminLoading(false);
+		}
+	}, [admin?._id]);
+
+
+	useEffect(() => {
+		fetchConversations();
+	}, [fetchConversations]);
+
+
+	// =========================================================
+	// Total unread support messages for admin
+	// =========================================================
+
+	const totalUnread = supportConversations.reduce(
+		(total, conversation) => {
+			if (!mongoAdmin?._id) return total;
+
+			return (
+				total +
+				Number(
+					conversation?.unreadCount?.[
+					String(mongoAdmin._id)
+					] || 0
+				)
+			);
+		},
+		0
+	);
+
+
+	// =========================================================
+	// Load conversations after admin is available
+	// =========================================================
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			fetchConversations();
+		}, 2000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, [fetchConversations]);
 
 	const menuBtn =
 		"flex items-center justify-between w-full px-5 py-4 rounded-2xl duration-300 hover:bg-[#24160f] hover:text-[#d4af37]";
@@ -381,7 +569,7 @@ const Admin = () => {
 
 						{/* Community */}
 
-						<Link
+						{/* <Link
 							to="/admin/community"
 							className={`${menuBtn} ${activeEffect("community")}`}
 						>
@@ -394,7 +582,7 @@ const Admin = () => {
 
 							</span>
 
-						</Link>
+						</Link> */}
 
 						{/* Users */}
 
@@ -432,7 +620,7 @@ const Admin = () => {
 
 						{/* Messages */}
 
-						<Link
+						{/* <Link
 							to="/admin/messages"
 							className={`${menuBtn} ${activeEffect("messages")}`}
 						>
@@ -441,10 +629,30 @@ const Admin = () => {
 
 								<FaEnvelope />
 
-								Contact Messages
+								Messages
 
 							</span>
 
+						</Link> */}
+
+						<Link
+							to="/admin/contact_messages"
+							className={`${menuBtn} ${activeEffect("contact_messages")}`}
+						>
+							<span className="flex items-center gap-4 w-full">
+								<FaEnvelope />
+
+								<span className="flex-1">
+									Contact Messages
+								</span>
+								{readCount > 0 && (
+									<span className="min-w-5 h-5 px-1.5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+										{totalUnread > 99
+											? "99+"
+											: readCount}
+									</span>
+								)}
+							</span>
 						</Link>
 
 						{/* Settings */}
