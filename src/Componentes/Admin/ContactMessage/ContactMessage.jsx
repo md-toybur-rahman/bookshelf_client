@@ -24,7 +24,7 @@ const ContactMessage = () => {
 
     useEffect(() => {
 
-        fetch("http://localhost:2000/responses")
+        fetch("https://bookshelf-server-zot1.onrender.com/responses")
 
             .then(res => res.json())
 
@@ -84,7 +84,7 @@ const ContactMessage = () => {
 
         try {
 
-            await fetch(`http://localhost:2000/contact/${id}`, {
+            await fetch(`https://bookshelf-server-zot1.onrender.com/contact/${id}`, {
 
                 method: "DELETE",
 
@@ -127,7 +127,7 @@ const ContactMessage = () => {
 
             await fetch(
 
-                `http://localhost:2000/contact/${item._id}`,
+                `https://bookshelf-server-zot1.onrender.com/contact/${item._id}`,
 
                 {
 

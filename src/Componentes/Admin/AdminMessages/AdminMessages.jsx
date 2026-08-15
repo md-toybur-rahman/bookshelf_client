@@ -43,7 +43,7 @@ const AdminMessages = () => {
         try {
             if (conversation.unreadForAdmin > 0) {
                 await fetch(
-                    `http://localhost:2000/conversations/${conversation._id}/read`,
+                    `https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/read`,
                     {
                         method: "PATCH",
                         headers: {

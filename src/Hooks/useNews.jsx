@@ -17,7 +17,7 @@ const useNews = () => {
 		retry: 1,
 		queryFn: async () => {
 
-			const res = await fetch("http://localhost:2000/news");
+			const res = await fetch("https://bookshelf-server-zot1.onrender.com/news");
 
 			if (!res.ok) {
 				throw new Error("Failed to fetch news");

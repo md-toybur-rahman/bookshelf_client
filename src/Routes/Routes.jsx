@@ -52,7 +52,7 @@ const router = createBrowserRouter([
       {
         path: "/book/:id",
         element: <PrivateRoute><BookDetails /></PrivateRoute>,
-        loader: ({ params }) => fetch(`http://localhost:2000/book/${params.id}`)
+        loader: ({ params }) => fetch(`https://bookshelf-server-zot1.onrender.com/book/${params.id}`)
       },
       {
         path: "/events",

@@ -1,12 +1,62 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useNews from '../../../Hooks/useNews';
 import LibraryNewsCard from './LibraryNewsCard';
 import { Link } from 'react-router-dom';
 import { FaNewspaper, FaArrowRight } from 'react-icons/fa';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, FreeMode } from 'swiper/modules';
 
 const LibraryNews = () => {
 
 	const [newses] = useNews();
+
+	const [col, setCol] = useState(1.2);
+
+	useEffect(() => {
+
+		const handleResize = () => {
+
+			const width = window.innerWidth;
+
+			if (width >= 1536) {
+
+				setCol(5);
+
+			} else if (width >= 1280) {
+
+				setCol(3.8);
+
+			} else if (width >= 1024) {
+
+				setCol(2.5);
+
+			} else if (width >= 768) {
+
+				setCol(2);
+
+			} else if (width >= 640) {
+
+				setCol(1.8);
+
+			} else if (width >= 500) {
+
+				setCol(1.6);
+
+			} else {
+
+				setCol(1.6);
+
+			}
+
+		};
+
+		handleResize();
+
+		window.addEventListener("resize", handleResize);
+
+		return () => window.removeEventListener("resize", handleResize);
+
+	}, []);
 
 	const latestNews = [...newses]
 		.sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -14,7 +64,7 @@ const LibraryNews = () => {
 
 	return (
 
-		<section className="relative mt-32 overflow-hidden py-28">
+		<section className="relative md:mt-32 overflow-hidden py-5 md:py-28">
 
 			{/* Background Glow */}
 
@@ -28,7 +78,7 @@ const LibraryNews = () => {
 
 				<div className="text-center max-w-3xl mx-auto">
 
-					<div className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-amber-500/20 bg-white/5 backdrop-blur-xl text-amber-300 font-semibold tracking-wider uppercase text-sm">
+					<div className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-amber-500/20 bg-white/5 backdrop-blur-xl text-amber-300 font-semibold tracking-wider uppercase text-xs md:text-sm">
 
 						<FaNewspaper />
 
@@ -36,7 +86,7 @@ const LibraryNews = () => {
 
 					</div>
 
-					<h2 className="mt-8 text-5xl lg:text-6xl font-black text-white leading-tight">
+					<h2 className="mt-5 md:mt-8 text-3xl lg:text-6xl font-black text-white leading-tight">
 
 						Latest
 
@@ -48,7 +98,7 @@ const LibraryNews = () => {
 
 					</h2>
 
-					<p className="mt-7 text-lg text-gray-400 leading-8">
+					<p className="mt-5 md:mt-7 text-sm md:text-lg text-gray-400 leading-8">
 
 						Discover the latest announcements, book arrivals, special
 						programs and exciting activities happening inside our
@@ -60,7 +110,7 @@ const LibraryNews = () => {
 
 				{/* Cards */}
 
-				<div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10 mt-20">
+				<div className="hidden xl:grid md:grid-cols-2 xl:grid-cols-3 gap-10 mt-20">
 
 					{
 						latestNews.map(news => (
@@ -75,13 +125,41 @@ const LibraryNews = () => {
 
 				</div>
 
+				<div className="block xl:hidden w-full">
+					<Swiper
+						slidesPerView={col}
+						spaceBetween={100}
+						freeMode={true}
+						modules={[FreeMode, Autoplay]}
+						slidesOffsetAfter={100}
+						autoplay={{
+							delay: 2000,
+							disableOnInteraction: false,
+							pauseOnMouseEnter: true,
+						}}
+					>
+
+						{
+							latestNews.map(news => (
+								<SwiperSlide key={news._id}>
+									<LibraryNewsCard
+										key={news._id}
+										news={news}
+									/>
+								</SwiperSlide>
+							))
+						}
+
+					</Swiper>
+				</div>
+
 				{/* Button */}
 
-				<div className="flex justify-center mt-20">
+				<div className="flex justify-center md:mt-20">
 
 					<Link
 						to="/news"
-						className="group inline-flex items-center gap-4 px-9 py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-600 text-[#2a1b08] font-bold text-lg shadow-[0_15px_35px_rgba(255,190,50,.28)] hover:scale-105 duration-300"
+						className="group inline-flex items-center gap-4 px-5 md:px-9 py-3 md:py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-600 text-[#2a1b08] font-bold text-xs md:text-lg shadow-[0_15px_35px_rgba(255,190,50,.28)] hover:scale-105 duration-300"
 					>
 
 						View All News

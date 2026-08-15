@@ -55,7 +55,7 @@ const MyProfile = () => {
 
         if (!user?.email) return;
 
-        fetch(`http://localhost:2000/users/${user.email}`)
+        fetch(`https://bookshelf-server-zot1.onrender.com/users/${user.email}`)
 
             .then(res => res.json())
 
@@ -138,7 +138,7 @@ const MyProfile = () => {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                `http://localhost:2000/users/profile_image/${profile?.email}`,
+                `https://bookshelf-server-zot1.onrender.com/users/profile_image/${profile?.email}`,
                 {
                     method: "PUT",
                     headers: {
@@ -226,7 +226,7 @@ const MyProfile = () => {
 
             const res = await fetch(
 
-                `http://localhost:2000/users/${profile?.email}`,
+                `https://bookshelf-server-zot1.onrender.com/users/${profile?.email}`,
 
                 {
 
@@ -345,15 +345,15 @@ const MyProfile = () => {
 
             <div className="container mx-auto">
 
-                <div className="relative text-center mb-20">
+                <div className="relative text-center mb-10 md:mb-20">
 
-                    <div className="mx-auto w-24 h-24 rounded-full bg-gradient-to-br from-amber-300 to-yellow-700 flex justify-center items-center shadow-[0_0_60px_rgba(212,175,55,.4)]">
+                    <div className="mx-auto w-12 h-12 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-amber-300 to-yellow-700 flex justify-center items-center shadow-[0_0_60px_rgba(212,175,55,.4)]">
 
-                        <FaUser className="text-4xl text-black" />
+                        <FaUser className="text-2xl md:text-4xl text-black" />
 
                     </div>
 
-                    <h1 className="mt-8 text-6xl lg:text-8xl font-black leading-none text-white">
+                    <h1 className="mt-5 md:mt-8 text-3xl lg:text-8xl font-black leading-none text-white">
 
                         <span className="block bg-gradient-to-r from-amber-300 via-yellow-500 to-orange-500 bg-clip-text text-transparent">
 

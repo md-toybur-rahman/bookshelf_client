@@ -37,7 +37,7 @@ const Cart = () => {
 
         if (!user?.email) return;
 
-        fetch(`http://localhost:2000/cart/${user.email}`, {
+        fetch(`https://bookshelf-server-zot1.onrender.com/cart/${user.email}`, {
 
             headers: {
 
@@ -167,7 +167,7 @@ const Cart = () => {
 
         fetch(
 
-            `http://localhost:2000/cart/${user.email}/${_id}`,
+            `https://bookshelf-server-zot1.onrender.com/cart/${user.email}/${_id}`,
 
             {
 
@@ -263,7 +263,7 @@ const Cart = () => {
 
     return (
 
-        <section className="relative min-h-screen overflow-hidden py-20">
+        <section className="relative min-h-screen overflow-hidden py-10 md:py-20">
 
             {/* Background */}
 
@@ -277,15 +277,15 @@ const Cart = () => {
 
                 {/* Hero */}
 
-                <div className="text-center mb-20">
+                <div className="text-center mb-10 md:mb-20">
 
-                    <div className="mx-auto w-24 h-24 rounded-full bg-gradient-to-br from-amber-300 to-yellow-700 flex justify-center items-center shadow-[0_0_60px_rgba(212,175,55,.4)]">
+                    <div className="mx-auto w-12 h-12 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-amber-300 to-yellow-700 flex justify-center items-center shadow-[0_0_60px_rgba(212,175,55,.4)]">
 
-                        <FaShoppingBag className="text-4xl text-black" />
+                        <FaShoppingBag className="text-2xl md:text-4xl text-black" />
 
                     </div>
 
-                    <h1 className="mt-8 text-6xl lg:text-8xl font-black leading-none text-white">
+                    <h1 className="mt-5 md:mt-8 text-3xl lg:text-8xl font-black leading-none text-white">
 
                         <span className="block bg-gradient-to-r from-amber-300 via-yellow-500 to-orange-500 bg-clip-text text-transparent">
 
@@ -295,7 +295,7 @@ const Cart = () => {
 
                     </h1>
 
-                    <p className="mt-6 max-w-2xl mx-auto text-slate-400">
+                    <p className="mt-3 md:mt-6 max-w-2xl mx-auto text-slate-400">
 
                         Review every selected book before completing your purchase.
 
@@ -364,7 +364,7 @@ const Cart = () => {
 
                                             <div className="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-yellow-400/10 blur-[110px]" />
 
-                                            <div className="relative z-10 flex flex-col md:flex-row gap-8">
+                                            <div className="relative z-10 flex flex-row gap-8">
 
                                                 <img
 
@@ -372,7 +372,7 @@ const Cart = () => {
 
                                                     alt={book?.book_name}
 
-                                                    className="w-44 h-64 rounded-2xl object-cover shadow-2xl transition duration-500 group-hover:scale-105 group-hover:rotate-2"
+                                                    className="md:w-44 w-20 h-24 md:h-64 rounded-2xl object-cover shadow-2xl transition duration-500 group-hover:scale-105 group-hover:rotate-2"
 
                                                 />
 
@@ -384,29 +384,29 @@ const Cart = () => {
 
                                                     </span>
 
-                                                    <h2 className="mt-5 text-3xl font-black">
+                                                    <h2 className="mt-2 md:mt-5 text-lg md:text-3xl font-black">
 
                                                         {book?.book_name}
 
                                                     </h2>
 
-                                                    <p className="mt-3 text-slate-400">
+                                                    <p className="md:mt-3 text-slate-400 text-xs md:text-base">
 
                                                         {book?.author_name}
 
                                                     </p>
 
-                                                    <div className="mt-10 flex flex-wrap gap-10">
+                                                    <div className="mt-5 md:mt-10 hidden md:flex flex-wrap gap-2 md:gap-10">
 
                                                         <div>
 
-                                                            <p className="text-slate-500">
+                                                            <p className="text-slate-500 text-xs md:text-base">
 
                                                                 Price
 
                                                             </p>
 
-                                                            <h3 className="text-amber-300 text-3xl font-black">
+                                                            <h3 className="text-amber-300 text-lg md:text-3xl font-black">
 
                                                                 ${book?.price}
 
@@ -414,15 +414,16 @@ const Cart = () => {
 
                                                         </div>
 
+
                                                         <div>
 
-                                                            <p className="text-slate-500">
+                                                            <p className="text-slate-500 text-xs md:text-base">
 
                                                                 Quantity
 
                                                             </p>
 
-                                                            <div className="mt-3 flex items-center gap-3">
+                                                            <div className="mt-3 flex items-center md:gap-3">
 
                                                                 <button
 
@@ -436,7 +437,7 @@ const Cart = () => {
 
                                                                 </button>
 
-                                                                <span className="text-2xl font-bold w-8 text-center">
+                                                                <span className="md:text-2xl font-bold w-8 text-center">
 
                                                                     {book?.quantity}
 
@@ -457,12 +458,11 @@ const Cart = () => {
                                                             </div>
 
                                                         </div>
-
                                                     </div>
 
                                                 </div>
 
-                                                <div className="flex items-end">
+                                                <div className="hidden md:flex items-end">
 
                                                     <button
 
@@ -482,6 +482,70 @@ const Cart = () => {
 
                                             </div>
 
+                                            <div className="mt-5 flex md:hidden justify-between items-end flex-wrap gap-2 md:gap-10">
+
+                                                <div>
+
+                                                    <p className="text-slate-500 text-xs md:text-base">
+
+                                                        Quantity
+
+                                                    </p>
+
+                                                    <div className="mt-3 flex items-center md:gap-3">
+
+                                                        <button
+
+                                                            onClick={() => decreaseQuantity(book?._id)}
+
+                                                            className="w-11 h-11 rounded-xl border border-amber-500/20 hover:bg-amber-400 hover:text-black duration-300 flex items-center justify-center"
+
+                                                        >
+
+                                                            <FaMinus />
+
+                                                        </button>
+
+                                                        <span className="md:text-2xl font-bold w-8 text-center">
+
+                                                            {book?.quantity}
+
+                                                        </span>
+
+                                                        <button
+
+                                                            onClick={() => increaseQuantity(book?._id)}
+
+                                                            className="w-11 h-11 rounded-xl border border-amber-500/20 hover:bg-amber-400 hover:text-black duration-300 flex items-center justify-center"
+
+                                                        >
+
+                                                            <FaPlus />
+
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+                                                <div className="flex items-end justify-end">
+
+                                                    <button
+
+                                                        onClick={() => removeBook(book?._id)}
+
+                                                        className="flex items-center gap-3 px-3 md:px-6 py-2 md:py-4 rounded-xl border border-red-500/30 hover:bg-red-500 duration-300"
+
+                                                    >
+
+                                                        <FaTrashAlt />
+
+                                                        Remove
+
+                                                    </button>
+
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                     ))
@@ -496,13 +560,13 @@ const Cart = () => {
 
                                 <div className="sticky top-24 rounded-[34px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#19130e] to-[#130f0d] p-8 shadow-[0_20px_60px_rgba(0,0,0,.45)]">
 
-                                    <h2 className="text-4xl font-black">
+                                    <h2 className="text-2xl md:text-4xl font-black">
 
                                         Order Summary
 
                                     </h2>
 
-                                    <div className="mt-10 space-y-6">
+                                    <div className="mt-5 md:mt-10 space-y-6 text-xs md:text-base">
 
                                         <div className="flex justify-between">
 
@@ -536,7 +600,7 @@ const Cart = () => {
 
                                         </div>
 
-                                        <div className="border-t border-amber-500/20 pt-6 flex justify-between text-3xl font-black">
+                                        <div className="border-t border-amber-500/20 pt-6 flex justify-between text-xl md:text-3xl font-black">
 
                                             <span>Total</span>
 
@@ -552,7 +616,7 @@ const Cart = () => {
 
                                     <button
 
-                                        className="w-full mt-10 py-5 rounded-2xl bg-gradient-to-r from-amber-300 via-yellow-500 to-yellow-700 text-black font-black text-lg hover:scale-[1.03] duration-300"
+                                        className="w-full mt-5 md:mt-10 py-3 md:py-5 rounded-2xl bg-gradient-to-r from-amber-300 via-yellow-500 to-yellow-700 text-black font-black text-base md:text-lg hover:scale-[1.03] duration-300"
 
                                     >
 

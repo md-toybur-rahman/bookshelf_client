@@ -37,7 +37,7 @@ const AdminSupportMessages = () => {
     // API
     // =========================================================
 
-    const API_URL = "http://localhost:2000";
+    const API_URL = "https://bookshelf-server-zot1.onrender.com";
 
     // =========================================================
     // Load MongoDB Admin

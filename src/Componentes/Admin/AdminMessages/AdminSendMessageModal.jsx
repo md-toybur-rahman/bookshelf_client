@@ -27,7 +27,7 @@ const AdminSendMessageModal = ({
 			setSending(true);
 
 			const res = await fetch(
-				"http://localhost:2000/conversations/start",
+				"https://bookshelf-server-zot1.onrender.com/conversations/start",
 				{
 					method: "POST",
 					headers: {

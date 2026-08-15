@@ -14,7 +14,7 @@ const MessageRequests = () => {
 
 		try {
 			const res = await fetch(
-				`http://localhost:2000/message-requests/${user._id}`
+				`https://bookshelf-server-zot1.onrender.com/message-requests/${user._id}`
 			);
 
 			const data = await res.json();
@@ -34,7 +34,7 @@ const MessageRequests = () => {
 						try {
 							const userRes =
 								await fetch(
-									`http://localhost:2000/users/${request.senderId}`
+									`https://bookshelf-server-zot1.onrender.com/users/${request.senderId}`
 								);
 
 							const userData =
@@ -74,7 +74,7 @@ const MessageRequests = () => {
 			setProcessing(requestId);
 
 			const res = await fetch(
-				`http://localhost:2000/message-requests/${requestId}/${action}`,
+				`https://bookshelf-server-zot1.onrender.com/message-requests/${requestId}/${action}`,
 				{
 					method: "PATCH",
 					headers: {

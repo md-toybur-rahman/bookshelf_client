@@ -85,7 +85,7 @@ const BookDetails = () => {
 				comment: reviewComment,
 			};
 
-			const res = await fetch(`http://localhost:2000/books/review/${_id}`, {
+			const res = await fetch(`https://bookshelf-server-zot1.onrender.com/books/review/${_id}`, {
 				method: "PATCH",
 				headers: {
 					"content-type": "application/json",
@@ -141,7 +141,7 @@ const BookDetails = () => {
 				book: book[0]._id
 			};
 
-			const res = await fetch("http://localhost:2000/cart", {
+			const res = await fetch("https://bookshelf-server-zot1.onrender.com/cart", {
 
 				method: "POST",
 

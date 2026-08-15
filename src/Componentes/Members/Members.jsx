@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../Providers/AuthProvider";
 import useMessages from "../../Hooks/useMessages";
 
-const API_URL = "http://localhost:2000";
+const API_URL = "https://bookshelf-server-zot1.onrender.com";
 
 const Members = () => {
     const { user } = useContext(AuthContext);

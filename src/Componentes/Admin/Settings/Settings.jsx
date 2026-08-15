@@ -137,7 +137,7 @@ const Settings = () => {
 
     useEffect(() => {
 
-        fetch("http://localhost:2000/settings")
+        fetch("https://bookshelf-server-zot1.onrender.com/settings")
 
             .then(res => res.json())
 
@@ -180,7 +180,7 @@ const Settings = () => {
 
             setLoading(true);
 
-            await fetch("http://localhost:2000/settings", {
+            await fetch("https://bookshelf-server-zot1.onrender.com/settings", {
 
                 method: "PUT",
 
@@ -231,37 +231,37 @@ const Settings = () => {
 
     return (
 
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full max-w-7xl mx-auto px-0 sm:px-2">
 
             {/* Header */}
 
-            <div className="relative overflow-hidden rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-10 mb-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
+            <div className="relative overflow-hidden rounded-2xl sm:rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-5 sm:p-7 lg:p-10 mb-6 sm:mb-8 lg:mb-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
 
-                <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-amber-500/10 blur-[120px]" />
+                <div className="absolute -right-20 sm:-right-24 -top-20 sm:-top-24 w-48 sm:w-72 lg:w-80 h-48 sm:h-72 lg:h-80 rounded-full bg-amber-500/10 blur-[80px] sm:blur-[120px]" />
 
-                <div className="flex items-center gap-6">
+                <div className="relative flex flex-col sm:flex-row items-center sm:items-center gap-5 sm:gap-6 lg:gap-8 text-center sm:text-left">
 
-                    <div className="w-20 h-20 rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center shadow-[0_0_35px_rgba(251,191,36,.25)]">
 
-                        <FaCog className="text-4xl text-slate-900" />
+                        <FaCog className="text-3xl sm:text-4xl text-slate-900" />
 
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
 
-                        <p className="uppercase tracking-[5px] text-amber-400">
+                        <p className="uppercase tracking-[3px] sm:tracking-[5px] text-amber-400 text-xs sm:text-sm">
 
                             Bookshelf Admin
 
                         </p>
 
-                        <h1 className="text-5xl font-black text-white">
+                        <h1 className="mt-1 sm:mt-0 text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
 
                             Website Settings
 
                         </h1>
 
-                        <p className="mt-2 text-slate-400">
+                        <p className="mt-2 text-sm sm:text-base text-slate-400 leading-6">
 
                             Manage your entire Bookshelf platform from one place.
 
@@ -273,81 +273,94 @@ const Settings = () => {
 
             </div>
 
-            <div className="grid lg:grid-cols-12 gap-8">
+
+            {/* Main Layout */}
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8">
 
                 {/* Left Menu */}
 
-                <div className="lg:col-span-3">
+                <div className="lg:col-span-3 min-w-0">
 
-                    <div className="sticky top-24 rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-5">
+                    <div className="lg:sticky lg:top-24 rounded-2xl sm:rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-3 sm:p-4 lg:p-5">
 
-                        {
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3">
 
-                            menu.map(item => {
+                            {
+                                menu.map(item => {
 
-                                const Icon = item.icon;
+                                    const Icon = item.icon;
 
-                                return (
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={item.id}
+                                            onClick={() => setActiveTab(item.id)}
+                                            className={`w-full min-w-0 flex items-center ${activeTab === item.id
+                                                ? "justify-center"
+                                                : "justify-start"
+                                                } gap-2 sm:gap-3 lg:gap-4 px-3 sm:px-4 lg:px-5 py-3 sm:py-3.5 lg:py-4 rounded-xl sm:rounded-2xl text-xs sm:text-sm lg:text-base font-semibold duration-300 ${activeTab === item.id
+                                                    ? "bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900"
+                                                    : "text-slate-300 hover:bg-white/5"
+                                                }`}
+                                        >
+                                            <div
+                                                className={`
+            flex items-center gap-2 sm:gap-3 lg:gap-4
+            transition-all duration-500 ease-out
+            ${activeTab === item.id
+                                                        ? "translate-x-0"
+                                                        : "translate-x-0"
+                                                    }
+        `}
+                                            >
+                                                <Icon className="shrink-0 text-base sm:text-lg" />
 
-                                    <button
+                                                <span className="truncate">
+                                                    {item.name}
+                                                </span>
+                                            </div>
+                                        </button>
 
-                                        key={item.id}
+                                    );
 
-                                        onClick={() => setActiveTab(item.id)}
+                                })
 
-                                        className={`w-full mb-3 flex items-center gap-4 px-5 py-4 rounded-2xl font-semibold duration-300 ${activeTab === item.id
+                            }
 
-                                                ? "bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900"
-
-                                                : "text-slate-300 hover:bg-white/5"
-
-                                            }`}
-
-                                    >
-
-                                        <Icon />
-
-                                        {item.name}
-
-                                    </button>
-
-                                );
-
-                            })
-
-                        }
+                        </div>
 
                     </div>
 
                 </div>
 
+
                 {/* Right Panel */}
 
-                <div className="lg:col-span-9">
+                <div className="lg:col-span-9 min-w-0">
 
-                    <div className="rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
+                    <div className="rounded-2xl sm:rounded-[30px] lg:rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-5 sm:p-7 lg:p-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
 
                         {/* ---------------- GENERAL ---------------- */}
 
                         {
-
                             activeTab === "general" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         Library Information
 
                                     </h2>
 
-                                    <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
 
                                         <input
                                             name="library_name"
                                             value={settings.library_name}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Library Name"
                                         />
 
@@ -355,7 +368,7 @@ const Settings = () => {
                                             name="logo"
                                             value={settings.logo}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Logo URL"
                                         />
 
@@ -363,7 +376,7 @@ const Settings = () => {
                                             name="email"
                                             value={settings.email}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Email"
                                         />
 
@@ -371,7 +384,7 @@ const Settings = () => {
                                             name="phone"
                                             value={settings.phone}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Phone"
                                         />
 
@@ -379,7 +392,7 @@ const Settings = () => {
                                             name="opening_time"
                                             value={settings.opening_time}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Opening Time"
                                         />
 
@@ -387,7 +400,7 @@ const Settings = () => {
                                             name="closing_time"
                                             value={settings.closing_time}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Closing Time"
                                         />
 
@@ -395,7 +408,7 @@ const Settings = () => {
                                             name="address"
                                             value={settings.address}
                                             onChange={handleChange}
-                                            className={`${inputStyle} md:col-span-2 resize-none`}
+                                            className={`${inputStyle} md:col-span-2 w-full resize-none`}
                                             rows={4}
                                             placeholder="Library Address"
                                         />
@@ -405,30 +418,29 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
+
 
                         {/* Homepage */}
 
                         {
-
                             activeTab === "homepage" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         Homepage Settings
 
                                     </h2>
 
-                                    <div className="grid gap-6">
+                                    <div className="grid gap-4 sm:gap-6">
 
                                         <input
                                             name="hero_title"
                                             value={settings.hero_title}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Hero Title"
                                         />
 
@@ -436,7 +448,7 @@ const Settings = () => {
                                             name="hero_subtitle"
                                             value={settings.hero_subtitle}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Hero Subtitle"
                                         />
 
@@ -444,7 +456,7 @@ const Settings = () => {
                                             name="hero_button_text"
                                             value={settings.hero_button_text}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Hero Button Text"
                                         />
 
@@ -452,7 +464,7 @@ const Settings = () => {
                                             name="hero_button_link"
                                             value={settings.hero_button_link}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Hero Button Link"
                                         />
 
@@ -461,29 +473,29 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
+
+
                         {/* Contact */}
 
                         {
-
                             activeTab === "contact" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         Contact Information
 
                                     </h2>
 
-                                    <div className="grid gap-6">
+                                    <div className="grid gap-4 sm:gap-6">
 
                                         <input
                                             name="contact_email"
                                             value={settings.contact_email}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Contact Email"
                                         />
 
@@ -491,7 +503,7 @@ const Settings = () => {
                                             name="contact_phone"
                                             value={settings.contact_phone}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Contact Phone"
                                         />
 
@@ -499,7 +511,7 @@ const Settings = () => {
                                             name="google_map"
                                             value={settings.google_map}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Google Map Link"
                                         />
 
@@ -508,7 +520,7 @@ const Settings = () => {
                                             name="contact_address"
                                             value={settings.contact_address}
                                             onChange={handleChange}
-                                            className={`${inputStyle} resize-none`}
+                                            className={`${inputStyle} w-full resize-none`}
                                             placeholder="Office Address"
                                         />
 
@@ -517,26 +529,25 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
+
 
                         {/* Theme */}
 
                         {
-
                             activeTab === "theme" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         Theme Settings
 
                                     </h2>
 
-                                    <div className="grid md:grid-cols-3 gap-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
 
-                                        <div>
+                                        <div className="min-w-0">
 
                                             <label className="block text-amber-300 mb-3">
 
@@ -549,12 +560,12 @@ const Settings = () => {
                                                 name="primary_color"
                                                 value={settings.primary_color}
                                                 onChange={handleChange}
-                                                className="w-full h-20 rounded-2xl bg-transparent"
+                                                className="w-full h-16 sm:h-20 rounded-2xl bg-transparent cursor-pointer"
                                             />
 
                                         </div>
 
-                                        <div>
+                                        <div className="min-w-0">
 
                                             <label className="block text-amber-300 mb-3">
 
@@ -567,12 +578,12 @@ const Settings = () => {
                                                 name="secondary_color"
                                                 value={settings.secondary_color}
                                                 onChange={handleChange}
-                                                className="w-full h-20 rounded-2xl bg-transparent"
+                                                className="w-full h-16 sm:h-20 rounded-2xl bg-transparent cursor-pointer"
                                             />
 
                                         </div>
 
-                                        <div>
+                                        <div className="min-w-0">
 
                                             <label className="block text-amber-300 mb-3">
 
@@ -585,7 +596,7 @@ const Settings = () => {
                                                 name="accent_color"
                                                 value={settings.accent_color}
                                                 onChange={handleChange}
-                                                className="w-full h-20 rounded-2xl bg-transparent"
+                                                className="w-full h-16 sm:h-20 rounded-2xl bg-transparent cursor-pointer"
                                             />
 
                                         </div>
@@ -595,30 +606,29 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
+
 
                         {/* Statistics */}
 
                         {
-
                             activeTab === "statistics" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         Homepage Statistics
 
                                     </h2>
 
-                                    <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
 
                                         <input
                                             name="total_books"
                                             value={settings.total_books}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Total Books"
                                         />
 
@@ -626,7 +636,7 @@ const Settings = () => {
                                             name="total_members"
                                             value={settings.total_members}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Total Members"
                                         />
 
@@ -634,7 +644,7 @@ const Settings = () => {
                                             name="total_events"
                                             value={settings.total_events}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Total Events"
                                         />
 
@@ -642,7 +652,7 @@ const Settings = () => {
                                             name="total_awards"
                                             value={settings.total_awards}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Total Awards"
                                         />
 
@@ -651,29 +661,29 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
+
+
                         {/* Social */}
 
                         {
-
                             activeTab === "social" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         Social Media
 
                                     </h2>
 
-                                    <div className="grid gap-6">
+                                    <div className="grid gap-4 sm:gap-6">
 
                                         <input
                                             name="facebook"
                                             value={settings.facebook}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Facebook URL"
                                         />
 
@@ -681,7 +691,7 @@ const Settings = () => {
                                             name="instagram"
                                             value={settings.instagram}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Instagram URL"
                                         />
 
@@ -689,7 +699,7 @@ const Settings = () => {
                                             name="linkedin"
                                             value={settings.linkedin}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="LinkedIn URL"
                                         />
 
@@ -697,7 +707,7 @@ const Settings = () => {
                                             name="youtube"
                                             value={settings.youtube}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="YouTube URL"
                                         />
 
@@ -705,7 +715,7 @@ const Settings = () => {
                                             name="github"
                                             value={settings.github}
                                             onChange={handleChange}
-                                            className={inputStyle}
+                                            className={`${inputStyle} w-full min-w-0`}
                                             placeholder="Github URL"
                                         />
 
@@ -714,31 +724,30 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
+
 
                         {/* About */}
 
                         {
-
                             activeTab === "about" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         About Library
 
                                     </h2>
 
-                                    <div className="grid gap-6">
+                                    <div className="grid gap-4 sm:gap-6">
 
                                         <textarea
                                             rows={5}
                                             name="mission"
                                             value={settings.mission}
                                             onChange={handleChange}
-                                            className={`${inputStyle} resize-none`}
+                                            className={`${inputStyle} w-full resize-none`}
                                             placeholder="Mission"
                                         />
 
@@ -747,7 +756,7 @@ const Settings = () => {
                                             name="vision"
                                             value={settings.vision}
                                             onChange={handleChange}
-                                            className={`${inputStyle} resize-none`}
+                                            className={`${inputStyle} w-full resize-none`}
                                             placeholder="Vision"
                                         />
 
@@ -756,7 +765,7 @@ const Settings = () => {
                                             name="history"
                                             value={settings.history}
                                             onChange={handleChange}
-                                            className={`${inputStyle} resize-none`}
+                                            className={`${inputStyle} w-full resize-none`}
                                             placeholder="History"
                                         />
 
@@ -765,28 +774,27 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
+
 
                         {/* Notification */}
 
                         {
-
                             activeTab === "notification" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         Notification Settings
 
                                     </h2>
 
-                                    <div className="space-y-6">
+                                    <div className="space-y-3 sm:space-y-4">
 
-                                        <label className="flex items-center justify-between rounded-2xl border border-amber-500/20 bg-[#1d140f] px-6 py-5">
+                                        <label className="flex items-center justify-between gap-4 rounded-2xl border border-amber-500/20 bg-[#1d140f] px-4 sm:px-6 py-4 sm:py-5">
 
-                                            <span className="text-white font-semibold">
+                                            <span className="text-white font-semibold text-sm sm:text-base">
 
                                                 Enable Contact Email
 
@@ -797,14 +805,14 @@ const Settings = () => {
                                                 name="contact_notification"
                                                 checked={settings.contact_notification}
                                                 onChange={handleChange}
-                                                className="w-6 h-6 accent-amber-500"
+                                                className="w-5 h-5 sm:w-6 sm:h-6 accent-amber-500 shrink-0"
                                             />
 
                                         </label>
 
-                                        <label className="flex items-center justify-between rounded-2xl border border-amber-500/20 bg-[#1d140f] px-6 py-5">
+                                        <label className="flex items-center justify-between gap-4 rounded-2xl border border-amber-500/20 bg-[#1d140f] px-4 sm:px-6 py-4 sm:py-5">
 
-                                            <span className="text-white font-semibold">
+                                            <span className="text-white font-semibold text-sm sm:text-base">
 
                                                 Enable Newsletter
 
@@ -815,14 +823,14 @@ const Settings = () => {
                                                 name="newsletter"
                                                 checked={settings.newsletter}
                                                 onChange={handleChange}
-                                                className="w-6 h-6 accent-amber-500"
+                                                className="w-5 h-5 sm:w-6 sm:h-6 accent-amber-500 shrink-0"
                                             />
 
                                         </label>
 
-                                        <label className="flex items-center justify-between rounded-2xl border border-amber-500/20 bg-[#1d140f] px-6 py-5">
+                                        <label className="flex items-center justify-between gap-4 rounded-2xl border border-amber-500/20 bg-[#1d140f] px-4 sm:px-6 py-4 sm:py-5">
 
-                                            <span className="text-white font-semibold">
+                                            <span className="text-white font-semibold text-sm sm:text-base">
 
                                                 Event Reminder
 
@@ -833,7 +841,7 @@ const Settings = () => {
                                                 name="event_notification"
                                                 checked={settings.event_notification}
                                                 onChange={handleChange}
-                                                className="w-6 h-6 accent-amber-500"
+                                                className="w-5 h-5 sm:w-6 sm:h-6 accent-amber-500 shrink-0"
                                             />
 
                                         </label>
@@ -843,28 +851,27 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
+
 
                         {/* Security */}
 
                         {
-
                             activeTab === "security" && (
 
                                 <div>
 
-                                    <h2 className="text-3xl font-black text-white mb-8">
+                                    <h2 className="text-2xl sm:text-3xl font-black text-white mb-6 sm:mb-8">
 
                                         Security
 
                                     </h2>
 
-                                    <div className="space-y-6">
+                                    <div className="space-y-4">
 
-                                        <label className="flex items-center justify-between rounded-2xl border border-red-500/20 bg-[#1d140f] px-6 py-5">
+                                        <label className="flex items-center justify-between gap-4 rounded-2xl border border-red-500/20 bg-[#1d140f] px-4 sm:px-6 py-4 sm:py-5">
 
-                                            <span className="text-white font-semibold">
+                                            <span className="text-white font-semibold text-sm sm:text-base">
 
                                                 Maintenance Mode
 
@@ -875,7 +882,7 @@ const Settings = () => {
                                                 name="maintenance"
                                                 checked={settings.maintenance}
                                                 onChange={handleChange}
-                                                className="w-6 h-6 accent-red-500"
+                                                className="w-5 h-5 sm:w-6 sm:h-6 accent-red-500 shrink-0"
                                             />
 
                                         </label>
@@ -885,29 +892,29 @@ const Settings = () => {
                                 </div>
 
                             )
-
                         }
 
-                        <div className="mt-12 flex justify-end">
+
+                        {/* Save */}
+
+                        <div className="mt-8 sm:mt-10 lg:mt-12">
 
                             <button
 
+                                type="button"
+
                                 onClick={handleSave}
 
-                                className="px-10 py-5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-black text-lg flex items-center gap-4 hover:scale-105 duration-300"
+                                className="w-full sm:w-auto sm:ml-auto px-7 sm:px-10 py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-black text-base sm:text-lg flex items-center justify-center gap-3 sm:gap-4 hover:scale-[1.02] sm:hover:scale-105 duration-300"
 
                             >
 
                                 <FaSave />
 
                                 {
-
                                     loading
-
                                         ? "Saving..."
-
                                         : "Save All Settings"
-
                                 }
 
                             </button>

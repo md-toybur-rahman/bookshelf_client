@@ -16,7 +16,7 @@ const useConversations = () => {
 
         try {
             const res = await fetch(
-                `http://localhost:2000/conversations/user/${user._id}`
+                `https://bookshelf-server-zot1.onrender.com/conversations/user/${user._id}`
             );
 
             if (!res.ok) {

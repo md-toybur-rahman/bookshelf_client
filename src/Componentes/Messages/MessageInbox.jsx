@@ -84,7 +84,7 @@ const MessageInbox = () => {
             };
 
             const res = await fetch(
-                `http://localhost:2000/conversations/${selectedConversation._id}/message`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${selectedConversation._id}/message`,
                 {
                     method: "PATCH",
                     headers: {

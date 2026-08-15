@@ -20,7 +20,7 @@ const useUserRole = () => {
         retry: 1,
         queryFn: async () => {
             const res = await axios.get(
-                `http://localhost:2000/users/${user?.email}`
+                `https://bookshelf-server-zot1.onrender.com/users/${user?.email}`
             );
 
             return res.data?.[0]?.type || "";

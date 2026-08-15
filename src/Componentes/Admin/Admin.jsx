@@ -18,6 +18,9 @@ import {
 	FaHome,
 	FaSignOutAlt,
 	FaShoppingCart,
+	FaTimes,
+	FaBars,
+	FaBookOpen,
 } from "react-icons/fa";
 import { AuthContext } from "../../Providers/AuthProvider";
 
@@ -63,7 +66,7 @@ const Admin = () => {
 			setAdminLoading(true);
 
 			const res = await fetch(
-				`http://localhost:2000/users/${encodeURIComponent(
+				`https://bookshelf-server-zot1.onrender.com/users/${encodeURIComponent(
 					user.email
 				)}`
 			);
@@ -115,7 +118,7 @@ const Admin = () => {
 	const fetchConversations = useCallback(async () => {
 		try {
 			const res = await fetch(
-				"http://localhost:2000/conversations/support"
+				"https://bookshelf-server-zot1.onrender.com/conversations/support"
 			);
 
 			if (!res.ok) {
@@ -245,189 +248,163 @@ const Admin = () => {
 	};
 
 	return (
-
 		<div className="min-h-screen bg-[#120d09] text-[#f8ead7]">
 
-			{/* Overlay */}
+			{/* =================================================
+            MOBILE OVERLAY
+        ================================================= */}
 
-			{
-				sidebarOpen && (
+			{sidebarOpen && (
+				<div
+					onClick={() => setSidebarOpen(false)}
+					className="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-40 lg:hidden"
+				/>
+			)}
 
-					<div
+			<div className="flex min-h-screen">
 
-						onClick={() => setSidebarOpen(false)}
-
-						className="fixed inset-0 bg-black/60 z-40 lg:hidden"
-
-					/>
-
-				)
-			}
-
-			<div className="flex">
-
-				{/* Sidebar */}
+				{/* =================================================
+                SIDEBAR
+            ================================================= */}
 
 				<aside
-
 					className={`
-
-                    fixed
-
-                    lg:static
-
+                    fixed lg:sticky
                     z-50
-
-                    top-0
-
-                    left-0
-
+                    top-0 left-0
                     h-screen
-
-                    w-[310px]
+                    w-[85vw] max-w-[310px] lg:w-[310px]
+                    shrink-0
+                    flex flex-col
 
                     bg-gradient-to-b
-
                     from-[#1d140f]
-
                     via-[#17100c]
-
                     to-[#120d09]
 
                     border-r
-
                     border-[#3d2c21]
-
-                    duration-300
 
                     shadow-[0_0_40px_rgba(0,0,0,.45)]
 
-                    ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+                    transform
+                    transition-transform
+                    duration-300
+                    ease-out
 
+                    ${sidebarOpen
+							? "translate-x-0"
+							: "-translate-x-full lg:translate-x-0"
+						}
                 `}
-
+					onClick={e => e.stopPropagation()}
 				>
 
-					{/* Logo */}
+					{/* =================================================
+                    LOGO
+                ================================================= */}
 
-					<div className="py-10 px-6 text-center border-b border-[#3b2a1e]">
+					<div className="shrink-0 py-6 sm:py-8 lg:py-10 px-4 sm:px-6 text-center border-b border-[#3b2a1e]">
 
-						<img
+						<div className="flex items-center justify-center">
+							<div className="flex h-12 md:h-16 w-12 md:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#d4af37] to-[#b8860b] text-2xl md:text-3xl text-[#1c1612]">
 
-							src="https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png"
+								<FaBookOpen />
 
-							className="w-24 mx-auto"
+							</div>
+						</div>
 
-						/>
-
-						<h2 className="mt-5 text-2xl font-bold bg-gradient-to-r from-[#f6d778] to-[#b8860b] bg-clip-text text-transparent">
-
+						<h2 className="mt-3 sm:mt-5 text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#f6d778] to-[#b8860b] bg-clip-text text-transparent">
 							Bookshelf Admin
-
 						</h2>
 
-						<p className="text-sm text-[#8f7a66] mt-2">
-
+						<p className="text-xs sm:text-sm text-[#8f7a66] mt-1.5 sm:mt-2">
 							Library Management Panel
-
 						</p>
 
 					</div>
 
-					{/* Navigation */}
 
-					<div className="px-4 py-6 space-y-2 overflow-y-auto h-[calc(100vh-170px)]">
+					{/* =================================================
+                    NAVIGATION
+                ================================================= */}
+
+					<div className="flex-1 min-h-0 px-3 sm:px-4 py-4 sm:py-6 space-y-2 overflow-y-auto">
 
 						{/* Dashboard */}
 
 						<Link
-
 							to="/admin"
-
-							className={`${menuBtn} ${location.pathname === "/admin"
-
-								? "bg-[#2c2016] text-[#d4af37]"
-
-								: ""
-
-								}`}
-
+							onClick={() => setSidebarOpen(false)}
+							className={`
+                            ${menuBtn}
+                            ${location.pathname === "/admin"
+									? "bg-[#2c2016] text-[#d4af37]"
+									: ""
+								}
+                        `}
 						>
-
-							<span className="flex items-center gap-4">
-
+							<span className="flex items-center gap-3 sm:gap-4">
 								<FaChartPie />
-
-								Dashboard
-
+								<span>Dashboard</span>
 							</span>
-
 						</Link>
 
-						{/* Book */}
+
+						{/* =================================================
+                        BOOK MANAGEMENT
+                    ================================================= */}
 
 						<div>
 
 							<button
-
-								onClick={() => toggleMenu("book")}
-
-								className={`${menuBtn}`}
-
+								onClick={e => {
+									e.stopPropagation();
+									toggleMenu("book");
+								}}
+								className={menuBtn}
 							>
 
-								<span className="flex items-center gap-4">
-
+								<span className="flex items-center gap-3 sm:gap-4 min-w-0">
 									<FaBook />
-
-									Book Management
-
+									<span className="truncate">
+										Book Management
+									</span>
 								</span>
 
-								{
-
-									openMenu === "book"
-
-										?
-
-										<FaChevronDown />
-
-										:
-
-										<FaChevronRight />
-
-								}
+								{openMenu === "book" ? (
+									<FaChevronDown className="shrink-0" />
+								) : (
+									<FaChevronRight className="shrink-0" />
+								)}
 
 							</button>
 
+
 							<div
-
-								className={`overflow-hidden duration-300 ${openMenu === "book"
-
-									? "max-h-60 mt-2"
-
-									: "max-h-0"
-
-									}`}
-
+								className={`
+                                overflow-hidden
+                                duration-300
+                                ${openMenu === "book"
+										? "max-h-60 mt-2"
+										: "max-h-0"
+									}
+                            `}
 							>
 
-								<div className="space-y-2 pl-5">
+								<div className="space-y-2 pl-4 sm:pl-5">
 
 									<Link
-
 										to="/admin/add_book"
-
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("add_book")}`}
-
 									>
-
 										Add Book
-
 									</Link>
 
 									<Link
 										to="/admin/update_book"
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("update_book")}`}
 									>
 										Update Book
@@ -435,6 +412,7 @@ const Admin = () => {
 
 									<Link
 										to="/admin/delete_book"
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("delete_book")}`}
 									>
 										Delete Book
@@ -445,42 +423,54 @@ const Admin = () => {
 							</div>
 
 						</div>
-						{/* Event */}
+
+
+						{/* =================================================
+                        EVENT MANAGEMENT
+                    ================================================= */}
 
 						<div>
 
 							<button
-								onClick={() => toggleMenu("event")}
+								onClick={e => {
+									e.stopPropagation();
+									toggleMenu("event");
+								}}
 								className={menuBtn}
 							>
 
-								<span className="flex items-center gap-4">
-
+								<span className="flex items-center gap-3 sm:gap-4 min-w-0">
 									<FaCalendarAlt />
-
-									Event Management
-
+									<span className="truncate">
+										Event Management
+									</span>
 								</span>
 
-								{
-									openMenu === "event"
-										? <FaChevronDown />
-										: <FaChevronRight />
-								}
+								{openMenu === "event" ? (
+									<FaChevronDown className="shrink-0" />
+								) : (
+									<FaChevronRight className="shrink-0" />
+								)}
 
 							</button>
 
+
 							<div
-								className={`overflow-hidden duration-300 ${openMenu === "event"
-									? "max-h-60 mt-2"
-									: "max-h-0"
-									}`}
+								className={`
+                                overflow-hidden
+                                duration-300
+                                ${openMenu === "event"
+										? "max-h-60 mt-2"
+										: "max-h-0"
+									}
+                            `}
 							>
 
-								<div className="space-y-2 pl-5">
+								<div className="space-y-2 pl-4 sm:pl-5">
 
 									<Link
 										to="/admin/add_event"
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("add_event")}`}
 									>
 										Add Event
@@ -488,6 +478,7 @@ const Admin = () => {
 
 									<Link
 										to="/admin/update_event"
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("update_event")}`}
 									>
 										Update Event
@@ -495,6 +486,7 @@ const Admin = () => {
 
 									<Link
 										to="/admin/delete_event"
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("delete_event")}`}
 									>
 										Delete Event
@@ -506,42 +498,53 @@ const Admin = () => {
 
 						</div>
 
-						{/* News */}
+
+						{/* =================================================
+                        NEWS MANAGEMENT
+                    ================================================= */}
 
 						<div>
 
 							<button
-								onClick={() => toggleMenu("news")}
+								onClick={e => {
+									e.stopPropagation();
+									toggleMenu("news");
+								}}
 								className={menuBtn}
 							>
 
-								<span className="flex items-center gap-4">
-
+								<span className="flex items-center gap-3 sm:gap-4 min-w-0">
 									<FaNewspaper />
-
-									News Management
-
+									<span className="truncate">
+										News Management
+									</span>
 								</span>
 
-								{
-									openMenu === "news"
-										? <FaChevronDown />
-										: <FaChevronRight />
-								}
+								{openMenu === "news" ? (
+									<FaChevronDown className="shrink-0" />
+								) : (
+									<FaChevronRight className="shrink-0" />
+								)}
 
 							</button>
 
+
 							<div
-								className={`overflow-hidden duration-300 ${openMenu === "news"
-									? "max-h-60 mt-2"
-									: "max-h-0"
-									}`}
+								className={`
+                                overflow-hidden
+                                duration-300
+                                ${openMenu === "news"
+										? "max-h-60 mt-2"
+										: "max-h-0"
+									}
+                            `}
 							>
 
-								<div className="space-y-2 pl-5">
+								<div className="space-y-2 pl-4 sm:pl-5">
 
 									<Link
 										to="/admin/add_news"
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("add_news")}`}
 									>
 										Add News
@@ -549,6 +552,7 @@ const Admin = () => {
 
 									<Link
 										to="/admin/update_news"
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("update_news")}`}
 									>
 										Update News
@@ -556,6 +560,7 @@ const Admin = () => {
 
 									<Link
 										to="/admin/delete_news"
+										onClick={() => setSidebarOpen(false)}
 										className={`${subBtn} ${activeEffect("delete_news")}`}
 									>
 										Delete News
@@ -567,185 +572,165 @@ const Admin = () => {
 
 						</div>
 
-						{/* Community */}
 
-						{/* <Link
-							to="/admin/community"
-							className={`${menuBtn} ${activeEffect("community")}`}
-						>
-
-							<span className="flex items-center gap-4">
-
-								<FaUsers />
-
-								Community
-
-							</span>
-
-						</Link> */}
-
-						{/* Users */}
+						{/* =================================================
+                        USERS
+                    ================================================= */}
 
 						<Link
 							to="/admin/users"
+							onClick={() => setSidebarOpen(false)}
 							className={`${menuBtn} ${activeEffect("users")}`}
 						>
-
-							<span className="flex items-center gap-4">
-
+							<span className="flex items-center gap-3 sm:gap-4">
 								<FaUsers />
-
 								Users
-
 							</span>
-
 						</Link>
 
-						{/* Cart */}
 
-						{/* <Link
-							to="/admin/cart"
-							className={menuBtn}
-						>
-
-							<span className="flex items-center gap-4">
-
-								<FaShoppingCart />
-
-								Borrow / Cart
-
-							</span>
-
-						</Link> */}
-
-						{/* Messages */}
-
-						{/* <Link
-							to="/admin/messages"
-							className={`${menuBtn} ${activeEffect("messages")}`}
-						>
-
-							<span className="flex items-center gap-4">
-
-								<FaEnvelope />
-
-								Messages
-
-							</span>
-
-						</Link> */}
+						{/* =================================================
+                        CONTACT MESSAGES
+                    ================================================= */}
 
 						<Link
 							to="/admin/contact_messages"
+							onClick={() => setSidebarOpen(false)}
 							className={`${menuBtn} ${activeEffect("contact_messages")}`}
 						>
-							<span className="flex items-center gap-4 w-full">
-								<FaEnvelope />
 
-								<span className="flex-1">
+							<span className="flex items-center gap-3 sm:gap-4 w-full min-w-0">
+
+								<FaEnvelope className="shrink-0" />
+
+								<span className="flex-1 truncate">
 									Contact Messages
 								</span>
+
 								{readCount > 0 && (
-									<span className="min-w-5 h-5 px-1.5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
-										{totalUnread > 99
+									<span className="min-w-5 h-5 px-1.5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center shrink-0">
+										{readCount > 99
 											? "99+"
 											: readCount}
 									</span>
 								)}
+
 							</span>
+
 						</Link>
 
-						{/* Settings */}
+
+						{/* =================================================
+                        SETTINGS
+                    ================================================= */}
 
 						<Link
 							to="/admin/settings"
+							onClick={() => setSidebarOpen(false)}
 							className={`${menuBtn} ${activeEffect("settings")}`}
 						>
-
-							<span className="flex items-center gap-4">
-
+							<span className="flex items-center gap-3 sm:gap-4">
 								<FaCog />
-
 								Settings
-
 							</span>
-
 						</Link>
 
 					</div>
 
-					{/* Footer */}
 
-					<div className="border-t border-[#3b2a1e] p-5 space-y-3">
+					{/* =================================================
+                    SIDEBAR FOOTER
+                ================================================= */}
+
+					<div className="shrink-0 border-t border-[#3b2a1e] p-3 sm:p-5 space-y-2 sm:space-y-3">
 
 						<Link
 							to="/"
-							className="flex items-center justify-center gap-3 rounded-2xl py-3 bg-[#24160f] hover:bg-[#2d1d14] duration-300"
+							onClick={() => setSidebarOpen(false)}
+							className="flex items-center justify-center gap-3 rounded-2xl py-2.5 sm:py-3 bg-[#24160f] hover:bg-[#2d1d14] duration-300 text-sm sm:text-base"
 						>
-
 							<FaHome />
-
 							Back Home
-
 						</Link>
 
+
 						<button
-							className="w-full flex items-center justify-center gap-3 rounded-2xl py-3 bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-[#18120d] font-bold hover:scale-[1.02] duration-300"
+							type="button"
+							className="w-full flex items-center justify-center gap-3 rounded-2xl py-2.5 sm:py-3 bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-[#18120d] font-bold hover:scale-[1.02] duration-300 text-sm sm:text-base"
 						>
-
 							<FaSignOutAlt />
-
 							Logout
-
 						</button>
 
 					</div>
 
 				</aside>
 
-				{/* Main */}
 
-				<div className="flex-1 lg:ml-0">
+				{/* =================================================
+                MAIN AREA
+            ================================================= */}
 
-					{/* Header */}
+				<div
+					className="flex-1 min-w-0"
+					onClick={() => setSidebarOpen(false)}
+				>
 
-					<header className="sticky top-0 z-30 h-20 px-6 flex items-center justify-between bg-[#120d09]/90 backdrop-blur-xl border-b border-[#3b2a1e]">
+					{/* =================================================
+                    HEADER
+                ================================================= */}
+
+					<header className="sticky top-0 z-30 min-h-16 sm:min-h-20 px-3 sm:px-5 lg:px-6 py-3 flex items-center gap-3 bg-[#120d09]/90 backdrop-blur-xl border-b border-[#3b2a1e]">
+
+						{/* Mobile menu button */}
 
 						<button
-							onClick={() => setSidebarOpen(true)}
-							className="lg:hidden text-3xl text-[#d4af37]"
+							type="button"
+							onClick={e => {
+								e.stopPropagation();
+								setSidebarOpen(prev => !prev);
+							}}
+							className="lg:hidden shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-[#d4af37] hover:bg-[#24160f] duration-300"
 						>
-
-							☰
-
+							{sidebarOpen ? (
+								<FaTimes size={20} />
+							) : (
+								<FaBars size={20} />
+							)}
 						</button>
 
-						<div>
 
-							<h2 className="text-3xl font-bold text-[#f7e8d1]">
+						{/* Header title */}
 
+						<div className="flex-1 min-w-0">
+
+							<h2 className="text-lg sm:text-2xl lg:text-3xl font-bold text-[#f7e8d1] truncate">
 								Admin Dashboard
-
 							</h2>
 
-							<p className="text-[#9d8b79]">
-
+							<p className="hidden sm:block text-xs lg:text-sm text-[#9d8b79] truncate mt-0.5">
 								Bookshelf Library Management
-
 							</p>
 
 						</div>
 
+
+						{/* Profile */}
+
 						<img
 							src="https://i.pravatar.cc/100"
-							className="w-12 h-12 rounded-full border-2 border-[#d4af37]"
+							alt="Admin"
+							className="w-9 h-9 sm:w-11 sm:h-11 lg:w-12 lg:h-12 shrink-0 rounded-full border-2 border-[#d4af37]"
 						/>
 
 					</header>
 
-					{/* Content */}
 
-					<main className="p-8">
+					{/* =================================================
+                    CONTENT
+                ================================================= */}
+
+					<main className="w-full min-w-0 p-3 sm:p-5 lg:p-8">
 
 						<Outlet />
 
@@ -756,7 +741,6 @@ const Admin = () => {
 			</div>
 
 		</div>
-
 	);
 
 };

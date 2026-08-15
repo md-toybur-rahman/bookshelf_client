@@ -20,7 +20,7 @@ const useMessageMembers = userId => {
             }
 
             const res = await fetch(
-                `http://localhost:2000/users/message-members/${userId}`
+                `https://bookshelf-server-zot1.onrender.com/users/message-members/${userId}`
             );
 
             if (!res.ok) {

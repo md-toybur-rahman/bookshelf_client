@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../Providers/AuthProvider";
 import useMessages from "../../Hooks/useMessages";
 
-const API_URL = "http://localhost:2000";
+const API_URL = "https://bookshelf-server-zot1.onrender.com";
 
 const MessageInbox = () => {
     const { user } = useContext(AuthContext);
@@ -573,12 +573,7 @@ const MessageInbox = () => {
                 INBOX PANEL
             ================================================= */}
 
-            <div
-                className={`absolute right-0 top-14 z-[9999] w-[390px] h-[560px] max-w-[calc(100vw-24px)] rounded-3xl border border-amber-500/20 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_25px_70px_rgba(0,0,0,.6)] overflow-hidden origin-top-right transition-all duration-300 ${open
-                    ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
-                    : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
-                    }`}
-            >
+            <div className={`absolute z-[9999] top-20 md:top-14 right-0 w-[390px] max-w-[calc(100vw-24px)] h-[560px] max-h-[calc(100vh-80px)] rounded-3xl border border-amber-500/20 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_25px_70px_rgba(0,0,0,.6)] overflow-hidden origin-top-right transition-all duration-300 max-sm:right-0 max-sm:translate-x-20 ${open ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}>
 
                 {/* =================================================
                     LIST VIEW

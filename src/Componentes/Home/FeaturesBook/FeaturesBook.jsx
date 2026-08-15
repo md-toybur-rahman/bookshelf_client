@@ -14,7 +14,7 @@ import useAllBooks from "../../../Hooks/useAllBooks";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
-import { FreeMode } from "swiper/modules";
+import { Autoplay, FreeMode } from "swiper/modules";
 
 const FeaturesBook = () => {
 
@@ -34,23 +34,27 @@ const FeaturesBook = () => {
 
 			} else if (width >= 1280) {
 
-				setCol(4.5);
+				setCol(3.8);
 
 			} else if (width >= 1024) {
 
-				setCol(4);
+				setCol(3.5);
 
 			} else if (width >= 768) {
 
-				setCol(3);
+				setCol(2.5);
 
 			} else if (width >= 640) {
 
 				setCol(2.3);
 
+			} else if (width >= 500) {
+
+				setCol(2.3);
+
 			} else {
 
-				setCol(1.2);
+				setCol(1.6);
 
 			}
 
@@ -66,7 +70,7 @@ const FeaturesBook = () => {
 
 	return (
 
-		<section className="relative mt-32 overflow-hidden pt-10">
+		<section className="relative mt-10 md:mt-32 overflow-hidden pt-10">
 
 			{/* Background */}
 
@@ -78,13 +82,13 @@ const FeaturesBook = () => {
 
 				{/* Heading */}
 
-				<div className="mx-auto mb-16 max-w-4xl text-center">
+				<div className="mx-auto mb-8 md:mb-16 max-w-4xl text-center px-6">
 
 					<div className="inline-flex items-center gap-3 rounded-full border border-[#5c4638] bg-[#201813]/70 px-5 py-2">
 
 						<FaFire className="text-[#d4af37]" />
 
-						<span className="text-sm font-bold uppercase tracking-[3px] text-[#d4af37]">
+						<span className="text-xs md:text-sm font-bold uppercase tracking-[3px] text-[#d4af37]">
 
 							Reader's Choice
 
@@ -92,7 +96,7 @@ const FeaturesBook = () => {
 
 					</div>
 
-					<h2 className="text-5xl font-black text-white md:text-6xl mt-10">
+					<h2 className="text-3xl font-black text-white md:text-6xl mt-10">
 
 						Features
 						<span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
@@ -103,7 +107,7 @@ const FeaturesBook = () => {
 
 					</h2>
 
-					<p className="mx-auto mt-6 max-w-3xl text-lg leading-9 text-[#cdbfae]">
+					<p className="mx-auto mt-5 max-w-3xl md:text-lg leading-8 md:leading-9 text-[#cdbfae] text-center">
 
 						Hand-picked books loved by thousands of readers.
 						Discover timeless classics, inspiring stories,
@@ -118,7 +122,7 @@ const FeaturesBook = () => {
 
 				<div className="mb-10 flex flex-col items-center justify-between gap-6 lg:flex-row px-5">
 
-					<div className="flex flex-wrap gap-4">
+					<div className="flex flex-wrap gap-4 text-xs md:text-base">
 
 						<div className="flex items-center gap-3 rounded-2xl border border-[#5c4638] bg-[#1d1712] px-6 py-3">
 
@@ -148,7 +152,7 @@ const FeaturesBook = () => {
 
 					<Link
 						to="/books"
-						className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#b8860b] px-7 py-4 font-bold text-[#1b1712] transition duration-300 hover:scale-105 hover:shadow-xl"
+						className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#b8860b] px-5 md:px-7 md:py-4 py-3 font-bold text-[#1b1712] transition duration-300 hover:scale-105 hover:shadow-xl text-xs md:text-base"
 					>
 
 						View All Books
@@ -160,12 +164,17 @@ const FeaturesBook = () => {
 				</div>
 
 				{/* Slider */}
-
 				<Swiper
 					slidesPerView={col}
 					spaceBetween={100}
 					freeMode={true}
-					modules={[FreeMode]}
+					modules={[FreeMode, Autoplay]}
+						slidesOffsetAfter={100}
+						autoplay={{
+							delay: 2000,
+							disableOnInteraction: false,
+							pauseOnMouseEnter: true,
+						}}
 				>
 
 					{
@@ -187,8 +196,11 @@ const FeaturesBook = () => {
 					}
 
 				</Swiper>
-
 			</div>
+
+			{/* <span className="min-w-28">
+						<FaArrowRight />
+					</span> */}
 
 		</section>
 

@@ -27,7 +27,7 @@ const UpdateNews = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch("http://localhost:2000/news")
+        fetch("https://bookshelf-server-zot1.onrender.com/news")
             .then(res => res.json())
             .then(data => {
                 setNews(data);
@@ -131,7 +131,7 @@ const UpdateNews = () => {
 
                 if (selectedNews.public_id) {
 
-                    await fetch("http://localhost:2000/delete-image", {
+                    await fetch("https://bookshelf-server-zot1.onrender.com/delete-image", {
 
                         method: "DELETE",
 
@@ -186,7 +186,7 @@ const UpdateNews = () => {
 
             await fetch(
 
-                `http://localhost:2000/news/${selectedNews?._id}`,
+                `https://bookshelf-server-zot1.onrender.com/news/${selectedNews?._id}`,
 
                 {
 
@@ -252,32 +252,32 @@ const UpdateNews = () => {
     }
 
     return (
-
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full max-w-7xl mx-auto px-0 sm:px-2">
 
             {/* Header */}
+            <div className="relative overflow-hidden rounded-2xl sm:rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-5 sm:p-8 lg:p-10 mb-6 sm:mb-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
 
-            <div className="relative overflow-hidden rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-10 mb-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
+                <div className="absolute -right-20 sm:-right-24 -top-20 sm:-top-24 w-48 sm:w-80 h-48 sm:h-80 rounded-full bg-amber-500/10 blur-[100px] sm:blur-[120px]" />
 
-                <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-amber-500/10 blur-[120px]" />
+                <div className="absolute left-0 bottom-0 h-1 w-full bg-gradient-to-r from-[#8f6500] via-[#f6d778] to-[#d4af37]" />
 
-                <div className="flex items-center gap-6">
+                <div className="relative flex flex-col sm:flex-row items-center sm:items-center gap-5 sm:gap-6 text-center sm:text-left">
 
-                    <div className="w-20 h-20 rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center shadow-[0_0_35px_rgba(251,191,36,.25)]">
 
-                        <FaEdit className="text-4xl text-slate-900" />
+                        <FaEdit className="text-3xl sm:text-4xl text-slate-900" />
 
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
 
-                        <p className="uppercase tracking-[5px] text-amber-400">
+                        <p className="uppercase tracking-[3px] sm:tracking-[5px] text-amber-400 text-[10px] sm:text-sm font-semibold">
 
                             Bookshelf Admin
 
                         </p>
 
-                        <h1 className="text-5xl font-black text-white">
+                        <h1 className="mt-1 sm:mt-2 text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
 
                             Update News
 
@@ -289,195 +289,227 @@ const UpdateNews = () => {
 
             </div>
 
+
             {/* Search */}
+            <div className="relative mb-6 sm:mb-10">
 
-            <div className="relative mb-10">
-
-                <FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <FaSearch className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-slate-400" />
 
                 <input
-
                     value={search}
-
                     onChange={(e) => setSearch(e.target.value)}
-
-                    className={`${inputStyle} pl-14`}
-
+                    className={`${inputStyle} w-full min-w-0 pl-11 sm:pl-14`}
                     placeholder="Search News..."
-
                 />
 
             </div>
-            {/* News List */}
 
+
+            {/* News List */}
             {
                 !selectedNews && (
-                    <div className={`grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-12`}>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-7 lg:gap-8 mb-8 sm:mb-12">
 
                         {
-                            filteredNews.sort((a, b) => new Date(a.date) - new Date(b.date)).reverse().map(item => (
+                            filteredNews
+                                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                                .reverse()
+                                .map(item => (
 
-                                <div
-                                    key={item._id}
-                                    onClick={() => handleSelectNews(item)}
-                                    className={`cursor-pointer rounded-[30px] overflow-hidden border transition-all duration-300 hover:-translate-y-2 hover:border-amber-400/40 border-amber-400 shadow-[0_0_35px_rgba(251,191,36,.10)]`}
-                                >
+                                    <div
+                                        key={item._id}
+                                        onClick={() => handleSelectNews(item)}
+                                        className="group cursor-pointer rounded-2xl sm:rounded-[30px] overflow-hidden border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_20px_60px_rgba(0,0,0,.40)] hover:-translate-y-1 sm:hover:-translate-y-2 hover:border-amber-400/40 duration-300 min-w-0"
+                                    >
 
-                                    <img
-                                        src={item.image}
-                                        alt={item.title}
-                                        className="h-52 w-full object-cover"
-                                    />
+                                        {/* Image */}
+                                        <div className="relative overflow-hidden">
 
-                                    <div className="p-6 bg-[#1b120d]">
+                                            <img
+                                                src={item.image}
+                                                alt={item.title}
+                                                className="h-48 sm:h-52 lg:h-56 w-full object-cover group-hover:scale-105 duration-500"
+                                            />
 
-                                        <h3 className="text-xl font-bold text-white leading-8 line-clamp-2 min-h-16 break-words">
+                                            <div className="absolute inset-0 bg-gradient-to-t from-[#15100c]/60 via-transparent to-transparent pointer-events-none" />
 
-                                            {item.title}
+                                        </div>
 
-                                        </h3>
 
-                                        <p className="text-slate-400 mt-2">
+                                        {/* Content */}
+                                        <div className="p-5 sm:p-6 bg-[#1b120d]">
 
-                                            {item.date}
+                                            <h3 className="text-xl sm:text-2xl font-bold text-white leading-7 sm:leading-8 line-clamp-2 min-h-[56px] sm:min-h-16 break-words">
 
-                                        </p>
+                                                {item.title}
+
+                                            </h3>
+
+                                            <p className="text-sm sm:text-base text-slate-400 mt-2">
+
+                                                {item.date}
+
+                                            </p>
+
+                                        </div>
 
                                     </div>
 
-                                </div>
-
-                            ))
+                                ))
                         }
 
                     </div>
+
                 )
             }
 
+
+            {/* Update Form */}
             {
                 selectedNews && (
 
                     <form onSubmit={handleSubmit(onSubmit)}>
 
-                        <div className="rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
+                        <div className="relative overflow-hidden rounded-2xl sm:rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-5 sm:p-8 lg:p-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
 
-                            <div className="grid md:grid-cols-2 gap-7">
+                            <div className="absolute -right-20 sm:-right-24 -top-20 sm:-top-24 w-48 sm:w-72 h-48 sm:h-72 rounded-full bg-amber-400/10 blur-[100px] sm:blur-[120px]" />
 
-                                <div className="md:col-span-2">
+                            <div className="absolute left-0 bottom-0 h-1 w-full bg-gradient-to-r from-[#8f6500] via-[#f6d778] to-[#d4af37]" />
 
-                                    <label className={labelStyle}>
+                            <div className="relative">
 
-                                        <FaHeading />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7">
 
-                                        News Title
+                                    {/* News Title */}
+                                    <div className="md:col-span-2 min-w-0">
 
-                                    </label>
+                                        <label className={labelStyle}>
 
-                                    <input
-                                        {...register("title", { required: true })}
-                                        className={inputStyle}
-                                    />
+                                            <FaHeading className="text-amber-400 shrink-0" />
 
+                                            News Title
+
+                                        </label>
+
+                                        <input
+                                            {...register("title", { required: true })}
+                                            className={`${inputStyle} w-full min-w-0`}
+                                        />
+
+                                        {
+                                            errors.title && (
+                                                <p className="text-red-400 mt-2 text-sm">
+                                                    Title is required.
+                                                </p>
+                                            )
+                                        }
+
+                                    </div>
+
+
+                                    {/* Description */}
+                                    <div className="md:col-span-2 min-w-0">
+
+                                        <label className={labelStyle}>
+
+                                            <FaAlignLeft className="text-amber-400 shrink-0" />
+
+                                            Description
+
+                                        </label>
+
+                                        <textarea
+                                            rows={8}
+                                            {...register("description", { required: true })}
+                                            className={`${inputStyle} w-full min-w-0 resize-none min-h-[180px]`}
+                                        />
+
+                                    </div>
+
+
+                                    {/* Publish Date */}
+                                    <div className="min-w-0">
+
+                                        <label className={labelStyle}>
+
+                                            <FaCalendarAlt className="text-amber-400 shrink-0" />
+
+                                            Publish Date
+
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            {...register("date", { required: true })}
+                                            className={`${inputStyle} w-full min-w-0 relative cursor-pointer`}
+                                        />
+
+                                    </div>
+
+
+                                    {/* Image */}
+                                    <div className="min-w-0">
+
+                                        <label className={labelStyle}>
+
+                                            <FaImage className="text-amber-400 shrink-0" />
+
+                                            Replace Image (Optional)
+
+                                        </label>
+
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            {...register("image")}
+                                            onChange={handlePreview}
+                                            className={`${inputStyle} w-full min-w-0 file:bg-amber-500 file:border-0 file:px-3 sm:file:px-5 file:py-2 file:rounded-lg sm:file:rounded-xl file:text-slate-900 file:font-bold file:mr-3`}
+                                        />
+
+                                    </div>
+
+
+                                    {/* Preview */}
                                     {
-                                        errors.title &&
-                                        <p className="text-red-400 mt-2 text-sm">
-                                            Title is required.
-                                        </p>
+                                        previewImage && (
+
+                                            <div className="md:col-span-2 min-w-0">
+
+                                                <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-amber-500/20 shadow-[0_15px_40px_rgba(0,0,0,.35)]">
+
+                                                    <img
+                                                        src={previewImage}
+                                                        alt="News preview"
+                                                        className="w-full h-48 sm:h-64 lg:h-[320px] object-cover"
+                                                    />
+
+                                                </div>
+
+                                            </div>
+
+                                        )
                                     }
 
                                 </div>
 
-                                <div className="md:col-span-2">
 
-                                    <label className={labelStyle}>
+                                {/* Submit */}
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="mt-7 sm:mt-10 w-full py-3.5 sm:py-5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-bold text-base sm:text-lg hover:scale-[1.01] duration-300 shadow-[0_0_35px_rgba(251,191,36,.25)] disabled:opacity-60 disabled:cursor-not-allowed"
+                                >
 
-                                        <FaAlignLeft />
+                                    {
+                                        loading
+                                            ? "Updating News..."
+                                            : "Update News"
+                                    }
 
-                                        Description
-
-                                    </label>
-
-                                    <textarea
-                                        rows={8}
-                                        {...register("description", { required: true })}
-                                        className={`${inputStyle} resize-none`}
-                                    />
-
-                                </div>
-
-                                <div>
-
-                                    <label className={labelStyle}>
-
-                                        <FaCalendarAlt />
-
-                                        Publish Date
-
-                                    </label>
-
-                                    <input
-                                        type="date"
-                                        {...register("date", { required: true })}
-                                        className={`${inputStyle} relative cursor-pointer`}
-                                    />
-
-                                </div>
-
-                                <div>
-
-                                    <label className={labelStyle}>
-
-                                        <FaImage />
-
-                                        Replace Image (Optional)
-
-                                    </label>
-
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        {...register("image")}
-                                        onChange={handlePreview}
-                                        className={`${inputStyle} file:bg-amber-500 file:border-0 file:px-5 file:py-2 file:rounded-xl file:text-slate-900 file:font-bold`}
-                                    />
-
-                                </div>
-
-                                {
-                                    previewImage && (
-
-                                        <div className="md:col-span-2">
-
-                                            <img
-                                                src={previewImage}
-                                                alt=""
-                                                className="rounded-3xl h-[320px] w-full object-cover border border-amber-500/20"
-                                            />
-
-                                        </div>
-
-                                    )
-                                }
+                                </button>
 
                             </div>
-
-                            <button
-
-                                type="submit"
-
-                                disabled={loading}
-
-                                className="mt-10 w-full py-5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-bold text-lg hover:scale-[1.01] duration-300"
-
-                            >
-
-                                {
-                                    loading
-                                        ? "Updating News..."
-                                        : "Update News"
-                                }
-
-                            </button>
 
                         </div>
 
@@ -487,7 +519,6 @@ const UpdateNews = () => {
             }
 
         </div>
-
     );
 
 };

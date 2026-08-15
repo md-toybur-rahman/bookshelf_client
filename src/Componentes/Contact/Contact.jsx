@@ -40,7 +40,7 @@ const Contact = () => {
 
 			queryFn: async () => {
 				const res = await fetch(
-					`http://localhost:2000/users/${encodeURIComponent(
+					`https://bookshelf-server-zot1.onrender.com/users/${encodeURIComponent(
 						user.email
 					)}`
 				);
@@ -70,7 +70,7 @@ const Contact = () => {
 
 		try {
 			const res = await fetch(
-				`http://localhost:2000/conversations/support/${encodeURIComponent(
+				`https://bookshelf-server-zot1.onrender.com/conversations/support/${encodeURIComponent(
 					profile._id
 				)}`
 			);
@@ -204,7 +204,7 @@ const Contact = () => {
 				// =================================================
 
 				const res = await fetch(
-					`http://localhost:2000/conversations/${conversation._id}/read`,
+					`https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/read`,
 					{
 						method: "PATCH",
 
@@ -279,7 +279,7 @@ const Contact = () => {
 				};
 
 				const res = await fetch(
-					"http://localhost:2000/conversations/support",
+					"https://bookshelf-server-zot1.onrender.com/conversations/support",
 					{
 						method: "POST",
 
@@ -310,7 +310,7 @@ const Contact = () => {
 
 			else {
 				const res = await fetch(
-					`http://localhost:2000/conversations/support/${conversation._id}/message`,
+					`https://bookshelf-server-zot1.onrender.com/conversations/support/${conversation._id}/message`,
 					{
 						method: "PATCH",
 

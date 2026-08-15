@@ -1,4 +1,3 @@
-
 .book-wrapper {
 	perspective: 1600px;
 	padding: 30px 16px 45px;
@@ -472,13 +471,13 @@
 
 }
 
-@media (max-width:768px) {
+/* @media (max-width:768px) {
 
 	.book-card {
 
 		width: 270px;
 
-		height: 490px;
+		height: fit-content;
 
 	}
 
@@ -494,13 +493,13 @@
 
 		font-size: 20px;
 
-		min-height: 56px;
+		min-height: 0px;
 
 	}
 
-}
+} */
 
-@media (max-width:480px) {
+@media (max-width:768px) {
 
 	.book-wrapper {
 
@@ -512,8 +511,14 @@
 
 		width: 245px;
 
-		height: 465px;
+		height: fit-content;
 
+		padding-top: 40px;
+	}
+
+	.book-image-wrapper {
+		height: fit-content;
+		margin-bottom: 10px;
 	}
 
 	.book-image {
@@ -538,6 +543,16 @@
 
 		justify-content: center;
 
+	}
+	.book-divider{
+		margin: 10px 0;
+	}
+	.book-category {
+		font-size: 9px;
+	}
+	.book-btn{
+		font-size: 14px;
+		padding: 12px;
 	}
 
 }

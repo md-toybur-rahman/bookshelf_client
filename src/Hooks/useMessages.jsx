@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-const API_URL = "http://localhost:2000";
+const API_URL = "https://bookshelf-server-zot1.onrender.com";
 
 const useMessages = userId => {
     const [conversations, setConversations] = useState([]);

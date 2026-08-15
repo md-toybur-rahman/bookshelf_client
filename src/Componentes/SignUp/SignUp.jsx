@@ -84,7 +84,7 @@ const SignUp = () => {
 			const image = imageData.secure_url;
 
 			const checkUser = await fetch(
-				`http://localhost:2000/users/${data.email}`
+				`https://bookshelf-server-zot1.onrender.com/users/${data.email}`
 			);
 
 			const userExist = await checkUser.json();
@@ -135,7 +135,7 @@ const SignUp = () => {
 				};
 
 				await fetch(
-					"http://localhost:2000/users",
+					"https://bookshelf-server-zot1.onrender.com/users",
 					{
 						method: "POST",
 						headers: {
@@ -196,7 +196,7 @@ const SignUp = () => {
 
 			// check existing user
 			const res = await fetch(
-				`http://localhost:2000/users/${user?.email}`
+				`https://bookshelf-server-zot1.onrender.com/users/${user?.email}`
 			);
 
 			const existingUser = await res.json();
@@ -227,7 +227,7 @@ const SignUp = () => {
 				};
 
 				await fetch(
-					"http://localhost:2000/users",
+					"https://bookshelf-server-zot1.onrender.com/users",
 					{
 						method: "POST",
 						headers: {

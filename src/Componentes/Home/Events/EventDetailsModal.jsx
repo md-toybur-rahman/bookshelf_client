@@ -62,7 +62,7 @@ const EventDetailsModal = ({
                 user_image: user.photoURL,
                 joined_at: new Date(),
             };
-            const res = await fetch("http://localhost:2000/event/join", {
+            const res = await fetch("https://bookshelf-server-zot1.onrender.com/event/join", {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",

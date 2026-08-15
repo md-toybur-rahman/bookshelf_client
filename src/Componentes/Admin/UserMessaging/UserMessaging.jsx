@@ -23,7 +23,7 @@ const UserMessaging = ({ selectedUser, currentUser }) => {
 
         try {
             const res = await fetch(
-                `http://localhost:2000/conversations/private/${currentUserId}/${targetUserId}`
+                `https://bookshelf-server-zot1.onrender.com/conversations/private/${currentUserId}/${targetUserId}`
             );
 
             const data = await res.json();
@@ -59,7 +59,7 @@ const UserMessaging = ({ selectedUser, currentUser }) => {
             setBlocking(true);
 
             const res = await fetch(
-                `http://localhost:2000/conversations/${conversation._id}/block`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/block`,
                 {
                     method: "PATCH",
                     headers: {
@@ -98,7 +98,7 @@ const UserMessaging = ({ selectedUser, currentUser }) => {
             setBlocking(true);
 
             const res = await fetch(
-                `http://localhost:2000/conversations/${conversation._id}/unblock`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/unblock`,
                 {
                     method: "PATCH",
                     headers: {
@@ -137,7 +137,7 @@ const UserMessaging = ({ selectedUser, currentUser }) => {
             setSending(true);
 
             const res = await fetch(
-                "http://localhost:2000/conversations/private/request",
+                "https://bookshelf-server-zot1.onrender.com/conversations/private/request",
                 {
                     method: "POST",
                     headers: {
@@ -188,7 +188,7 @@ const UserMessaging = ({ selectedUser, currentUser }) => {
             setSending(true);
 
             const res = await fetch(
-                `http://localhost:2000/conversations/${conversation._id}/message`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/message`,
                 {
                     method: "PATCH",
                     headers: {
@@ -239,7 +239,7 @@ const UserMessaging = ({ selectedUser, currentUser }) => {
 
         try {
             const res = await fetch(
-                `http://localhost:2000/conversations/${conversation._id}/block`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/block`,
                 {
                     method: "PATCH",
                     headers: {
@@ -281,7 +281,7 @@ const UserMessaging = ({ selectedUser, currentUser }) => {
 
         try {
             const res = await fetch(
-                `http://localhost:2000/conversations/${conversation._id}/unblock`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/unblock`,
                 {
                     method: "PATCH",
                     headers: {

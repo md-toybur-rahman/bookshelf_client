@@ -8,6 +8,7 @@ import {
 import {
     BsBookmarkHeartFill,
 } from "react-icons/bs";
+import CountUp from "react-countup";
 
 const Banner = () => {
     return (
@@ -21,17 +22,17 @@ const Banner = () => {
             <div className="absolute right-0 bottom-0 h-80 w-80 rounded-full bg-[#8b5a2b]/10 blur-[130px]" />
 
 
-            <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col items-center justify-between gap-16 px-6 py-20 lg:flex-row">
+            <div className="relative mx-auto flex md:min-h-[92vh] max-w-7xl flex-col items-center justify-between gap-16 px-6 py-10 md:py-20 lg:flex-row">
 
                 {/* LEFT */}
 
-                <div className="max-w-2xl">
+                <div className="w-5xl flex md:block flex-col items-center justify-center">
 
                     <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-5 py-2 backdrop-blur-xl">
 
                         <BsBookmarkHeartFill className="text-yellow-400" />
 
-                        <span className="text-sm font-semibold tracking-widest text-yellow-300">
+                        <span className="text-xs md:text-base font-semibold tracking-widest text-yellow-300">
 
                             PREMIUM DIGITAL LIBRARY
 
@@ -39,15 +40,15 @@ const Banner = () => {
 
                     </div>
 
-                    <h1 className="text-5xl font-black leading-tight text-white md:text-6xl xl:text-7xl">
+                    <h1 className="flex md:block items-center justify-center gap-5 flex-wrap text-3xl font-black leading-tight text-white md:text-6xl xl:text-7xl">
 
-                        Read.
+                        <span>Read.</span>
 
-                        <br />
+                        <br className="hidden md:block" />
 
-                        Learn.
+                        <span>Learn.</span>
 
-                        <br />
+                        <br className="hidden md:block" />
 
                         <span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
 
@@ -57,7 +58,7 @@ const Banner = () => {
 
                     </h1>
 
-                    <p className="mt-8 max-w-xl text-lg leading-8 text-slate-300">
+                    <p className="mt-5 md:mt-8 max-w-xl md:text-lg leading-8 text-slate-300 text-center md:text-left">
 
                         Discover thousands of carefully selected books,
                         world-famous authors, timeless classics and
@@ -66,11 +67,11 @@ const Banner = () => {
 
                     </p>
 
-                    <div className="mt-10 flex flex-wrap gap-5">
+                    <div className="my-10 md:my-0 md:mt-10 flex flex-wrap gap-5 text-xs md:text-base">
 
                         <Link
                             to="/books"
-                            className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-yellow-500 to-amber-600 px-8 py-4 font-bold text-slate-900 shadow-2xl transition duration-500 hover:-translate-y-2 hover:shadow-yellow-500/30"
+                            className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-yellow-500 to-amber-600 px-5 md:px-8 py-4 font-bold text-slate-900 shadow-2xl transition duration-500 hover:-translate-y-2 hover:shadow-yellow-500/30"
                         >
 
                             Explore Books
@@ -81,7 +82,7 @@ const Banner = () => {
 
                         <Link
                             to="/events"
-                            className="rounded-2xl border border-yellow-500/40 bg-white/5 px-8 py-4 font-semibold text-white backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:border-yellow-400 hover:bg-white/10"
+                            className="rounded-2xl border border-yellow-500/40 bg-white/5 px-5 md:px-8 py-4 font-semibold text-white backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:border-yellow-400 hover:bg-white/10"
                         >
 
                             Library Events
@@ -90,17 +91,15 @@ const Banner = () => {
 
                     </div>
 
-                    <div className="mt-14 flex flex-wrap gap-10">
+                    <div className="md:mt-14 flex items-center justify-center md:justify-normal flex-wrap gap-5 md:gap-10">
 
                         <div>
 
-                            <h2 className="text-4xl font-black text-yellow-400">
-
-                                20K+
-
+                            <h2 className="text-3xl md:text-5xl font-black text-yellow-400">
+                                <CountUp start={0} end={20} duration={2.7} suffix="K+" />
                             </h2>
 
-                            <p className="mt-2 text-slate-400">
+                            <p className="mt-2 text-slate-400 text-xs md:text-lg">
 
                                 Premium Books
 
@@ -110,13 +109,13 @@ const Banner = () => {
 
                         <div>
 
-                            <h2 className="text-4xl font-black text-yellow-400">
+                            <h2 className="text-3xl md:text-5xl font-black text-yellow-400">
 
-                                150+
+                                <CountUp start={0} end={150} duration={2.7} suffix="+" />
 
                             </h2>
 
-                            <p className="mt-2 text-slate-400">
+                            <p className="mt-2 text-slate-400 text-xs md:text-lg">
 
                                 Publishers
 
@@ -126,13 +125,13 @@ const Banner = () => {
 
                         <div>
 
-                            <h2 className="text-4xl font-black text-yellow-400">
+                            <h2 className="text-3xl md:text-5xl font-black text-yellow-400">
 
-                                50K+
+                                <CountUp start={0} end={50} duration={2.7} suffix="K+" />
 
                             </h2>
 
-                            <p className="mt-2 text-slate-400">
+                            <p className="mt-2 text-slate-400 text-xs md:text-lg">
 
                                 Happy Readers
 
@@ -146,7 +145,7 @@ const Banner = () => {
 
                 {/* RIGHT */}
 
-                <div className="relative hidden w-full items-center justify-center lg:flex">
+                <div className="relative hidden items-center justify-center lg:flex">
 
                     {/* Main Glow */}
 

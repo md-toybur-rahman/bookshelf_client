@@ -12,7 +12,7 @@ const useUsers = () => {
         queryKey: ["users"],
         queryFn: async () => {
 
-            const res = await fetch("http://localhost:2000/users");
+            const res = await fetch("https://bookshelf-server-zot1.onrender.com/users");
 
             if (!res.ok) {
                 throw new Error("Failed to fetch users");

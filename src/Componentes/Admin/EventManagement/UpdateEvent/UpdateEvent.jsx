@@ -42,7 +42,7 @@ const UpdateEvent = () => {
 	/* ---------------- Load Events ---------------- */
 
 	useEffect(() => {
-		fetch("http://localhost:2000/events")
+		fetch("https://bookshelf-server-zot1.onrender.com/events")
 			.then(res => res.json())
 			.then(data => {
 				setEvents(data);
@@ -52,7 +52,7 @@ const UpdateEvent = () => {
 	}, []);
 
 
-	const loadEvents= (value) => {
+	const loadEvents = (value) => {
 
 		if (!value.trim()) {
 			setFilteredEvents(events);
@@ -142,7 +142,7 @@ const UpdateEvent = () => {
 
 				if (selectedEvent.public_id) {
 
-					await fetch("http://localhost:2000/delete-image", {
+					await fetch("https://bookshelf-server-zot1.onrender.com/delete-image", {
 
 						method: "DELETE",
 
@@ -190,7 +190,7 @@ const UpdateEvent = () => {
 				image
 			};
 			await fetch(
-				`http://localhost:2000/events/${selectedEvent._id}`,
+				`https://bookshelf-server-zot1.onrender.com/events/${selectedEvent._id}`,
 				{
 					method: "PUT",
 					headers: {
@@ -237,225 +237,216 @@ const UpdateEvent = () => {
 	};
 
 	return (
-
-		<div className="max-w-7xl mx-auto">
+		<div className="w-full max-w-7xl mx-auto px-0 sm:px-2">
 
 			{/* Header */}
+			<div className="relative overflow-hidden rounded-2xl sm:rounded-[30px] lg:rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-5 sm:p-7 lg:p-10 mb-6 sm:mb-8 lg:mb-10 shadow-[0_20px_50px_rgba(0,0,0,.4)]">
 
-			<div className="relative overflow-hidden rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-10 mb-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
+				<div className="absolute -right-20 -top-20 w-48 sm:w-64 lg:w-80 h-48 sm:h-64 lg:h-80 rounded-full bg-amber-500/10 blur-[90px] lg:blur-[120px]" />
 
-				<div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-amber-500/10 blur-[120px]" />
+				<div className="absolute left-0 bottom-0 h-1 w-full bg-gradient-to-r from-[#8f6500] via-[#f6d778] to-[#d4af37]" />
 
-				<div className="flex items-center gap-6">
+				<div className="relative flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
 
-					<div className="w-20 h-20 rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center">
-
-						<FaEdit className="text-4xl text-slate-900" />
-
+					<div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center shadow-[0_0_30px_rgba(251,191,36,.25)]">
+						<FaEdit className="text-3xl sm:text-4xl text-slate-900" />
 					</div>
 
-					<div>
+					<div className="min-w-0">
 
-						<p className="uppercase tracking-[5px] text-amber-400">
-
+						<p className="uppercase tracking-[3px] sm:tracking-[5px] text-amber-400 text-[10px] sm:text-sm">
 							Bookshelf Admin
-
 						</p>
 
-						<h1 className="text-5xl font-black text-white">
-
+						<h1 className="mt-1 text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
 							Update Event
-
 						</h1>
+
+						<p className="mt-2 text-sm sm:text-base text-slate-400">
+							Search and update event information.
+						</p>
 
 					</div>
 
 				</div>
-
 			</div>
 
+
 			{/* Search */}
+			<div className="relative mb-6 sm:mb-8 lg:mb-10">
 
-			<div className="relative mb-10">
-
-				<FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
+				<FaSearch className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-slate-400" />
 
 				<input
 					onChange={(e) => loadEvents(e.target.value)}
-					className={`${inputStyle} pl-14`}
+					className={`${inputStyle} w-full pl-11 sm:pl-14`}
 					placeholder="Search Event..."
 				/>
 
 			</div>
-			{/* Event List */}
 
-			<div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-12">
+
+			{/* Event List */}
+			<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 mb-8 sm:mb-10 lg:mb-12">
 
 				{
-					filteredEvents.sort((a, b) => new Date(a.date) - new Date(b.date)).reverse().map((event) => (
+					filteredEvents
+						.sort((a, b) => new Date(a.date) - new Date(b.date))
+						.reverse()
+						.map((event) => (
 
-						<div
-							key={event._id}
-							onClick={() => handleSelectEvent(event)}
-							className={`cursor-pointer rounded-3xl overflow-hidden border transition-all duration-300 hover:-translate-y-2 hover:border-amber-400/40 ${selectedEvent?._id === event._id
-								? "border-amber-400 shadow-[0_0_35px_rgba(251,191,36,.25)]"
-								: "border-amber-500/15"
-								}`}
-						>
+							<div
+								key={event._id}
+								onClick={() => handleSelectEvent(event)}
+								className={`cursor-pointer rounded-2xl sm:rounded-[26px] lg:rounded-3xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 hover:border-amber-400/40 ${selectedEvent?._id === event._id
+										? "border-amber-400 shadow-[0_0_30px_rgba(251,191,36,.25)]"
+										: "border-amber-500/15"
+									}`}
+							>
 
-							<img
-								src={event.image}
-								className="h-52 w-full object-cover"
-								alt=""
-							/>
+								<img
+									src={event.image}
+									className="h-48 sm:h-52 lg:h-56 w-full object-cover"
+									alt={event.title}
+								/>
 
-							<div className="p-6 bg-[#1b120d]">
+								<div className="p-4 sm:p-5 lg:p-6 bg-[#1b120d]">
 
-								<h3 className="text-xl font-bold text-white">
+									<h3 className="text-lg sm:text-xl font-bold text-white leading-tight line-clamp-2">
+										{event.title}
+									</h3>
 
-									{event.title}
+									<p className="text-sm sm:text-base text-slate-400 mt-2">
+										{event.date}
+									</p>
 
-								</h3>
-
-								<p className="text-slate-400 mt-2">
-
-									{event.date}
-
-								</p>
+								</div>
 
 							</div>
 
-						</div>
-
-					))
+						))
 				}
 
 			</div>
 
+
+			{/* Update Form */}
 			{
 				selectedEvent && (
 
 					<form onSubmit={handleSubmit(onSubmit)}>
 
-						<div className="rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
+						<div className="rounded-2xl sm:rounded-[30px] lg:rounded-[35px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-5 sm:p-7 lg:p-10 shadow-[0_20px_60px_rgba(0,0,0,.45)]">
 
-							<div className="grid md:grid-cols-2 gap-7">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-7">
 
-								<div className="md:col-span-2">
+								{/* Event Title */}
+								<div className="md:col-span-2 min-w-0">
 
 									<label className={labelStyle}>
-
-										<FaHeading />
-
+										<FaHeading className="shrink-0" />
 										Event Title
-
 									</label>
 
 									<input
 										{...register("title", { required: true })}
-										className={inputStyle}
+										className={`${inputStyle} w-full min-w-0`}
 									/>
 
 								</div>
 
-								<div className="md:col-span-2">
+
+								{/* Description */}
+								<div className="md:col-span-2 min-w-0">
 
 									<label className={labelStyle}>
-
-										<FaAlignLeft />
-
+										<FaAlignLeft className="shrink-0" />
 										Description
-
 									</label>
 
 									<textarea
 										rows={6}
 										{...register("description", { required: true })}
-										className={`${inputStyle} resize-none`}
+										className={`${inputStyle} w-full resize-none min-h-[140px]`}
 									/>
 
 								</div>
 
-								<div>
+
+								{/* Event Date */}
+								<div className="min-w-0">
 
 									<label className={labelStyle}>
-
-										<FaCalendarAlt />
-
+										<FaCalendarAlt className="shrink-0" />
 										Event Date
-
 									</label>
 
 									<input
 										type="date"
 										{...register("date", { required: true })}
-										className={`${inputStyle} relative cursor-pointer`}
+										className={`${inputStyle} w-full min-w-0 relative cursor-pointer`}
 									/>
 
 								</div>
 
-								<div>
+
+								{/* Available Seats */}
+								<div className="min-w-0">
 
 									<label className={labelStyle}>
-
-										<FaUsers />
-
+										<FaUsers className="shrink-0" />
 										Available Seats
-
 									</label>
 
 									<input
 										type="number"
 										{...register("available_seats", { required: true })}
-										className={inputStyle}
+										className={`${inputStyle} w-full min-w-0`}
 									/>
 
 								</div>
 
-								<div>
+
+								{/* Start Time */}
+								<div className="min-w-0">
 
 									<label className={labelStyle}>
-
-										<FaClock />
-
+										<FaClock className="shrink-0" />
 										Start Time
-
 									</label>
 
 									<input
 										type="time"
 										{...register("start_time", { required: true })}
-										className={`${inputStyle} relative cursor-pointer`}
+										className={`${inputStyle} w-full min-w-0 relative cursor-pointer`}
 									/>
 
 								</div>
 
-								<div>
+
+								{/* End Time */}
+								<div className="min-w-0">
 
 									<label className={labelStyle}>
-
-										<FaClock />
-
+										<FaClock className="shrink-0" />
 										End Time
-
 									</label>
 
 									<input
 										type="time"
 										{...register("end_time", { required: true })}
-										className={`${inputStyle} relative cursor-pointer`}
+										className={`${inputStyle} w-full min-w-0 relative cursor-pointer`}
 									/>
 
 								</div>
 
-								<div className="md:col-span-2">
+
+								{/* Banner */}
+								<div className="md:col-span-2 min-w-0">
 
 									<label className={labelStyle}>
-
-										<FaImage />
-
+										<FaImage className="shrink-0" />
 										Change Event Banner
-
 									</label>
 
 									<input
@@ -463,20 +454,22 @@ const UpdateEvent = () => {
 										accept="image/*"
 										{...register("image")}
 										onChange={handlePreview}
-										className={`${inputStyle} file:bg-amber-500 file:border-0 file:px-5 file:py-2 file:rounded-xl file:text-slate-900 file:font-bold`}
+										className={`${inputStyle} w-full min-w-0 file:bg-amber-500 file:border-0 file:px-3 sm:file:px-5 file:py-2 file:rounded-lg sm:file:rounded-xl file:text-slate-900 file:font-bold file:mr-2 sm:file:mr-3`}
 									/>
 
 								</div>
 
+
+								{/* Preview */}
 								{
 									previewImage && (
 
-										<div className="md:col-span-2">
+										<div className="md:col-span-2 min-w-0">
 
 											<img
 												src={previewImage}
-												className="rounded-3xl h-[320px] w-full object-cover border border-amber-500/20"
-												alt=""
+												className="rounded-2xl sm:rounded-3xl h-52 sm:h-64 lg:h-[320px] w-full object-cover border border-amber-500/20"
+												alt="Event preview"
 											/>
 
 										</div>
@@ -486,22 +479,18 @@ const UpdateEvent = () => {
 
 							</div>
 
+
+							{/* Submit */}
 							<button
-
 								type="submit"
-
 								disabled={loading}
-
-								className="mt-10 w-full py-5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-bold text-lg hover:scale-[1.01] duration-300"
-
+								className="mt-7 sm:mt-9 lg:mt-10 w-full py-3.5 sm:py-4 lg:py-5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500 text-slate-900 font-bold text-base sm:text-lg hover:scale-[1.01] active:scale-[0.99] duration-300 disabled:opacity-60 shadow-[0_0_30px_rgba(251,191,36,.2)]"
 							>
-
 								{
 									loading
 										? "Updating Event..."
 										: "Update Event"
 								}
-
 							</button>
 
 						</div>
@@ -512,7 +501,6 @@ const UpdateEvent = () => {
 			}
 
 		</div>
-
 	);
 
 };

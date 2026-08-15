@@ -8,7 +8,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 
 // import required modules
-import { FreeMode, Pagination } from 'swiper/modules';
+import { Autoplay, FreeMode, Pagination } from 'swiper/modules';
 import BookCard from '../../Shared/BookCard/BookCard';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaBookOpen, FaFire, FaStar } from 'react-icons/fa';
@@ -30,23 +30,27 @@ const NewArrivals = () => {
 
 			} else if (width >= 1280) {
 
-				setCol(4.5);
+				setCol(3.8);
 
 			} else if (width >= 1024) {
 
-				setCol(4);
+				setCol(3.5);
 
 			} else if (width >= 768) {
 
-				setCol(3);
+				setCol(2.5);
 
 			} else if (width >= 640) {
 
-				setCol(2.3);
+				setCol(1.8);
+
+			} else if (width >= 500) {
+
+				setCol(1.6);
 
 			} else {
 
-				setCol(1.2);
+				setCol(1.6);
 
 			}
 
@@ -62,7 +66,7 @@ const NewArrivals = () => {
 
 	return (
 
-		<section className="relative mt-32 overflow-hidden pt-10">
+		<section className="relative md:mt-32 overflow-hidden pt-10">
 
 			{/* Background */}
 
@@ -74,13 +78,13 @@ const NewArrivals = () => {
 
 				{/* Heading */}
 
-				<div className="mx-auto mb-16 max-w-4xl text-center">
+				<div className="mx-auto mb-5 md:mb-16 max-w-4xl text-center">
 
 					<div className="inline-flex items-center gap-3 rounded-full border border-[#5c4638] bg-[#201813]/70 px-5 py-2">
 
 						<FaFire className="text-[#d4af37]" />
 
-						<span className="text-sm font-bold uppercase tracking-[3px] text-[#d4af37]">
+						<span className="text-xs md:text-sm font-bold uppercase tracking-[3px] text-[#d4af37]">
 
 							Reader's Choice
 
@@ -88,7 +92,7 @@ const NewArrivals = () => {
 
 					</div>
 
-					<h2 className="text-5xl font-black text-white md:text-6xl mt-10">
+					<h2 className="text-3xl font-black text-white md:text-6xl mt-5 md:mt-10">
 
 						New
 						<span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
@@ -99,7 +103,7 @@ const NewArrivals = () => {
 
 					</h2>
 
-					<p className="mx-auto mt-6 max-w-3xl text-lg leading-9 text-[#cdbfae]">
+					<p className="mx-auto mt-4 md:mt-6 max-w-3xl text-sm md:text-lg leading-8 md:leading-9 text-[#cdbfae]">
 
 						Hand-picked books loved by thousands of readers.
 						Discover timeless classics, inspiring stories,
@@ -112,7 +116,7 @@ const NewArrivals = () => {
 
 				{/* Top Bar */}
 
-				<div className="mb-10 flex flex-col items-center justify-between gap-6 lg:flex-row px-5">
+				<div className="text-xs md:text-base mb-5 md:mb-10 flex flex-col items-center justify-between gap-6 lg:flex-row px-5">
 
 					<div className="flex flex-wrap gap-4">
 
@@ -144,7 +148,7 @@ const NewArrivals = () => {
 
 					<Link
 						to="/books"
-						className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#b8860b] px-7 py-4 font-bold text-[#1b1712] transition duration-300 hover:scale-105 hover:shadow-xl"
+						className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#b8860b] px-5 md:px-7 py-3 md:py-4 font-bold text-[#1b1712] transition duration-300 hover:scale-105 hover:shadow-xl"
 					>
 
 						View All Books
@@ -161,7 +165,13 @@ const NewArrivals = () => {
 					slidesPerView={col}
 					spaceBetween={100}
 					freeMode={true}
-					modules={[FreeMode]}
+					modules={[FreeMode, Autoplay]}
+						slidesOffsetAfter={100}
+						autoplay={{
+							delay: 2000,
+							disableOnInteraction: false,
+							pauseOnMouseEnter: true,
+						}}
 				>
 
 					{

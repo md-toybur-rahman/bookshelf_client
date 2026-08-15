@@ -11,7 +11,7 @@ const useAllConversations = () => {
         queryKey: ["allConversations"],
         queryFn: async () => {
             const res = await fetch(
-                "http://localhost:2000/conversations"
+                "https://bookshelf-server-zot1.onrender.com/conversations"
             );
 
             if (!res.ok) {

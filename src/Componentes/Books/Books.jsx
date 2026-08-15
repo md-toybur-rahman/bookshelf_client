@@ -18,7 +18,7 @@ const Books = () => {
 
             {/* Hero */}
 
-            <section className="relative min-h-[85vh] flex items-center justify-center">
+            <section className="relative py-20 md:py-0 md:min-h-[85vh] flex items-center justify-center">
 
                 <div className="absolute inset-0">
 
@@ -36,15 +36,15 @@ const Books = () => {
 
                     <div className="max-w-4xl mx-auto text-center">
 
-                        <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-amber-500/20 backdrop-blur-xl text-amber-300 uppercase tracking-[3px] text-sm">
+                        <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-amber-500/20 backdrop-blur-xl text-amber-300 uppercase tracking-[3px] text-xs md:text-sm">
 
                             <FaBookOpen />
 
-                            Premium Library Collection
+                            <span className="text-nowrap">Premium Library Collection</span>
 
                         </div>
 
-                        <h1 className="mt-8 text-6xl lg:text-8xl font-black leading-none text-white">
+                        <h1 className="mt-8 text-3xl lg:text-8xl font-black leading-none text-white">
 
                             Discover
 
@@ -56,7 +56,7 @@ const Books = () => {
 
                         </h1>
 
-                        <p className="mt-8 text-xl leading-9 text-gray-300 max-w-3xl mx-auto">
+                        <p className="mt-5 md:mt-8 text-sm md:text-xl leading-8 md:leading-9 text-gray-300 max-w-3xl mx-auto">
 
                             Explore timeless classics, bestselling novels,
                             inspiring biographies and thousands of carefully
@@ -66,13 +66,13 @@ const Books = () => {
 
                         <div className="flex flex-wrap justify-center gap-6 mt-12">
 
-                            <button className="px-9 py-4 rounded-2xl bg-gradient-to-r from-amber-300 to-yellow-600 text-[#1f150b] font-bold shadow-[0_20px_40px_rgba(255,185,60,.25)] hover:scale-105 duration-300">
+                            <button className="px-5 md:px-9 py-3 md:py-4 text-xs md:text-base rounded-2xl bg-gradient-to-r from-amber-300 to-yellow-600 text-[#1f150b] font-bold shadow-[0_20px_40px_rgba(255,185,60,.25)] hover:scale-105 duration-300">
 
                                 Browse Collection
 
                             </button>
 
-                            <button className="px-9 py-4 rounded-2xl border border-amber-400/30 bg-white/5 backdrop-blur-xl text-white hover:border-amber-400 duration-300">
+                            <button className="px-5 md:px-9 py-3 md:py-4 text-xs md:text-base rounded-2xl border border-amber-400/30 bg-white/5 backdrop-blur-xl text-white hover:border-amber-400 duration-300">
 
                                 Learn More
 
@@ -94,11 +94,17 @@ const Books = () => {
 
             </section>
 
+            {/* Divider */}
+
+            <div className="max-w-6xl mx-auto px-5">
+
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent"></div>
+
+            </div>
+
             {/* Featured */}
 
-            <section className="relative py-24">
-
-                <div className="absolute left-1/2 -translate-x-1/2 top-0 w-72 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
+            <section className="relative md:py-24">
 
                 <FeaturesBook />
 
@@ -114,7 +120,7 @@ const Books = () => {
 
             {/* New Arrivals */}
 
-            <section className="relative py-24">
+            <section className="relative md:py-24">
 
                 <NewArrivals />
 
@@ -130,7 +136,7 @@ const Books = () => {
 
             {/* Best Sellers */}
 
-            <section className="relative py-24">
+            <section className="relative md:py-24">
 
                 <BestSellers />
 

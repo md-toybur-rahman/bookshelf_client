@@ -96,17 +96,19 @@ const Layout = () => {
 
 									<button
 										onClick={handleCloseNewsModal}
-										className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2b211b] text-[#d4af37] transition hover:rotate-90 hover:bg-[#d4af37] hover:text-[#1a1410]"
+										className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2b211b] text-[#d4af37] transition hover:rotate-90 hover:bg-[#d4af37] hover:text-[#1a1410] p-3"
 									>
 										<FaTimes />
 									</button>
 
 								</div>
 
-								<p
-									id="news_modal_description"
-									className="leading-8 text-[#d2c3b2]"
-								/>
+								<div className="max-h-[60vh] overflow-scroll">
+									<p
+										id="news_modal_description"
+										className="leading-8 text-[#d2c3b2]"
+									/>
+								</div>
 
 							</div>
 

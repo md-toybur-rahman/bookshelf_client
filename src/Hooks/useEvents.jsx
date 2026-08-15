@@ -19,8 +19,8 @@ const useEvents = () => {
 		retry: 1,
 		queryFn: async () => {
 			const [eventsRes, joinRes] = await Promise.all([
-				fetch("http://localhost:2000/events"),
-				fetch("http://localhost:2000/event/join"),
+				fetch("https://bookshelf-server-zot1.onrender.com/events"),
+				fetch("https://bookshelf-server-zot1.onrender.com/event/join"),
 			]);
 
 			if (!eventsRes.ok || !joinRes.ok) {

@@ -35,7 +35,7 @@ const Users = () => {
     const loadUsers = async () => {
         try {
             const res = await fetch(
-                "http://localhost:2000/users"
+                "https://bookshelf-server-zot1.onrender.com/users"
             );
 
             if (!res.ok) {
@@ -121,7 +121,7 @@ const Users = () => {
 
             // First: existing private conversation খুঁজবে
             const res = await fetch(
-                `http://localhost:2000/conversations/private/${encodeURIComponent(
+                `https://bookshelf-server-zot1.onrender.com/conversations/private/${encodeURIComponent(
                     user._id
                 )}/${encodeURIComponent(selected._id)}`
             );
@@ -149,7 +149,7 @@ const Users = () => {
 
             // না থাকলে নতুন conversation তৈরি করবে
             const startRes = await fetch(
-                "http://localhost:2000/conversations/admin/start",
+                "https://bookshelf-server-zot1.onrender.com/conversations/admin/start",
                 {
                     method: "POST",
                     headers: {
@@ -216,7 +216,7 @@ const Users = () => {
             const text = message.trim();
 
             const res = await fetch(
-                `http://localhost:2000/conversations/${conversation._id}/message`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/message`,
                 {
                     method: "PATCH",
                     headers: {
@@ -283,7 +283,7 @@ const Users = () => {
         const loadLatestConversation = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:2000/conversations/private/${encodeURIComponent(
+                    `https://bookshelf-server-zot1.onrender.com/conversations/private/${encodeURIComponent(
                         user._id
                     )}/${encodeURIComponent(
                         selectedUser._id
@@ -346,51 +346,48 @@ const Users = () => {
     };
 
     return (
-        <div className="p-6">
+        <div className="w-full p-3 sm:p-4 md:p-6">
             {/* =========================
-			    USERS HEADER
-			========================= */}
+            USERS HEADER
+        ========================= */}
 
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-                <div>
-                    <h1 className="text-3xl font-bold text-white">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6 sm:mb-8">
+                <div className="min-w-0">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-white">
                         Users
                     </h1>
 
-                    <p className="text-slate-500 mt-1">
-                        Manage users and communicate
-                        directly.
+                    <p className="text-sm sm:text-base text-slate-500 mt-1">
+                        Manage users and communicate directly.
                     </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3">
-                    <div className="relative">
+                {/* Search + Filter */}
+
+                <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                    <div className="relative w-full sm:w-64">
                         <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
 
                         <input
                             type="text"
                             value={search}
                             onChange={e =>
-                                setSearch(
-                                    e.target.value
-                                )
+                                setSearch(e.target.value)
                             }
                             placeholder="Search users..."
-                            className="w-full sm:w-64 pl-11 pr-4 py-3 rounded-xl bg-[#1d140f] border border-amber-500/20 text-white outline-none focus:border-amber-500/50"
+                            className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#1d140f] border border-amber-500/20 text-white text-sm outline-none focus:border-amber-500/50"
                         />
                     </div>
 
-                    <div className="relative">
-                        <FaFilter className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <div className="relative w-full sm:w-auto">
+                        <FaFilter className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
 
                         <select
                             value={roleFilter}
                             onChange={e =>
-                                setRoleFilter(
-                                    e.target.value
-                                )
+                                setRoleFilter(e.target.value)
                             }
-                            className="pl-11 pr-8 py-3 rounded-xl bg-[#1d140f] border border-amber-500/20 text-white outline-none"
+                            className="w-full sm:w-auto pl-11 pr-9 py-3 rounded-xl bg-[#1d140f] border border-amber-500/20 text-white text-sm outline-none"
                         >
                             <option value="all">
                                 All
@@ -413,26 +410,26 @@ const Users = () => {
             </div>
 
             {/* =========================
-			    USERS TABLE
-			========================= */}
+            USERS TABLE
+        ========================= */}
 
-            <div className="overflow-x-auto rounded-2xl border border-amber-500/10">
-                <table className="w-full">
+            <div className="w-full overflow-x-auto rounded-2xl border border-amber-500/10">
+                <table className="w-full min-w-[700px]">
                     <thead>
                         <tr className="bg-[#1d140f] border-b border-amber-500/10">
-                            <th className="text-left px-5 py-4 text-sm text-slate-400">
+                            <th className="text-left px-4 sm:px-5 py-4 text-sm text-slate-400">
                                 User
                             </th>
 
-                            <th className="text-left px-5 py-4 text-sm text-slate-400">
+                            <th className="text-left px-4 sm:px-5 py-4 text-sm text-slate-400">
                                 Email
                             </th>
 
-                            <th className="text-left px-5 py-4 text-sm text-slate-400">
+                            <th className="text-left px-4 sm:px-5 py-4 text-sm text-slate-400">
                                 Role
                             </th>
 
-                            <th className="text-right px-5 py-4 text-sm text-slate-400">
+                            <th className="text-right px-4 sm:px-5 py-4 text-sm text-slate-400">
                                 Action
                             </th>
                         </tr>
@@ -444,16 +441,17 @@ const Users = () => {
                                 key={item._id}
                                 className="border-b border-amber-500/10 hover:bg-white/[0.02] duration-300"
                             >
-                                <td className="px-5 py-4">
+                                {/* User */}
+
+                                <td className="px-4 sm:px-5 py-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-11 h-11 rounded-full overflow-hidden border border-amber-500/20">
+                                        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border border-amber-500/20 shrink-0">
                                             {item.image ? (
                                                 <img
-                                                    src={
-                                                        item.image
-                                                    }
+                                                    src={item.image}
                                                     alt={
-                                                        item.name
+                                                        item.name ||
+                                                        "User"
                                                     }
                                                     className="w-full h-full object-cover"
                                                 />
@@ -462,15 +460,13 @@ const Users = () => {
                                                     {(
                                                         item.name ||
                                                         "U"
-                                                    ).charAt(
-                                                        0
-                                                    )}
+                                                    ).charAt(0)}
                                                 </div>
                                             )}
                                         </div>
 
-                                        <div>
-                                            <p className="font-semibold text-white">
+                                        <div className="min-w-0">
+                                            <p className="font-semibold text-white truncate max-w-[160px]">
                                                 {item.name ||
                                                     "User"}
                                             </p>
@@ -478,18 +474,27 @@ const Users = () => {
                                     </div>
                                 </td>
 
-                                <td className="px-5 py-4 text-sm text-slate-400">
-                                    {item.email}
+                                {/* Email */}
+
+                                <td className="px-4 sm:px-5 py-4 text-sm text-slate-400">
+                                    <span className="block max-w-[220px] truncate">
+                                        {item.email}
+                                    </span>
                                 </td>
 
-                                <td className="px-5 py-4">
-                                    <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold capitalize">
+                                {/* Role */}
+
+                                <td className="px-4 sm:px-5 py-4">
+                                    <span className="inline-flex px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold capitalize whitespace-nowrap">
                                         {item.role ||
+                                            item.type ||
                                             "member"}
                                     </span>
                                 </td>
 
-                                <td className="px-5 py-4">
+                                {/* Action */}
+
+                                <td className="px-4 sm:px-5 py-4">
                                     <div className="flex justify-end">
                                         <button
                                             type="button"
@@ -498,10 +503,12 @@ const Users = () => {
                                                     item
                                                 )
                                             }
-                                            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 font-semibold flex items-center gap-2 hover:scale-105 duration-300"
+                                            className="px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 text-sm font-semibold flex items-center gap-2 hover:scale-105 duration-300 whitespace-nowrap"
                                         >
                                             <FaEnvelope />
-                                            Message
+                                            <span>
+                                                Message
+                                            </span>
                                         </button>
                                     </div>
                                 </td>
@@ -512,17 +519,18 @@ const Users = () => {
             </div>
 
             {/* =========================
-			    ADMIN CHAT MODAL
-			========================= */}
+            ADMIN CHAT MODAL
+        ========================= */}
 
             {selectedUser && (
-                <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
-                    <div className="w-full max-w-lg h-[620px] max-h-[calc(100vh-40px)] rounded-3xl overflow-hidden border border-amber-500/20 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_30px_90px_rgba(0,0,0,.7)] flex flex-col">
+                <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+                    <div className="w-full max-w-lg h-[calc(100dvh-16px)] sm:h-[620px] max-h-[calc(100dvh-16px)] sm:max-h-[calc(100vh-40px)] rounded-2xl sm:rounded-3xl overflow-hidden border border-amber-500/20 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_30px_90px_rgba(0,0,0,.7)] flex flex-col">
+
                         {/* CHAT HEADER */}
 
-                        <div className="h-[72px] shrink-0 px-5 border-b border-amber-500/10 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full overflow-hidden border border-amber-500/20">
+                        <div className="min-h-[68px] sm:h-[72px] shrink-0 px-3 sm:px-5 py-3 border-b border-amber-500/10 flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-3 min-w-0">
+                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-amber-500/20 shrink-0">
                                     {selectedUser.image ? (
                                         <img
                                             src={
@@ -538,21 +546,19 @@ const Users = () => {
                                             {(
                                                 selectedUser.name ||
                                                 "U"
-                                            ).charAt(
-                                                0
-                                            )}
+                                            ).charAt(0)}
                                         </div>
                                     )}
                                 </div>
 
-                                <div>
-                                    <h3 className="text-white font-bold">
+                                <div className="min-w-0">
+                                    <h3 className="text-sm sm:text-base text-white font-bold truncate">
                                         {
                                             selectedUser.name
                                         }
                                     </h3>
 
-                                    <p className="text-xs text-slate-500">
+                                    <p className="text-[10px] sm:text-xs text-slate-500 truncate max-w-[190px] sm:max-w-[280px]">
                                         {
                                             selectedUser.email
                                         }
@@ -563,7 +569,7 @@ const Users = () => {
                             <button
                                 type="button"
                                 onClick={closeChat}
-                                className="w-9 h-9 rounded-full flex items-center justify-center text-slate-400 hover:text-red-400 hover:bg-red-500/10 duration-300"
+                                className="w-9 h-9 rounded-full flex items-center justify-center text-slate-400 hover:text-red-400 hover:bg-red-500/10 duration-300 shrink-0"
                             >
                                 <FaTimes />
                             </button>
@@ -571,20 +577,19 @@ const Users = () => {
 
                         {/* MESSAGES */}
 
-                        <div className="flex-1 overflow-y-auto p-5 space-y-4">
+                        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-3 sm:p-5 space-y-3 sm:space-y-4">
                             {loadingConversation ? (
                                 <div className="h-full flex items-center justify-center">
-                                    <div className="w-9 h-9 rounded-full border-2 border-amber-500/20 border-t-amber-400 animate-spin" />
+                                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-amber-500/20 border-t-amber-400 animate-spin" />
                                 </div>
                             ) : !conversation ||
                                 conversation.messages
-                                    ?.length ===
-                                0 ? (
-                                <div className="h-full flex items-center justify-center text-center">
+                                    ?.length === 0 ? (
+                                <div className="h-full flex items-center justify-center text-center px-4">
                                     <div>
                                         <FaEnvelope className="mx-auto text-3xl text-slate-700 mb-4" />
 
-                                        <p className="text-slate-400">
+                                        <p className="text-sm sm:text-base text-slate-400">
                                             No messages yet.
                                         </p>
 
@@ -607,26 +612,26 @@ const Users = () => {
                                                     index
                                                 }
                                                 className={`flex ${isAdmin
-                                                    ? "justify-end"
-                                                    : "justify-start"
+                                                        ? "justify-end"
+                                                        : "justify-start"
                                                     }`}
                                             >
                                                 <div
-                                                    className={`max-w-[78%] px-4 py-3 rounded-2xl ${isAdmin
-                                                        ? "bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 rounded-br-md"
-                                                        : "bg-white/5 border border-amber-500/10 text-slate-300 rounded-bl-md"
+                                                    className={`max-w-[88%] sm:max-w-[78%] px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl ${isAdmin
+                                                            ? "bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 rounded-br-md"
+                                                            : "bg-white/5 border border-amber-500/10 text-slate-300 rounded-bl-md"
                                                         }`}
                                                 >
-                                                    <p className="text-sm leading-6 break-words">
+                                                    <p className="text-xs sm:text-sm leading-5 sm:leading-6 break-words whitespace-pre-wrap">
                                                         {
                                                             item.text
                                                         }
                                                     </p>
 
                                                     <p
-                                                        className={`text-[10px] mt-2 ${isAdmin
-                                                            ? "text-slate-700"
-                                                            : "text-slate-600"
+                                                        className={`text-[9px] sm:text-[10px] mt-1.5 sm:mt-2 ${isAdmin
+                                                                ? "text-slate-700"
+                                                                : "text-slate-600"
                                                             }`}
                                                     >
                                                         {item.sentAt
@@ -651,24 +656,21 @@ const Users = () => {
 
                         {/* SEND AREA */}
 
-                        <div className="p-4 border-t border-amber-500/10">
-                            <div className="flex items-center gap-2 bg-black/20 border border-amber-500/10 rounded-2xl p-2">
+                        <div className="shrink-0 p-2.5 sm:p-4 border-t border-amber-500/10">
+                            <div className="flex items-center gap-2 bg-black/20 border border-amber-500/10 rounded-xl sm:rounded-2xl p-1.5 sm:p-2">
                                 <input
                                     type="text"
-                                    value={
-                                        message
-                                    }
+                                    value={message}
                                     onChange={e =>
                                         setMessage(
-                                            e.target
-                                                .value
+                                            e.target.value
                                         )
                                     }
                                     onKeyDown={
                                         handleKeyDown
                                     }
                                     placeholder="Write a message..."
-                                    className="flex-1 bg-transparent outline-none text-white text-sm px-3 py-2 placeholder:text-slate-600"
+                                    className="flex-1 min-w-0 bg-transparent outline-none text-white text-xs sm:text-sm px-2 sm:px-3 py-2 sm:py-2.5 placeholder:text-slate-600"
                                 />
 
                                 <button
@@ -680,9 +682,9 @@ const Users = () => {
                                         !message.trim() ||
                                         sending
                                     }
-                                    className="w-11 h-11 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 duration-300"
+                                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 flex items-center justify-center shrink-0 disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 duration-300"
                                 >
-                                    <FaPaperPlane />
+                                    <FaPaperPlane className="text-sm sm:text-base" />
                                 </button>
                             </div>
                         </div>

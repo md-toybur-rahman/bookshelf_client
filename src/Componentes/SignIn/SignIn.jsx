@@ -35,7 +35,7 @@ const SignIn = () => {
 
 		const { email, password } = data;
 
-		fetch(`http://localhost:2000/users/${email}`)
+		fetch(`https://bookshelf-server-zot1.onrender.com/users/${email}`)
 			.then((res) => res.json())
 			.then((user) => {
 
@@ -108,7 +108,7 @@ const SignIn = () => {
 
 			// check existing user
 			const res = await fetch(
-				`http://localhost:2000/users/${user?.email}`
+				`https://bookshelf-server-zot1.onrender.com/users/${user?.email}`
 			);
 
 			const existingUser = await res.json();
@@ -139,7 +139,7 @@ const SignIn = () => {
 				};
 
 				await fetch(
-					"http://localhost:2000/users",
+					"https://bookshelf-server-zot1.onrender.com/users",
 					{
 						method: "POST",
 						headers: {

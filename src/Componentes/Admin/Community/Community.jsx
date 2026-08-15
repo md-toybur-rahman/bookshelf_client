@@ -22,7 +22,7 @@ const Community = () => {
 
     useEffect(() => {
 
-        fetch("http://localhost:2000/members")
+        fetch("https://bookshelf-server-zot1.onrender.com/members")
 
             .then(res => res.json())
 

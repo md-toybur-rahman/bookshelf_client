@@ -419,11 +419,15 @@
 
 @media(max-width:768px) {
 
+    .event-wrapper {
+        padding: 20px 16px 15px;
+    }
+
     .event-card {
 
         width: 310px;
 
-        min-height: 540px;
+        min-height: fit-content;
 
     }
 
@@ -435,25 +439,51 @@
 
     .event-body h2 {
 
-        font-size: 22px;
+        font-size: 18px;
+        min-height: 0;
+        margin-bottom: 10px;
 
+    }
+
+    .event-divider {
+        display: none;
+    }
+
+    .event-body {
+        padding-top: 10px;
+    }
+
+    .event-body h2 {
+        height: 50px;
+    }
+
+    .event-description {
+        display: none;
+    }
+
+    .event-info {
+        display: none;
+    }
+
+    .event-image-wrapper {
+        height: fit-content;
+        margin: 15px 0;
+    }
+
+    .event-btn {
+        font-size: 12px;
+        padding: 12px;
     }
 
 }
 
 @media(max-width:480px) {
 
-    .event-wrapper {
-
-        padding: 20px 8px 35px;
-
-    }
-
     .event-card {
 
         width: 270px;
 
-        min-height: 520px;
+        min-height: fit-content;
 
     }
 

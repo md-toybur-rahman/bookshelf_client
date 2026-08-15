@@ -42,7 +42,7 @@ const AdminMessageChat = ({
             };
 
             const res = await fetch(
-                `http://localhost:2000/conversations/${conversation._id}/message`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/message`,
                 {
                     method: "PATCH",
                     headers: {

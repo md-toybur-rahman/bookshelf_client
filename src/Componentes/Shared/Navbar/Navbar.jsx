@@ -16,7 +16,7 @@ import {
 	FaCalendarAlt,
 	FaNewspaper,
 	FaEnvelope,
-	FaHome,
+	FaHome, FaUsers,
 } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../../Providers/AuthProvider";
@@ -55,7 +55,7 @@ const Navbar = () => {
 		queryFn: async () => {
 
 			const res = await fetch(
-				`http://localhost:2000/users/${user?.email}`
+				`https://bookshelf-server-zot1.onrender.com/users/${user?.email}`
 			);
 
 			return res.json();
@@ -114,7 +114,7 @@ const Navbar = () => {
 			setAdminLoading(true);
 
 			const res = await fetch(
-				`http://localhost:2000/users/${encodeURIComponent(
+				`https://bookshelf-server-zot1.onrender.com/users/${encodeURIComponent(
 					user.email
 				)}`
 			);
@@ -175,7 +175,7 @@ const Navbar = () => {
 	const fetchConversations = useCallback(async () => {
 		try {
 			const res = await fetch(
-				"http://localhost:2000/conversations/support"
+				"https://bookshelf-server-zot1.onrender.com/conversations/support"
 			);
 
 			if (!res.ok) {
@@ -316,7 +316,7 @@ const Navbar = () => {
 		try {
 
 			const res = await fetch(
-				`http://localhost:2000/users/role/${user?.email}`,
+				`https://bookshelf-server-zot1.onrender.com/users/role/${user?.email}`,
 				{
 					method: "PATCH",
 					headers: {
@@ -388,7 +388,7 @@ const Navbar = () => {
 			// =================================================
 
 			const res = await fetch(
-				`http://localhost:2000/conversations/${conversation._id}/read`,
+				`https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/read`,
 				{
 					method: "PATCH",
 
@@ -607,19 +607,15 @@ const Navbar = () => {
 					className="flex items-center gap-3"
 				>
 
-					<div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#d4af37] to-[#b8860b] shadow-lg">
+					<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#d4af37] to-[#b8860b] text-2xl text-[#1c1612]">
 
-						<img
-							src="https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png"
-							className="h-10 w-10 object-contain"
-							alt=""
-						/>
+						<FaBookOpen />
 
 					</div>
 
 					<div>
 
-						<h2 className="text-2xl font-black tracking-wide text-white">
+						<h2 className="text-lg md:text-2xl font-black tracking-wide text-white">
 
 							Bookshelf
 
@@ -662,7 +658,7 @@ const Navbar = () => {
 
 						<div
 							ref={profileRef}
-							className="relative"
+							className="hidden lg:block relative"
 						>
 
 							<button
@@ -806,6 +802,9 @@ const Navbar = () => {
 			{/* Mobile Drawer */}
 
 			<div
+				onClick={() =>
+					setMobileMenu(!mobileMenu)
+				}
 				ref={mobileRef}
 				className={`overflow-hidden border-t border-[#3c3027] bg-[#17120e] transition-all duration-500 lg:hidden ${mobileMenu
 					? "max-h-[700px]"
@@ -850,14 +849,42 @@ const Navbar = () => {
 						News
 					</NavLink>
 
-					<NavLink
+					{/* <NavLink
 						to="/contact"
 						onClick={() => setMobileMenu(false)}
 						className="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-[#e8d8c7] transition hover:bg-[#2a211b] hover:text-[#d4af37]"
 					>
 						<FaEnvelope />
 						Contact
-					</NavLink>
+					</NavLink> */}
+					{
+						user ? <NavLink
+							to="/members"
+							className="flex items-center gap-3 rounded-xl px-4 py-3 text-[#e8d8c7] transition hover:bg-[#2a211b] hover:text-[#d4af37]"
+						>
+							<FaUsers />
+							Members
+						</NavLink> : ''
+					}
+					{
+						profile?.type !== 'admin' ?
+							<NavLink
+								onClick={() => {
+									handleReadBedge(conversations)
+								}}
+								to="/contact"
+								className="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-[#e8d8c7] transition hover:bg-[#2a211b] hover:text-[#d4af37]"
+							>
+								<FaEnvelope />
+								Contact
+
+								{userReadCount > 0 && (
+									<span className="absolute -top-3 -right-4 min-w-[20px] h-5 px-1.5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center border-2 border-[#090603] shadow-lg">
+										{userReadCount > 99 ? "99+" : userReadCount}
+									</span>
+								)}
+							</NavLink> : ''
+					}
 
 					<NavLink
 						to="/cart"
@@ -886,7 +913,7 @@ const Navbar = () => {
 							>
 
 								<button
-									onClick={() => setRoleMenu(!roleMenu)}
+									onClick={(e) => { e.stopPropagation(); setRoleMenu(!roleMenu) }}
 									className={`${navLink} flex items-center gap-2 mt-2`}
 								>
 
@@ -911,18 +938,9 @@ const Navbar = () => {
 								</button>
 
 								<div
-									className={`absolute left-1/2 top-full mt-5
-                -translate-x-1/2
-                w-56
-                rounded-3xl
-                border border-[#5d4638]
-                bg-[#1b120d]
-                shadow-[0_20px_60px_rgba(0,0,0,.45)]
-                overflow-hidden
-                transition-all duration-300
-                ${roleMenu
-											? "opacity-100 visible translate-y-0"
-											: "opacity-0 invisible -translate-y-2"
+									className={`absolute left-1/2 top-full mt-5 -translate-x-1/2 w-56 rounded-3xl border border-[#5d4638] bg-[#1b120d] shadow-[0_20px_60px_rgba(0,0,0,.45)] overflow-hidden transition-all duration-300 ${roleMenu
+										? "opacity-100 visible translate-y-0"
+										: "opacity-0 invisible -translate-y-2"
 										}`}
 								>
 

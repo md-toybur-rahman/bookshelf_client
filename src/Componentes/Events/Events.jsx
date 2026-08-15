@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useEvents from "../../Hooks/useEvents";
 import EventCard from "../Home/Events/EventCard";
 import {
@@ -8,6 +8,9 @@ import {
 	FaArrowDown,
 } from "react-icons/fa";
 import EventDetailsModal from "../Home/Events/EventDetailsModal";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, FreeMode } from "swiper/modules";
+import CountUp from "react-countup";
 
 const Events = () => {
 
@@ -16,6 +19,54 @@ const Events = () => {
 
 	const [selectedEvent, setSelectedEvent] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
+
+	const [col, setCol] = useState(1.2);
+
+	useEffect(() => {
+
+		const handleResize = () => {
+
+			const width = window.innerWidth;
+
+			if (width >= 1536) {
+
+				setCol(5);
+
+			} else if (width >= 1280) {
+
+				setCol(3.8);
+
+			} else if (width >= 1024) {
+
+				setCol(2.5);
+
+			} else if (width >= 768) {
+
+				setCol(2);
+
+			} else if (width >= 640) {
+
+				setCol(1.8);
+
+			} else if (width >= 500) {
+
+				setCol(1.6);
+
+			} else {
+
+				setCol(1.6);
+
+			}
+
+		};
+
+		handleResize();
+
+		window.addEventListener("resize", handleResize);
+
+		return () => window.removeEventListener("resize", handleResize);
+
+	}, []);
 
 	const handleOpenModal = (event) => {
 		setSelectedEvent(event);
@@ -52,7 +103,7 @@ const Events = () => {
 
 			{/* ================= HERO ================= */}
 
-			<section className="relative min-h-[85vh] flex items-center justify-center">
+			<section className="relative py-14 md:py-0 md:min-h-[85vh] flex items-center justify-center">
 
 				<div className="absolute inset-0">
 
@@ -70,7 +121,7 @@ const Events = () => {
 
 					<div className="text-center max-w-4xl mx-auto">
 
-						<div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-amber-400/20 backdrop-blur-xl text-amber-300 uppercase tracking-[3px] text-sm">
+						<div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-amber-400/20 backdrop-blur-xl text-amber-300 uppercase tracking-[3px] text-xs md:text-sm">
 
 							<FaCalendarAlt />
 
@@ -78,7 +129,7 @@ const Events = () => {
 
 						</div>
 
-						<h1 className="mt-8 text-6xl lg:text-8xl font-black leading-none text-white">
+						<h1 className="mt-5 md:mt-8 text-3xl lg:text-8xl font-black leading-none text-white">
 
 							Learn.
 
@@ -90,7 +141,7 @@ const Events = () => {
 
 						</h1>
 
-						<p className="mt-8 text-xl text-gray-300 leading-9">
+						<p className="mt-5 md:mt-8 text-sm md:text-xl text-gray-300 leading-8 md:leading-9">
 
 							Participate in inspiring workshops, author sessions,
 							book fairs and community meetups designed for every
@@ -98,9 +149,9 @@ const Events = () => {
 
 						</p>
 
-						<div className="flex flex-wrap justify-center gap-5 mt-12">
+						<div className="flex flex-wrap justify-center gap-5 mt-5 md:mt-12">
 
-							<div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
+							<div className="px-5 md:px-7 py-2 md:py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
 
 								<div className="flex items-center gap-3">
 
@@ -108,9 +159,9 @@ const Events = () => {
 
 									<div className="text-left">
 
-										<p className="text-2xl font-bold text-white">
+										<p className="text-lg md:text-2xl font-bold text-white">
 
-											{events.length}
+											<CountUp start={0} end={events.length} duration={2.7} />
 
 										</p>
 
@@ -126,7 +177,7 @@ const Events = () => {
 
 							</div>
 
-							<div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
+							<div className="px-5 md:px-7 py-2 md:py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
 
 								<div className="flex items-center gap-3">
 
@@ -134,9 +185,9 @@ const Events = () => {
 
 									<div className="text-left">
 
-										<p className="text-2xl font-bold text-white">
+										<p className="text-lg md:text-2xl font-bold text-white">
 
-											{upcomingEvents?.length}
+											<CountUp start={0} end={upcomingEvents?.length} duration={2.7} />
 
 										</p>
 
@@ -152,7 +203,7 @@ const Events = () => {
 
 							</div>
 
-							<div className="px-7 py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
+							<div className="px-5 md:px-7 py-2 md:py-4 rounded-2xl bg-white/5 border border-amber-400/20 backdrop-blur-xl">
 
 								<div className="flex items-center gap-3">
 
@@ -160,9 +211,9 @@ const Events = () => {
 
 									<div className="text-left">
 
-										<p className="text-2xl font-bold text-white">
+										<p className="text-lg md:text-2xl font-bold text-white">
 
-											12K+
+											<CountUp start={0} end={12} duration={2.7} suffix="K+" />
 
 										</p>
 
@@ -184,7 +235,7 @@ const Events = () => {
 
 				</div>
 
-				<div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+				<div className="absolute bottom-2 md:bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
 
 					<FaArrowDown className="text-amber-400 text-2xl" />
 
@@ -198,15 +249,20 @@ const Events = () => {
 
 				upcomingEvents.length > 0 &&
 
-				<section className="py-24">
+				<section className="md:py-24">
 
 					<div className="max-w-7xl mx-auto px-5">
 
-						<div className="text-center mb-16">
+						<div className="text-center md:mb-16">
 
-							<h2 className="text-5xl font-black text-white">
+							<h2 className="text-3xl font-black text-white md:text-6xl mt-10">
 
-								Upcoming Events
+								Upcoming
+								<span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
+
+									{" "}Events
+
+								</span>
 
 							</h2>
 
@@ -218,7 +274,7 @@ const Events = () => {
 
 						</div>
 
-						<div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
+						<div className="hidden xl:grid md:grid-cols-2 xl:grid-cols-3 gap-10">
 
 							{
 								upcomingEvents
@@ -234,6 +290,38 @@ const Events = () => {
 									))
 							}
 
+						</div>
+						<div className="block xl:hidden w-full">
+							<Swiper
+								slidesPerView={col}
+								spaceBetween={100}
+								freeMode={true}
+								modules={[FreeMode, Autoplay]}
+								slidesOffsetAfter={100}
+								autoplay={{
+									delay: 2000,
+									disableOnInteraction: false,
+									pauseOnMouseEnter: true,
+								}}
+							>
+
+								{
+									upcomingEvents
+										?.slice()
+										.sort((a, b) => new Date(a.date) - new Date(b.date))
+										.map(event => (
+											<SwiperSlide key={event._id}>
+												<EventCard
+													key={event._id}
+													event={event}
+													userEvents={userEvents}
+													onViewDetails={handleOpenModal}
+												/>
+											</SwiperSlide>
+										))
+								}
+
+							</Swiper>
 						</div>
 
 					</div>
@@ -252,15 +340,20 @@ const Events = () => {
 
 			{/* ================= PAST ================= */}
 
-			<section className="py-24">
+			<section className="md:py-24">
 
 				<div className="max-w-7xl mx-auto px-5">
 
-					<div className="text-center mb-16">
+					<div className="text-center md:mb-16">
 
-						<h2 className="text-5xl font-black text-white">
+						<h2 className="text-3xl font-black text-white md:text-6xl mt-10">
 
-							Past Events
+							Past
+							<span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
+
+								{" "}Events
+
+							</span>
 
 						</h2>
 
@@ -272,7 +365,7 @@ const Events = () => {
 
 					</div>
 
-					<div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
+					<div className="hidden xl:grid md:grid-cols-2 xl:grid-cols-3 gap-10">
 
 						{
 							pastEvents?.slice()
@@ -288,6 +381,38 @@ const Events = () => {
 								))
 						}
 
+					</div>
+					<div className="block xl:hidden w-full">
+						<Swiper
+							slidesPerView={col}
+							spaceBetween={100}
+							freeMode={true}
+							modules={[FreeMode, Autoplay]}
+							slidesOffsetAfter={100}
+							autoplay={{
+								delay: 2000,
+								disableOnInteraction: false,
+								pauseOnMouseEnter: true,
+							}}
+						>
+
+							{
+								pastEvents?.slice()
+									.sort((a, b) => new Date(a.date) - new Date(b.date))
+									.reverse()
+									.map(event => (
+										<SwiperSlide key={event._id}>
+											<EventCard
+												key={event._id}
+												event={event}
+												userEvents={userEvents}
+												onViewDetails={handleOpenModal}
+											/>
+										</SwiperSlide>
+									))
+							}
+
+						</Swiper>
 					</div>
 
 				</div>

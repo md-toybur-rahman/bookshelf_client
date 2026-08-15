@@ -40,7 +40,7 @@ const MessageChatModal = ({
 
         try {
             await fetch(
-                `http://localhost:2000/conversations/${conversationId}/read`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${conversationId}/read`,
                 {
                     method: "PATCH",
                     headers: {
@@ -72,7 +72,7 @@ const MessageChatModal = ({
             if (!otherUserId) return;
 
             const res = await fetch(
-                `http://localhost:2000/conversations/private/${currentUserId}/${otherUserId}`
+                `https://bookshelf-server-zot1.onrender.com/conversations/private/${currentUserId}/${otherUserId}`
             );
 
             if (!res.ok) return;
@@ -124,7 +124,7 @@ const MessageChatModal = ({
             };
 
             const res = await fetch(
-                `http://localhost:2000/conversations/${currentConversation._id}/message`,
+                `https://bookshelf-server-zot1.onrender.com/conversations/${currentConversation._id}/message`,
                 {
                     method: "PATCH",
                     headers: {

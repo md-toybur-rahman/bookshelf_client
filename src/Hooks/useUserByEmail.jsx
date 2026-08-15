@@ -20,7 +20,7 @@ const useUserByEmail = () => {
                 setError(null);
 
                 const res = await fetch(
-                    `http://localhost:2000/users/${user?.email}`
+                    `https://bookshelf-server-zot1.onrender.com/users/${user?.email}`
                 );
 
                 if (!res.ok) {
