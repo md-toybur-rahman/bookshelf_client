@@ -35,47 +35,46 @@ const Footer = () => {
 
 			<div className="absolute right-0 bottom-0 h-80 w-80 rounded-full bg-[#8b5a2b]/10 blur-[140px]" />
 
-			<div className="relative mx-auto max-w-[1500px] px-6 py-20">
+			<div className="relative mx-auto max-w-[1500px] px-6 py-5 md:py-20">
 
 				{/* Top */}
 
-				<div className="grid gap-14 lg:grid-cols-4">
+				<div className="grid gap-5 md:gap-14 lg:grid-cols-4">
 
 					{/* Brand */}
 
 					<div>
 
-						<div className="mb-6 flex items-center gap-4">
+						<Link
+							to="/"
+							className="flex items-center gap-3"
+						>
 
-							<div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#d4af37] to-[#b8860b]">
+							<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#d4af37] to-[#b8860b] text-2xl text-[#1c1612]">
 
-								<img
-									src="https://i.ibb.co/5G31THF/Elegant-Public-Library-Logo-Template-Photoroom-2.png"
-									className="h-11 w-11"
-									alt=""
-								/>
+								<FaBookOpen />
 
 							</div>
 
 							<div>
 
-								<h2 className="text-3xl font-black text-white">
+								<h2 className="text-lg md:text-2xl font-black tracking-wide text-white">
 
 									Bookshelf
 
 								</h2>
 
-								<p className="tracking-[5px] text-[#d4af37] uppercase text-xs">
+								<p className="-mt-1 text-xs tracking-[4px] text-[#d4af37] uppercase">
 
-									Digital Library
+									Library
 
 								</p>
 
 							</div>
 
-						</div>
+						</Link>
 
-						<p className="leading-8 text-[#cdbfae]">
+						<p className="leading-6 md:leading-8 text-[#cdbfae] mt-3">
 
 							Discover thousands of books, attend inspiring
 							events, connect with readers and build your own
@@ -85,7 +84,7 @@ const Footer = () => {
 
 						{/* Social */}
 
-						<div className="mt-8 flex gap-4">
+						<div className="mt-5 md:mt-8 flex gap-4">
 
 							<a
 								href="#"
@@ -123,13 +122,11 @@ const Footer = () => {
 
 					<div>
 
-						<h2 className="mb-8 text-2xl font-bold text-white">
-
+						<h2 className="mb-3 md:mb-8 text-lg md:text-2xl font-bold text-white">
 							Quick Links
-
 						</h2>
 
-						<div className="flex flex-col gap-5">
+						<div className="flex flex-col gap-2 md:gap-5">
 
 							<Link
 								onClick={scroll()}
@@ -178,13 +175,11 @@ const Footer = () => {
 
 					<div>
 
-						<h2 className="mb-8 text-2xl font-bold text-white">
-
+						<h2 className="mb-5 md:mb-8 text-lg md:text-2xl font-bold text-white">
 							Contact Us
-
 						</h2>
 
-						<div className="space-y-6">
+						<div className="space-y-3 md:space-y-6">
 
 							<div className="flex items-start gap-4">
 
@@ -274,14 +269,13 @@ const Footer = () => {
 
 					<div>
 
-						<h2 className="mb-8 text-2xl font-bold text-white">
+						<h2 className="mb-3 md:mb-8 text-lg md:text-2xl font-bold text-white">
 
 							Newsletter
 
 						</h2>
 
 						<p className="mb-6 leading-7 text-[#cdbfae]">
-
 							Subscribe to receive book recommendations,
 							library events, author interviews and the latest
 							updates from Bookshelf.
@@ -293,11 +287,11 @@ const Footer = () => {
 							<input
 								type="email"
 								placeholder="Enter your email"
-								className="w-full rounded-2xl border border-[#564032] bg-[#211913] px-5 py-4 text-white outline-none transition focus:border-[#d4af37]"
+								className="w-full text-sm md:text-base rounded-2xl border border-[#564032] bg-[#211913] px-3 md:px-5 py-2 md:py-4 text-white outline-none transition focus:border-[#d4af37]"
 							/>
 
 							<button
-								className="w-full rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#b8860b] py-4 font-bold text-[#1b1712] transition duration-300 hover:scale-[1.02] hover:shadow-xl"
+								className="w-full text-sm md:text-base rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#b8860b] py-2 md:py-4 font-bold text-[#1b1712] transition duration-300 hover:scale-[1.02] hover:shadow-xl"
 							>
 								Subscribe Now
 							</button>
@@ -310,17 +304,17 @@ const Footer = () => {
 
 				{/* Statistics */}
 
-				<div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="mt-8 md:mt-20 grid gap-6 grid-cols-2 lg:grid-cols-4">
 
 					<div className="rounded-3xl border border-[#4b392f] bg-[#201813]/80 p-8 text-center">
 
-						<h2 className="text-5xl font-black text-[#d4af37]">
+						<h2 className="text-2xl md:text-5xl font-black text-[#d4af37]">
 
 							15K+
 
 						</h2>
 
-						<p className="mt-3 text-[#cdbfae]">
+						<p className="text-sm md:text-base mt-3 text-[#cdbfae]">
 
 							Books Collection
 
@@ -330,13 +324,13 @@ const Footer = () => {
 
 					<div className="rounded-3xl border border-[#4b392f] bg-[#201813]/80 p-8 text-center">
 
-						<h2 className="text-5xl font-black text-[#d4af37]">
+						<h2 className="text-2xl md:text-5xl font-black text-[#d4af37]">
 
 							9K+
 
 						</h2>
 
-						<p className="mt-3 text-[#cdbfae]">
+						<p className="text-sm md:text-base mt-3 text-[#cdbfae]">
 
 							Happy Readers
 
@@ -346,13 +340,13 @@ const Footer = () => {
 
 					<div className="rounded-3xl border border-[#4b392f] bg-[#201813]/80 p-8 text-center">
 
-						<h2 className="text-5xl font-black text-[#d4af37]">
+						<h2 className="text-2xl md:text-5xl font-black text-[#d4af37]">
 
 							350+
 
 						</h2>
 
-						<p className="mt-3 text-[#cdbfae]">
+						<p className="text-sm md:text-base mt-3 text-[#cdbfae]">
 
 							Weekly Events
 
@@ -362,13 +356,13 @@ const Footer = () => {
 
 					<div className="rounded-3xl border border-[#4b392f] bg-[#201813]/80 p-8 text-center">
 
-						<h2 className="text-5xl font-black text-[#d4af37]">
+						<h2 className="text-2xl md:text-5xl font-black text-[#d4af37]">
 
 							99%
 
 						</h2>
 
-						<p className="mt-3 text-[#cdbfae]">
+						<p className="text-sm md:text-base mt-3 text-[#cdbfae]">
 
 							Reader Satisfaction
 
@@ -379,9 +373,9 @@ const Footer = () => {
 				</div>
 				{/* Bottom */}
 
-				<div className="mt-20 border-t border-[#3d3027] pt-10">
+				<div className="mt-8 md:mt-20 border-t border-[#3d3027] pt-5 md:pt-10">
 
-					<div className="flex flex-col items-center justify-between gap-8 lg:flex-row">
+					<div className="flex flex-col items-center justify-between gap-4 md:gap-8 lg:flex-row">
 
 						<div className="flex items-center gap-4">
 

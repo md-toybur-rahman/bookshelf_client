@@ -148,19 +148,12 @@ const EventCard = ({ event, userEvents, onViewDetails }) => {
 
 				<div className="event-body">
 
-					<h2>{title}</h2>
+					<h2 className="leading-6 min-h-24 md:min-h-24 sm:leading-7 line-clamp-2 break-words">{title}</h2>
 
-					<p className="event-description">
+					<p className="event-description leading-6 min-h-14 md:min-h-14 sm:leading-7 line-clamp-2 break-words">
 
 						{
 							description
-								?.split(' ')
-								.slice(0, 8)
-								.join(' ')
-						}
-						{
-							description
-								?.split(' ').length > 8 ? ' . . . .' : ''
 						}
 
 					</p>
