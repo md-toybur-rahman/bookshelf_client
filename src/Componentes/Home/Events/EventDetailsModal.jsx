@@ -78,7 +78,6 @@ const EventDetailsModal = ({
                     showConfirmButton: false,
                 });
                 onClose();
-                await refetch();
                 return;
             }
             if (data.message) {

@@ -27,8 +27,6 @@ import MyProfile from "../Componentes/MyProfile/MyProfile";
 import AddNews from "../Componentes/Admin/NewsManagement/AddNews/AddNews";
 import UpdateNews from "../Componentes/Admin/NewsManagement/UpdateNews/UpdateNews";
 import DeleteNews from "../Componentes/Admin/NewsManagement/DeleteNews/DeleteNews";
-import Community from "../Componentes/Admin/Community/Community";
-import ContactMessage from "../Componentes/Admin/ContactMessage/ContactMessage";
 import Settings from "../Componentes/Admin/Settings/Settings";
 import Users from "../Componentes/Admin/Users/Users";
 import AdminRoute from "./AdminRoute";
@@ -121,10 +119,6 @@ const router = createBrowserRouter([
           {
             path: "/admin/delete_news",
             element: <PrivateRoute><DeleteNews /></PrivateRoute>
-          },
-          {
-            path: "/admin/community",
-            element: <PrivateRoute><Community /></PrivateRoute>
           },
           {
             path: "/admin/contact_messages",

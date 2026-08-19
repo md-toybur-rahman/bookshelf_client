@@ -3,27 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-import {
-	FaBook,
-	FaUserEdit,
-	FaBuilding,
-	FaCalendarAlt,
-	FaLanguage,
-	FaTags,
-	FaHashtag,
-	FaDollarSign,
-	FaRulerCombined,
-	FaCloudUploadAlt,
-	FaFileAlt,
-	FaBarcode,
-	FaLayerGroup,
-	FaBoxes,
-	FaRulerVertical,
-	FaRulerHorizontal,
-	FaExpandArrowsAlt,
-	FaAlignLeft,
-	FaImage
-} from "react-icons/fa";
+import { FaBook, FaUserEdit, FaBuilding, FaCalendarAlt, FaLanguage, FaTags, FaHashtag, FaDollarSign, FaRulerCombined, FaCloudUploadAlt, FaFileAlt, FaBarcode, FaLayerGroup, FaBoxes, FaRulerVertical, FaRulerHorizontal, FaExpandArrowsAlt, FaAlignLeft, FaImage } from "react-icons/fa";
 
 const AddBook = () => {
 	const {
@@ -180,8 +160,6 @@ const AddBook = () => {
 				className="w-full"
 			>
 				<div className="space-y-6 sm:space-y-8">
-
-					{/* Book Information */}
 					<div className="relative overflow-hidden rounded-2xl sm:rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-5 sm:p-8 lg:p-10 shadow-[0_25px_60px_rgba(0,0,0,.45)]">
 
 						<div className="absolute -right-20 -top-20 w-48 sm:w-72 h-48 sm:h-72 rounded-full bg-amber-400/10 blur-[100px] sm:blur-[120px]" />
@@ -199,8 +177,6 @@ const AddBook = () => {
 							</div>
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-
-								{/* Book Name */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaBook className="text-amber-400 shrink-0" />
@@ -221,8 +197,6 @@ const AddBook = () => {
 										</p>
 									)}
 								</div>
-
-								{/* Author */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaUserEdit className="text-amber-400 shrink-0" />
@@ -237,8 +211,6 @@ const AddBook = () => {
 										placeholder="Author Name"
 									/>
 								</div>
-
-								{/* Publisher */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaBuilding className="text-amber-400 shrink-0" />
@@ -253,8 +225,6 @@ const AddBook = () => {
 										placeholder="Publisher Name"
 									/>
 								</div>
-
-								{/* Publication */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaCalendarAlt className="text-amber-400 shrink-0" />
@@ -269,8 +239,6 @@ const AddBook = () => {
 										className={`${inputStyle} w-full min-w-0 relative cursor-pointer`}
 									/>
 								</div>
-
-								{/* Language */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaLanguage className="text-amber-400 shrink-0" />
@@ -285,8 +253,6 @@ const AddBook = () => {
 										placeholder="English"
 									/>
 								</div>
-
-								{/* Genre */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaTags className="text-amber-400 shrink-0" />
@@ -301,8 +267,6 @@ const AddBook = () => {
 										placeholder="Novel"
 									/>
 								</div>
-
-								{/* Pages */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaFileAlt className="text-amber-400 shrink-0" />
@@ -317,8 +281,6 @@ const AddBook = () => {
 										className={`${inputStyle} w-full min-w-0`}
 									/>
 								</div>
-
-								{/* Stock */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaBoxes className="text-amber-400 shrink-0" />
@@ -332,8 +294,6 @@ const AddBook = () => {
 										defaultValue={1}
 									/>
 								</div>
-
-								{/* Price */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaDollarSign className="text-amber-400 shrink-0" />
@@ -350,8 +310,6 @@ const AddBook = () => {
 										placeholder="19.99"
 									/>
 								</div>
-
-								{/* Height */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaRulerVertical className="text-amber-400 shrink-0" />
@@ -364,8 +322,6 @@ const AddBook = () => {
 										placeholder="8 inches"
 									/>
 								</div>
-
-								{/* Width */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaRulerHorizontal className="text-amber-400 shrink-0" />
@@ -378,8 +334,6 @@ const AddBook = () => {
 										placeholder="5.5 inches"
 									/>
 								</div>
-
-								{/* Depth */}
 								<div className="min-w-0">
 									<label className={labelStyle}>
 										<FaExpandArrowsAlt className="text-amber-400 shrink-0" />
@@ -392,8 +346,6 @@ const AddBook = () => {
 										placeholder="1 inch"
 									/>
 								</div>
-
-								{/* Keywords */}
 								<div className="md:col-span-2 min-w-0">
 									<label className={labelStyle}>
 										<FaTags className="text-amber-400 shrink-0" />
@@ -410,8 +362,6 @@ const AddBook = () => {
 										Separate multiple keywords with comma (,)
 									</p>
 								</div>
-
-								{/* Description */}
 								<div className="md:col-span-2 min-w-0">
 									<label className={labelStyle}>
 										<FaAlignLeft className="text-amber-400 shrink-0" />
@@ -425,8 +375,6 @@ const AddBook = () => {
 										placeholder="Write book description..."
 									/>
 								</div>
-
-								{/* Cover Image */}
 								<div className="md:col-span-2 min-w-0">
 									<label className={labelStyle}>
 										<FaImage className="text-amber-400 shrink-0" />
@@ -443,8 +391,6 @@ const AddBook = () => {
 									/>
 								</div>
 							</div>
-
-							{/* Submit */}
 							<div className="mt-7 sm:mt-10 flex justify-stretch sm:justify-end">
 
 								<button

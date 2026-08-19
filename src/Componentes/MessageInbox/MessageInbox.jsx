@@ -12,6 +12,7 @@ import {
     FaCheck,
     FaTrash,
 } from "react-icons/fa";
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import Swal from "sweetalert2";
 
 import { AuthContext } from "../../Providers/AuthProvider";
@@ -91,20 +92,56 @@ const MessageInbox = () => {
         refetch,
     } = useMessages(mongoUserId);
 
+
+    // =========================================================
+    // Get Other User
+    // =========================================================
+
+    const getOtherUser = conversation => {
+        if (!conversation) return {};
+
+        // If backend already provides user object
+        if (
+            conversation.user &&
+            typeof conversation.user === "object"
+        ) {
+            return conversation.user;
+        }
+
+        // Some backend responses may provide users array
+        if (
+            Array.isArray(conversation.users)
+        ) {
+            const otherUser =
+                conversation.users.find(
+                    item =>
+                        item?._id?.toString() !==
+                        mongoUserId
+                );
+
+            if (otherUser) {
+                return otherUser;
+            }
+        }
+
+        return {};
+    };
+
     // =========================================================
     // State
     // =========================================================
 
     const [open, setOpen] = useState(false);
-    const [selectedConversation, setSelectedConversation] =
-        useState(null);
-
+    const [selectedConversation, setSelectedConversation] = useState(null);
+    const [seen, setSeen] = useState(0);
     const [message, setMessage] = useState("");
     const [sending, setSending] = useState(false);
-    const [requestAction, setRequestAction] =
-        useState(null);
+    const [requestAction, setRequestAction] = useState(null);
+    const [isSelectedCoversationOpen, setIsSelectedCoversationOpen] = useState(false);
 
     const chatEndRef = useRef(null);
+    const chatContainerRef = useRef(null);
+    const previousMessageCount = useRef(0);
     const inboxRef = useRef(null);
 
     // =========================================================
@@ -122,6 +159,10 @@ const MessageInbox = () => {
             );
 
         if (updatedConversation) {
+            const otherUser = getOtherUser(updatedConversation);
+            const otherUserId = otherUser?._id;
+            setSeen(updatedConversation?.unread?.otherUserId)
+
             setSelectedConversation(
                 updatedConversation
             );
@@ -172,48 +213,90 @@ const MessageInbox = () => {
         });
     };
 
+    // useEffect(() => {
+    //     if (!selectedConversation) return;
+    //     console.log('first')
+    //     handleOpenConversation(selectedConversation);
+    //     scrollToBottom();
+    // }, [
+    //     selectedConversation,
+    //     selectedConversation?.messages?.length,
+    // ]);
+
     useEffect(() => {
-        if (!selectedConversation) return;
+        const container = chatContainerRef.current;
 
-        scrollToBottom();
-    }, [
-        selectedConversation,
-        selectedConversation?.messages?.length,
-    ]);
+        if (!container) {
+            return;
+        }
+        handleOpenConversation(selectedConversation);
+        const messages =
+            selectedConversation?.messages || [];
 
-    // =========================================================
-    // Get Other User
-    // =========================================================
+        const currentMessageCount =
+            messages.length;
 
-    const getOtherUser = conversation => {
-        if (!conversation) return {};
+        // ==========================================
+        // New conversation opened
+        // ==========================================
 
-        // If backend already provides user object
         if (
-            conversation.user &&
-            typeof conversation.user === "object"
+            previousMessageCount.current === 0 &&
+            currentMessageCount > 0
         ) {
-            return conversation.user;
+            requestAnimationFrame(() => {
+                container.scrollTo({
+                    top: container.scrollHeight,
+                    behavior: "auto",
+                });
+            });
+
+            previousMessageCount.current =
+                currentMessageCount;
+
+            return;
         }
 
-        // Some backend responses may provide users array
-        if (
-            Array.isArray(conversation.users)
-        ) {
-            const otherUser =
-                conversation.users.find(
-                    item =>
-                        item?._id?.toString() !==
-                        mongoUserId
-                );
+        // ==========================================
+        // New message arrived
+        // ==========================================
 
-            if (otherUser) {
-                return otherUser;
+        if (
+            currentMessageCount >
+            previousMessageCount.current
+        ) {
+            const distanceFromBottom =
+                container.scrollHeight -
+                container.scrollTop -
+                container.clientHeight;
+
+            /*
+             * User is already near bottom.
+             * So new message এলে automatically নিচে যাবে।
+             */
+            if (distanceFromBottom < 120) {
+                requestAnimationFrame(() => {
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: "smooth",
+                    });
+                });
             }
         }
 
-        return {};
-    };
+        previousMessageCount.current =
+            currentMessageCount;
+
+    }, [
+        selectedConversation?._id,
+        selectedConversation?.messages?.length,
+    ]);
+
+    useEffect(() => {
+        previousMessageCount.current = 0;
+    }, [
+        selectedConversation?._id,
+    ]);
 
     // =========================================================
     // User Name
@@ -299,8 +382,8 @@ const MessageInbox = () => {
     // =========================================================
 
     const handleClose = () => {
-        setOpen(false);
         setSelectedConversation(null);
+        setOpen(false);
         setMessage("");
     };
 
@@ -548,9 +631,12 @@ const MessageInbox = () => {
 
             <button
                 type="button"
-                onClick={() =>
-                    setOpen(prev => !prev)
-                }
+                onClick={() => {
+                    setOpen(prev => !prev);
+                    if (selectedConversation) {
+                        setSelectedConversation(null)
+                    }
+                }}
                 className="relative w-11 h-11 rounded-full flex items-center justify-center text-slate-300 bg-white/5 border border-amber-500/20 hover:bg-amber-500/10 hover:text-amber-400 hover:border-amber-500/40 duration-300"
             >
                 <FaEnvelope className="text-lg" />
@@ -597,7 +683,10 @@ const MessageInbox = () => {
 
                             <button
                                 type="button"
-                                onClick={handleClose}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleClose();
+                                }}
                                 className="w-9 h-9 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-red-500/20 duration-300"
                             >
                                 <FaTimes />
@@ -779,7 +868,9 @@ const MessageInbox = () => {
                                         </p>
                                     </div>
 
-                                    {conversations.map(
+                                    {conversations.sort((a, b) => {
+                                        return new Date(b.lastMessageAt) - new Date(a.lastMessageAt);
+                                    }).map(
                                         conversation => {
                                             const otherUser =
                                                 getOtherUser(
@@ -967,7 +1058,10 @@ const MessageInbox = () => {
 
                             <button
                                 type="button"
-                                onClick={handleClose}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleClose();
+                                }}
                                 className="w-9 h-9 rounded-full flex items-center justify-center text-slate-400 hover:text-red-400 hover:bg-red-500/10 duration-300"
                             >
                                 <FaTimes />
@@ -979,32 +1073,53 @@ const MessageInbox = () => {
                             CHAT MESSAGES
                         ================================================= */}
 
-                        <div onClick={() =>
-                            handleOpenConversation(
-                                selectedConversation
-                            )
-                        } className="h-[416px] overflow-y-auto p-4 space-y-3 custom-scrollbar">
-
-                            {(
-                                selectedConversation?.messages ||
-                                []
-                            ).length === 0 ? (
+                        <div
+                            onClick={() =>
+                                handleOpenConversation(selectedConversation)
+                            }
+                            ref={chatContainerRef}
+                            className="h-[416px] overflow-y-auto p-4 space-y-3 custom-scrollbar"
+                        >
+                            {(selectedConversation?.messages || []).length === 0 ? (
                                 <div className="h-full flex items-center justify-center text-center">
-
                                     <p className="text-sm text-slate-600">
                                         No messages yet.
                                     </p>
-
                                 </div>
                             ) : (
                                 selectedConversation.messages.map(
-                                    (
-                                        item,
-                                        index
-                                    ) => {
+                                    (item, index) => {
+
                                         const isMine =
                                             item?.senderId?.toString() ===
                                             mongoUserId;
+
+                                        // Find the other participant
+                                        const otherUserId =
+                                            selectedConversation?.participantIds?.find(
+                                                id =>
+                                                    id?.toString() !==
+                                                    mongoUserId
+                                            )?.toString();
+
+                                        // Other user's unread count
+                                        const otherUserUnread =
+                                            otherUserId
+                                                ? Number(
+                                                    selectedConversation?.unread?.[
+                                                    otherUserId
+                                                    ] ?? 0
+                                                )
+                                                : null;
+                                        const isSeen =
+                                            isMine &&
+                                            otherUserId &&
+                                            otherUserUnread === 0;
+
+                                        // Only show status on my latest message
+                                        const isLastMessage =
+                                            selectedConversation?.messages?.length ===
+                                            index + 1;
 
                                         return (
                                             <div
@@ -1012,12 +1127,27 @@ const MessageInbox = () => {
                                                     item?._id?.toString() ||
                                                     index
                                                 }
-                                                className={`flex ${isMine
+                                                className={`flex items-end gap-2 ${isMine
                                                     ? "justify-end"
                                                     : "justify-start"
                                                     }`}
                                             >
 
+                                                {/* Seen Status */}
+                                                {isMine && isLastMessage && (
+                                                    <div
+                                                        className={`flex items-center justify-center mb-1 transition-all duration-300 ${isSeen
+                                                            ? "text-amber-500"
+                                                            : "text-slate-500"
+                                                            }`}
+                                                    >
+                                                        <IoCheckmarkDoneSharp
+                                                            className="text-lg"
+                                                        />
+                                                    </div>
+                                                )}
+
+                                                {/* Message */}
                                                 <div
                                                     className={`max-w-[78%] px-4 py-3 rounded-2xl ${isMine
                                                         ? "bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 rounded-br-md"
@@ -1026,9 +1156,7 @@ const MessageInbox = () => {
                                                 >
 
                                                     <p className="text-sm leading-6 break-words">
-                                                        {
-                                                            item?.text
-                                                        }
+                                                        {item?.text}
                                                     </p>
 
                                                     <p
@@ -1059,7 +1187,6 @@ const MessageInbox = () => {
                             )}
 
                             <div ref={chatEndRef} />
-
                         </div>
 
                         {/* =================================================

@@ -1,0 +1,61 @@
+@keyframes book-left {
+
+    0%,
+    100% {
+        transform: rotateY(0deg);
+    }
+
+    50% {
+        transform: rotateY(-25deg);
+    }
+}
+
+@keyframes book-right {
+
+    0%,
+    100% {
+        transform: rotateY(0deg);
+    }
+
+    50% {
+        transform: rotateY(25deg);
+    }
+}
+
+@keyframes pages {
+
+    0%,
+    100% {
+        transform: scaleX(1);
+    }
+
+    50% {
+        transform: scaleX(0.82);
+    }
+}
+
+@keyframes loading-line {
+    0% {
+        transform: translateX(-120%);
+    }
+
+    100% {
+        transform: translateX(220%);
+    }
+}
+
+.animate-book-left {
+    animation: book-left 1.8s ease-in-out infinite;
+}
+
+.animate-book-right {
+    animation: book-right 1.8s ease-in-out infinite;
+}
+
+.animate-pages {
+    animation: pages 1.8s ease-in-out infinite;
+}
+
+.animate-loading-line {
+    animation: loading-line 1.4s ease-in-out infinite;
+}

@@ -245,7 +245,7 @@ const DeleteEvent = () => {
 									<div className="p-5 sm:p-6 flex flex-col flex-1 min-w-0">
 
 										{/* Title + Status */}
-										<div className="flex items-start justify-between gap-3 mb-4">
+										<div className="flex items-start justify-between gap-3 mb-4 min-h-14 md:min-h-16">
 
 											<h2 className="text-xl sm:text-2xl font-bold text-white leading-7 sm:leading-8 line-clamp-2 break-words min-w-0 flex-1">
 
@@ -308,7 +308,7 @@ const DeleteEvent = () => {
 
 
 										{/* Description */}
-										<p className="mt-5 text-sm sm:text-base text-slate-500 leading-6 sm:leading-7 line-clamp-4 break-words">
+										<p className="mt-5 text-sm sm:text-base text-slate-500 leading-6 min-h-24 md:min-h-28 sm:leading-7 line-clamp-4 break-words">
 
 											{event.description}
 

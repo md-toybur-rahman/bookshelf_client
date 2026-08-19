@@ -177,7 +177,6 @@ const Navbar = () => {
 			const res = await fetch(
 				"https://bookshelf-server-zot1.onrender.com/conversations/support"
 			);
-
 			if (!res.ok) {
 				throw new Error(
 					"Failed to load conversations"

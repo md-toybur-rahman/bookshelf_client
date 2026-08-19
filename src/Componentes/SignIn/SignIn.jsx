@@ -98,13 +98,9 @@ const SignIn = () => {
 	const handleGoogleSignIn = async () => {
 
 		try {
-
 			setLoading(true);
-
 			const result = await googleLogin();
-
 			const user = result.user;
-			console.log(user)
 
 			// check existing user
 			const res = await fetch(

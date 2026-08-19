@@ -76,9 +76,6 @@ const DeleteBook = () => {
 		if (!confirm.isConfirmed) return;
 
 		try {
-
-			/* Delete Image */
-
 			if (book.public_id) {
 
 				await fetch("https://bookshelf-server-zot1.onrender.com/delete-image", {
@@ -96,9 +93,6 @@ const DeleteBook = () => {
 				});
 
 			}
-
-			/* Delete Book */
-
 			const res = await fetch(
 				`https://bookshelf-server-zot1.onrender.com/books/${book._id}`,
 				{

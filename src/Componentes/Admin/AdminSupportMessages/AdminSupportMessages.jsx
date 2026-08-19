@@ -1,18 +1,5 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
-import {
-    FaArrowLeft,
-    FaComments,
-    FaEnvelope,
-    FaPaperPlane,
-    FaTrashAlt,
-} from "react-icons/fa";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState, } from "react";
+import { FaArrowLeft, FaComments, FaEnvelope, FaPaperPlane, FaTrashAlt, } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import useUserByEmail from "../../../Hooks/useUserByEmail";
@@ -22,48 +9,29 @@ const AdminSupportMessages = () => {
 
     const [admin, setAdmin] = useState(null);
     const [conversations, setConversations] = useState([]);
-    const [selectedConversation, setSelectedConversation] =
-        useState(null);
-
+    const [selectedConversation, setSelectedConversation] = useState(null);
     const [message, setMessage] = useState("");
     const [sending, setSending] = useState(false);
     const [loading, setLoading] = useState(true);
     const [adminLoading, setAdminLoading] = useState(true);
-
-
     const chatRef = useRef(null);
-
-    // =========================================================
-    // API
-    // =========================================================
-
     const API_URL = "https://bookshelf-server-zot1.onrender.com";
-
-    // =========================================================
-    // Load MongoDB Admin
-    // Firebase user != MongoDB user
-    // =========================================================
 
     const loadAdmin = useCallback(async () => {
         if (!user?.email) return;
-
         try {
             setAdminLoading(true);
-
             const res = await fetch(
                 `${API_URL}/users/${encodeURIComponent(
                     user.email
                 )}`
             );
-
             if (!res.ok) {
                 throw new Error(
                     "Failed to fetch admin information"
                 );
             }
-
             const data = await res.json();
-
             const mongoUser = Array.isArray(data)
                 ? data[0]
                 : data;
@@ -80,73 +48,50 @@ const AdminSupportMessages = () => {
                 "Admin loading error:",
                 error
             );
-
             setAdmin(null);
         } finally {
             setAdminLoading(false);
         }
     }, [user?.email]);
 
-
-    // =========================================================
-    // Load Admin
-    // =========================================================
-
     useEffect(() => {
         loadAdmin();
     }, [loadAdmin]);
-
-
-    // =========================================================
-    // Fetch All Support Conversations
-    // =========================================================
 
     const fetchConversations = useCallback(async () => {
         try {
             const res = await fetch(
                 `${API_URL}/conversations/support`
             );
-
             if (!res.ok) {
                 throw new Error(
                     "Failed to load conversations"
                 );
             }
-
             const data = await res.json();
-
             if (!data.success) {
                 throw new Error(
                     data.message ||
                     "Failed to load conversations"
                 );
             }
-
             const newConversations =
                 data.conversations || [];
-
             setConversations(newConversations);
-
-            // =================================================
-            // Keep currently opened conversation updated
-            // =================================================
 
             setSelectedConversation(prev => {
                 if (!prev?._id) {
                     return prev;
                 }
-
                 const updatedConversation =
                     newConversations.find(
                         item =>
                             String(item._id) ===
                             String(prev._id)
                     );
-
                 if (!updatedConversation) {
                     return null;
                 }
-
                 return updatedConversation;
             });
         } catch (error) {
@@ -159,19 +104,9 @@ const AdminSupportMessages = () => {
         }
     }, []);
 
-
-    // =========================================================
-    // Initial Conversation Load
-    // =========================================================
-
     useEffect(() => {
         fetchConversations();
     }, [fetchConversations]);
-
-
-    // =========================================================
-    // Live Conversation Update
-    // =========================================================
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -183,18 +118,9 @@ const AdminSupportMessages = () => {
         };
     }, [fetchConversations]);
 
-    // =========================================================
-    // Admin Total Unread Count
-    //
-    // IMPORTANT:
-    // unread এখন MongoDB user ID দিয়ে stored
-    // =========================================================
-
     const totalUnread = useMemo(() => {
         if (!admin?._id) return 0;
-
         const adminId = String(admin._id);
-
         return conversations.reduce(
             (total, conversation) => {
                 return (
@@ -208,34 +134,18 @@ const AdminSupportMessages = () => {
         );
     }, [conversations, admin?._id]);
 
-
-    // =========================================================
-    // Open Conversation
-    // =========================================================
-
     const handleOpenConversation = async conversation => {
         if (!conversation?._id) return;
-
-        // Immediately open conversation
         setSelectedConversation(conversation);
-
-        // Clear input
         setMessage("");
-
-        // Admin MongoDB ID required
         if (!admin?._id) {
             console.error(
                 "Admin MongoDB ID unavailable"
             );
-
             return;
         }
 
         try {
-            // =================================================
-            // Mark admin's unread messages as read
-            // =================================================
-
             const res = await fetch(
                 `${API_URL}/conversations/${conversation._id}/read`,
                 {
@@ -260,11 +170,6 @@ const AdminSupportMessages = () => {
                     "Failed to mark messages as read"
                 );
             }
-
-            // =================================================
-            // Refresh inbox
-            // =================================================
-
             await fetchConversations();
         } catch (error) {
             console.error(
@@ -274,41 +179,25 @@ const AdminSupportMessages = () => {
         }
     };
 
-
-    // =========================================================
-    // Auto Scroll ONLY Inside Chat Box
-    // =========================================================
-
     useEffect(() => {
         if (!selectedConversation?.messages?.length) return;
-
         const container = chatRef.current;
-
         if (!container) return;
-
         const timer = setTimeout(() => {
             container.scrollTo({
                 top: container.scrollHeight,
                 behavior: "smooth",
             });
         }, 50);
-
         return () => clearTimeout(timer);
     }, [
         selectedConversation?._id,
         selectedConversation?.messages?.length,
     ]);
 
-
-    // =========================================================
-    // Send Admin Message
-    // =========================================================
-
     const handleSendMessage = async e => {
         e.preventDefault();
-
         const text = message.trim();
-
         if (
             !text ||
             !selectedConversation?._id ||
@@ -316,90 +205,54 @@ const AdminSupportMessages = () => {
         ) {
             return;
         }
-
         if (!admin?._id) {
             Swal.fire({
                 icon: "error",
                 title: "Admin information unavailable",
                 text: "Please try again.",
             });
-
             return;
         }
 
         try {
             setSending(true);
-
-            // =================================================
-            // Send message
-            // =================================================
-
             const res = await fetch(
                 `${API_URL}/conversations/support/${encodeURIComponent(
                     selectedConversation._id
                 )}/message`,
                 {
                     method: "PATCH",
-
                     headers: {
                         "Content-Type":
                             "application/json",
                     },
-
                     body: JSON.stringify({
                         text,
-
-                        // MongoDB admin ID
                         senderId: String(admin._id),
-
-                        // For displaying sender
                         senderEmail: admin.email,
-
-                        // Backend message sender type
                         userType: "admin",
                     }),
                 }
             );
-
             const data = await res.json();
-
             if (!res.ok || !data.success) {
                 throw new Error(
                     data.message ||
                     "Failed to send message"
                 );
             }
-
-            // Clear input
             setMessage("");
-
-            // =================================================
-            // Refresh conversation
-            // =================================================
-
             await fetchConversations();
-
-            // =================================================
-            // Scroll ONLY inside chat box
-            // =================================================
-
             setTimeout(() => {
                 const container =
                     chatRef.current;
-
                 if (!container) return;
-
                 container.scrollTo({
                     top: container.scrollHeight,
                     behavior: "smooth",
                 });
             }, 100);
         } catch (error) {
-            console.error(
-                "Admin message error:",
-                error
-            );
-
             Swal.fire({
                 icon: "error",
                 title: "Message Failed",
@@ -410,33 +263,19 @@ const AdminSupportMessages = () => {
         }
     };
 
-
-    // =========================================================
-    // End Support Conversation
-    // =========================================================
-
     const handleEndChat = async conversationId => {
         if (!conversationId) return;
-
         const result = await Swal.fire({
             icon: "warning",
-
             title: "End this conversation?",
-
-            text:
-                "This support conversation will be permanently deleted.",
-
+            text: "This support conversation will be permanently deleted.",
             showCancelButton: true,
-
             confirmButtonText: "End Chat",
-
             cancelButtonText: "Cancel",
-
             confirmButtonColor: "#dc2626",
         });
 
         if (!result.isConfirmed) return;
-
         try {
             const res = await fetch(
                 `${API_URL}/conversations/${conversationId}/end`,
@@ -444,53 +283,30 @@ const AdminSupportMessages = () => {
                     method: "DELETE",
                 }
             );
-
             const data = await res.json();
-
             if (!res.ok || !data.success) {
                 throw new Error(
                     data.message ||
                     "Failed to end conversation"
                 );
             }
-
-            // Close selected conversation
             setSelectedConversation(null);
-
-            // Clear input
             setMessage("");
-
-            // Reload inbox
             await fetchConversations();
-
             Swal.fire({
                 icon: "success",
-
                 title: "Chat Ended",
-
                 showConfirmButton: false,
-
                 timer: 1200,
             });
         } catch (error) {
-            console.error(
-                "End support conversation error:",
-                error
-            );
-
             Swal.fire({
                 icon: "error",
-
                 title: "Failed",
-
                 text: error.message,
             });
         }
     };
-
-    // =========================================================
-    // Loading
-    // =========================================================
 
     if (loading || adminLoading) {
         return (
@@ -500,20 +316,10 @@ const AdminSupportMessages = () => {
         );
     }
 
-    // =========================================================
-    // UI
-    // =========================================================
-
     return (
         <div className="w-full">
-            {/* =================================================
-            CONVERSATION LIST
-        ================================================= */}
-
             {!selectedConversation ? (
                 <div>
-                    {/* Header */}
-
                     <div className="flex items-center justify-between mb-8">
                         <div>
                             <h1 className="text-3xl font-black text-white">
@@ -533,9 +339,6 @@ const AdminSupportMessages = () => {
                             </span>
                         </div>
                     </div>
-
-                    {/* Empty */}
-
                     {conversations.length === 0 ? (
                         <div className="rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-12 text-center">
                             <FaEnvelope className="mx-auto text-5xl text-slate-600 mb-5" />
@@ -563,7 +366,6 @@ const AdminSupportMessages = () => {
                                         key={conversation._id}
                                         className="rounded-[30px] border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] p-6 shadow-[0_20px_60px_rgba(0,0,0,.45)] hover:border-amber-400/40 hover:-translate-y-1 duration-300"
                                     >
-                                        {/* User */}
 
                                         <div className="flex items-start gap-4">
                                             <div className="w-12 h-12 rounded-2xl overflow-hidden border border-amber-500/20 shrink-0">
@@ -614,8 +416,6 @@ const AdminSupportMessages = () => {
                                             </div>
                                         </div>
 
-                                        {/* Last Message */}
-
                                         <div className="mt-6 p-4 rounded-2xl bg-black/20 border border-amber-500/10">
                                             <p className="text-sm text-slate-300 line-clamp-3 leading-6">
                                                 {conversation.lastMessage ||
@@ -630,8 +430,6 @@ const AdminSupportMessages = () => {
                                                     : ""}
                                             </p>
                                         </div>
-
-                                        {/* Buttons */}
 
                                         <div className="flex gap-3 mt-6">
                                             <button
@@ -666,36 +464,10 @@ const AdminSupportMessages = () => {
                     )}
                 </div>
             ) : (
-                /* =================================================
-                   CHAT VIEW
-                ================================================= */
-
                 <div
-                    className="
-                    max-w-4xl
-                    mx-auto
-                    h-[650px]
-                    flex
-                    flex-col
-                    min-h-0
-                    rounded-[30px]
-                    overflow-hidden
-                    border
-                    border-amber-500/15
-                    bg-gradient-to-br
-                    from-[#24160f]
-                    via-[#1b120d]
-                    to-[#15100c]
-                    shadow-[0_20px_60px_rgba(0,0,0,.45)]
-                "
+                    className="max-w-4xl mx-auto h-[650px] flex flex-col min-h-0 rounded-[30px] overflow-hidden border border-amber-500/15 bg-gradient-to-br from-[#24160f] via-[#1b120d] to-[#15100c] shadow-[0_20px_60px_rgba(0,0,0,.45)]"
                 >
-                    {/* =================================================
-                    HEADER
-                ================================================= */}
-
                     <div className="shrink-0 px-6 py-5 border-b border-amber-500/10 flex items-center gap-4">
-                        {/* Back */}
-
                         <button
                             type="button"
                             onClick={() =>
@@ -705,9 +477,6 @@ const AdminSupportMessages = () => {
                         >
                             <FaArrowLeft />
                         </button>
-
-                        {/* User Avatar */}
-
                         <div className="w-11 h-11 rounded-xl overflow-hidden border border-amber-500/20 shrink-0">
                             {selectedConversation?.user?.image ? (
                                 <img
@@ -730,8 +499,6 @@ const AdminSupportMessages = () => {
                             )}
                         </div>
 
-                        {/* User Info */}
-
                         <div className="flex-1 min-w-0">
                             <h2 className="text-lg font-bold text-white truncate">
                                 {selectedConversation?.user?.name ||
@@ -743,8 +510,6 @@ const AdminSupportMessages = () => {
                                     ""}
                             </p>
                         </div>
-
-                        {/* End Chat */}
 
                         <button
                             type="button"
@@ -758,12 +523,6 @@ const AdminSupportMessages = () => {
                             End Chat
                         </button>
                     </div>
-
-                    {/* =================================================
-                    MESSAGES
-                    IMPORTANT:
-                    ONLY THIS AREA WILL SCROLL
-                ================================================= */}
 
                     <div
                         ref={chatRef}
@@ -835,10 +594,6 @@ const AdminSupportMessages = () => {
                             </div>
                         )}
                     </div>
-
-                    {/* =================================================
-                    INPUT
-                ================================================= */}
 
                     <form
                         onSubmit={handleSendMessage}

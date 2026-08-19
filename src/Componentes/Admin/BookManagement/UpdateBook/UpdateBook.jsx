@@ -100,15 +100,10 @@ const UpdateBook = () => {
 		setValue("keywords", item.keywords?.join(", "));
 
 		Swal.fire({
-
 			icon: "success",
-
 			title: "Book Selected",
-
 			timer: 1200,
-
 			showConfirmButton: false,
-
 		});
 
 	};
@@ -382,7 +377,7 @@ const UpdateBook = () => {
 							<input
 								type="date"
 								{...register("publication_date")}
-								className={`${inputStyle} w-full min-w-0 cursor-pointer`}
+								className={`${inputStyle} w-full min-w-0 relative cursor-pointer`}
 							/>
 
 						</div>

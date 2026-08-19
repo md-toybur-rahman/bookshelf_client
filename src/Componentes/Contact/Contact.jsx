@@ -146,6 +146,58 @@ const Contact = () => {
 		return () => clearInterval(interval);
 	}, [profile?._id]);
 
+
+
+	const handleReadBedge = async (conversation) => {
+		if (!conversation?._id) return;
+
+		// Admin MongoDB ID required
+		if (!profile?._id) {
+			console.error(
+				"Admin MongoDB ID unavailable"
+			);
+
+			return;
+		}
+
+		try {
+			// =================================================
+			// Mark admin's unread messages as read
+			// =================================================
+
+			const res = await fetch(
+				`https://bookshelf-server-zot1.onrender.com/conversations/${conversation._id}/read`,
+				{
+					method: "PATCH",
+
+					headers: {
+						"Content-Type":
+							"application/json",
+					},
+
+					body: JSON.stringify({
+						userId: String(profile?._id),
+					}),
+				}
+			);
+
+			const data = await res.json();
+
+			if (!res.ok || !data.success) {
+				throw new Error(
+					data.message ||
+					"Failed to mark messages as read"
+				);
+			}
+
+		} catch (error) {
+			console.error(
+				"Mark support message read error:",
+				error
+			);
+		}
+	};
+
 	// =========================================================
 	// Auto Scroll Bottom
 	// =========================================================
@@ -164,7 +216,7 @@ const Contact = () => {
 
 	useEffect(() => {
 		if (!conversation?.messages?.length) return;
-
+		handleReadBedge(conversation);
 		const timer = setTimeout(() => {
 			scrollMessagesToBottom();
 		}, 50);

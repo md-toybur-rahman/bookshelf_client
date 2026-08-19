@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../Shared/Navbar/Navbar";
 import Footer from "../Shared/Footer/Footer";
 import { FaTimes } from "react-icons/fa";
+import Loading from "../Shared/Loading/Loading";
 
 const Layout = () => {
 	const location = useLocation();
@@ -15,6 +16,18 @@ const Layout = () => {
 			newsModal.classList.add("hidden");
 		}
 	};
+
+	const [isServer, setIsServer] = useState(null);
+	const [loading, setLoading] = useState(false);
+	useEffect(() => {
+		setLoading(true);
+		fetch('https://bookshelf-server-zot1.onrender.com/books').then(res => res.json()).then(data => { setIsServer(data); setLoading(false) });
+	}, [])
+
+
+	if (loading) {
+		return <Loading />
+	}
 
 	return (
 		<div className="relative min-h-screen overflow-hidden bg-[#0f0b08] text-white font-default">
