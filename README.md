@@ -51,6 +51,7 @@ Admins can communicate directly with users through:
 * Conversation continuation
 * Automatic conversation scrolling
 * Periodic message polling
+* Support Conversation
 
 ## Technologies
 
